@@ -1,41 +1,46 @@
 import random
 
+cardtypes = {
+    1: 'Remains',
+    2: 'Idol',
+    3: 'Jewelry',
+    4: 'Manuscript',
+    5: 'Pottery',
+    6: 'Tapestry'
+}
+
 class TreasureCard:
     
     """A treasure card."""
-    def __init__(self, name, type, value, face_up):
-        self.name = name
-        self.face_up = face_up
+    def __init__(self, type, value):
         self.type = type
         self.value = value
+        self.face_up = False
 
+    def turnCard(self):
+        self.face_up = not self.face_up
+
+    def __repr__(self):
+        if self.face_up:
+            return cardtypes[self.type] + ' : ' + str(self.value)
+        else:
+            return cardtypes[self.type]
 
 
 class CollectorCard:
 
     """A collector card."""
-    def __init__(self,type, requirement, reward):
+    def __init__(self, type, requirement, reward):
         self.type = type
         self.reward = reward
         self.requirement = requirement
 
-
-class Servant:
-
-    def roll(self):
-        return random.randint(1,6)
-
-    def seteffortvalue(self, effort_value):
-        self.effort_value = effort_value
-    
-
 class LeaderCard:
 
     def __init__(self):
-        self.type = "Torch"
+        self.type = "Leader"
 
 class LightsOut:
 
     def __init__(self):
         self.type = "Lights Out"
-        
