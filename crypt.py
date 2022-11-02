@@ -22,6 +22,32 @@ class Crypt:
         }
         self.turnsLeft = 8
     
+    def passTorchphase(self, loop):
+        if not self.deck:
+            self.calcScore()
+            self.printScore()
+            loop = False
+        else:
+            self.players[0].torch = not self.players[0].torch
+            self.players[1].torch = not self.players[1].torch
+            loop = True
+        return loop
+
+    def calcScore(self):
+        p1_score = 0
+        for card in self.players[0].collection:
+            p1_score += card.coinvalue
+        self.players[0].score = p1_score
+
+        p2_score = 0
+        for card in self.players[1].collection:
+            p2_score += card.coinvalue
+        self.players[1].score = p2_score
+
+    def printScore(self):
+        print('Red score: ', self.players[0].score)
+        print('Blue score: ', self.players[1].score)
+
     def revealphase(self):
         self.updateNewBoard(1)
         self.updateNewBoard(2)
@@ -50,6 +76,32 @@ class Crypt:
             self.printBoard()
             self.lastAction(1)
 
+    def collectphase(self):
+        self.rollDices()
+        self.collectCards()
+
+    def collectCards(self):
+        for place in range(1, 4):
+            if self.board[place]['servants']:
+                if str(self.board[place]['servants'][0]).startswith('Red'):
+                    self.collectTreasure(0, place)
+                else:
+                    self.collectTreasure(1, place)
+
+    def rollDices(self):
+        for place in range(1,4):
+            for servant in self.board[place]['servants']:
+                if str(servant).startswith('Red'):
+                    if servant.roll() >= servant.effort_value:
+                        self.players[0].recoverSingleServant()
+                else:
+                    if servant.roll() >= servant.effort_value:
+                        self.players[1].recoverSingleServant()
+        
+
+    def collectTreasure(self, playerNr, place):
+        card = self.board[place]['card']
+        self.players[playerNr].addTreasure(card)
 
     def Action(self, playerNr):
         if self.players[playerNr].servants:
@@ -58,10 +110,11 @@ class Crypt:
             self.noServants(playerNr)
 
     def hasServants(self, playerNr):
-        print(self.players[playerNr].color, 'turn')
+        print(self.players[playerNr].color, 'turn!')
         print('1: Claim a card')
         print('2: Recover all servants')
         print('3: Use Treasures')
+        print('')
         action = input('Choose an action: ')
         if action == '1':
             self.claimCard(playerNr)
@@ -77,12 +130,13 @@ class Crypt:
             print('Invalid input')
             self.hasServants(playerNr)
 
+        ####### Check if player has servants left #######
     def lastAction(self, playerNr):
-        print(self.players[playerNr].color, 'turn')
-        print('')
+        print(self.players[playerNr].color, 'turn!')
         print('1: Claim a card')
         print('2: Use Treasures')
         print('-: End turn')
+        print('')
         action = input('Choose an action: ')
         if action == '1':
             self.claimCard(playerNr)
@@ -123,6 +177,7 @@ class Crypt:
             print('Invalid input')
             self.claimAgain(playerNr)
 
+        ################# fixa det här
         if self.players[playerNr].servants:
             self.claimAgain(playerNr)
         else:
@@ -130,7 +185,7 @@ class Crypt:
 
 
     def claimCard(self, playerNr):
-        #### Check so place is between 1 and 3
+        # Check so place is between 1 and 3
         place = int(input('Choose a place: '))
         if place < 1 or place > 3:
             print('Invalid input')
@@ -142,7 +197,7 @@ class Crypt:
             print('You do not have enough servants to do that')
             self.claimCard(playerNr)
 
-        #### Check so value is between 1 and 6
+        # Check so value is between 1 and 6
         value = int(input('Choose a value: '))
         if value < 1 or value > 6:
             print('Invalid input')
@@ -182,13 +237,20 @@ class Crypt:
         print('2:', self.board[2]['card'], '|| Servants:', self.board[2]['servants'])
         print('3:', self.board[3]['card'], '|| Servants:', self.board[3]['servants'])
         print('')
+        print(self.turnsLeft, 'turns left')
+        print('')
         
 
 
 crypt = Crypt()
-crypt.revealphase()
-crypt.claimphase()
-
+loop = True
+while loop:
+    crypt.revealphase()
+    crypt.claimphase()
+    crypt.collectphase()
+    print(crypt.players[0].collection, crypt.players[0].servants)
+    print(crypt.players[1].collection, crypt.players[1].servants)
+    loop = crypt.passTorchphase(loop)
 
 
 

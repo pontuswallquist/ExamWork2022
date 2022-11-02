@@ -20,6 +20,9 @@ class Player:
 
     def recoverSingleServant(self):
         self.servants.append(Servant(self.color))
+    
+    def addTreasure(self, treasure):
+        self.collection.append(treasure)
 
 
 
