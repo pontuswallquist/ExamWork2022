@@ -14,7 +14,7 @@ class TreasureCard:
     """A treasure card."""
     def __init__(self, type, value):
         self.type = type
-        self.value = value
+        self.coinvalue = value
         self.face_up = False
 
     def turnCard(self):
@@ -22,7 +22,7 @@ class TreasureCard:
 
     def __repr__(self):
         if self.face_up:
-            return cardtypes[self.type] + ' : ' + str(self.value)
+            return cardtypes[self.type] + ' : ' + str(self.coinvalue)
         else:
             return cardtypes[self.type]
 
