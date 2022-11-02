@@ -184,24 +184,43 @@ class Crypt:
             pass
 
 
-    def claimCard(self, playerNr):
-        # Check so place is between 1 and 3
-        place = int(input('Choose a place: '))
-        if place < 1 or place > 3:
-            print('Invalid input')
-            self.claimCard(playerNr)
-
+    def get_place_servants_value(self, playerNr):
+        # Gets input from player
+        while True:
+            try:
+                place = int(input('Choose a place: '))
+                if place < 1 or place > 3:
+                    raise ValueError('Invalid place')
+                break
+            except ValueError as e:
+                print(e)
+        
         #Check if player has enough servants to use
-        servants = int(input('Choose a number of servants: '))
-        if servants > len(self.players[playerNr].servants):
-            print('You do not have enough servants to do that')
-            self.claimCard(playerNr)
+        while True:
+            try:
+                servants = int(input('Choose a number of servants: '))
+                if servants > len(self.players[playerNr].servants):
+                    raise ValueError('You dont have servants for that')
+                break
+            except ValueError as e:
+                print(e)
 
         # Check so value is between 1 and 6
-        value = int(input('Choose a value: '))
-        if value < 1 or value > 6:
-            print('Invalid input')
-            self.claimCard(playerNr)
+        while True:
+            try:
+                value = int(input('Choose a value: '))
+                if value < 1 or value > 6:
+                    raise ValueError('Value must be between 1 and 6')
+                break
+            except ValueError as e:
+                print(e)
+
+        return place, servants, value
+            
+
+    def claimCard(self, playerNr):
+       
+        place, servants, value = self.get_place_servants_value(playerNr)
 
         #Check if card servants is not empty
         if self.board[place]['servants']:
