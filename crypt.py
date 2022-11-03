@@ -110,6 +110,7 @@ class Crypt:
                         print('Blue player rolls', roll, 'and recovers a servant')
                     else:
                         print('Blue player rolls', roll, 'and servant is exhausted')
+        print('===============================================')
         
 
     def collectTreasure(self, playerNr, place):
@@ -143,19 +144,19 @@ class Crypt:
 
 
     def lastAction(self, playerNr):
+        if not self.players[playerNr].servants:
+            return
         self.printRoundInfo(playerNr)
         print('1: Claim a card')
         print('2: Use Treasures')
         print('3: End turn')
         action = self.get_input(1,3)
         if action == '1':
-            if self.players[playerNr].servants:
-                self.claimCard(playerNr)
+            self.claimCard(playerNr)
         elif action == '2':
             pass
         elif action == '3':
             pass
-        print('===============================================')
         return
         
 

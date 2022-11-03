@@ -17,6 +17,7 @@ class Player:
         
     def recoverServants(self):
         self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
+        print(self.color, 'player recovered all servants')
 
     def recoverSingleServant(self):
         self.servants.append(Servant(self.color))
