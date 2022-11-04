@@ -11,6 +11,16 @@ class Crypt:
                 self.deck.append(TreasureCard(type, value))
         random.shuffle(self.deck)
 
+        # Initialize Collector cards
+        self.collectors = {
+            1: RemainsCollector(),
+            2: IdolCollector(),
+            3: JewelryCollector(),
+            4: ManuscriptCollector(),
+            5: PotteryCollector(),
+            6: TapestryCollector()
+        }
+
         # Initialize players
         self.players = [Player('Red', True), Player('Blue')]
         
@@ -24,7 +34,9 @@ class Crypt:
     
     def passTorchphase(self, loop):
         if not self.deck:
-            self.calcScore()
+            self.countBonus()
+            self.calculateCollectionScore()
+            self.countServants()
             self.printScore()
             loop = False
         else:
@@ -33,19 +45,35 @@ class Crypt:
             loop = True
         return loop
 
-    def calcScore(self):
-        p1_score = 0
-        for card in self.players[0].collection:
-            p1_score += card.coinvalue
-        self.players[0].score = p1_score
+    def countServants(self):
+        self.players[0].score += len(self.players[0].servants)
+        self.players[1].score += len(self.players[1].servants)
 
-        p2_score = 0
+    def countBonus(self):
+        self.players[0].turnAllCards()
+        self.players[1].turnAllCards()
+        for i in range(3,6):
+            self.collectors[i].useCard(self.players[0])
+            self.collectors[i].useCard(self.players[1])
+        self.collectors[6].useCard(self.players[0], self.players[1])
+        
+
+    def calculateCollectionScore(self):
+        #Player 1 score
+        for card in self.players[0].collection:
+            self.players[0].score += card.coinvalue
+
+        #Player 2 score
         for card in self.players[1].collection:
-            p2_score += card.coinvalue
-        self.players[1].score = p2_score
+            self.players[1].score += card.coinvalue
 
     def printScore(self):
+        print('Red Treasures: ', self.players[0].collection)
+        print('Red servants: ', self.players[0].servants)
         print('Red score: ', self.players[0].score)
+        print('')
+        print('Blue Treasures: ', self.players[1].collection)
+        print('Blue servants: ', self.players[1].servants)
         print('Blue score: ', self.players[1].score)
 
     def revealphase(self):
@@ -77,8 +105,8 @@ class Crypt:
             self.lastAction(1)
 
     def collectphase(self):
-        self.rollDices()
         self.collectCards()
+        self.rollDices()
 
     def printRoundInfo(self, playerNr):
         print(self.players[playerNr].color, 'turn!')
@@ -87,12 +115,13 @@ class Crypt:
 
     def collectCards(self):
         for place in range(1, 4):
-            if self.board[place]['servants']:
-                if str(self.board[place]['servants'][0]).startswith('Red'): # Maybe change this line
+            for servant in self.board[place]['servants']:
+                if servant.color == 'Red':
                     self.collectTreasure(0, place)
                 else:
                     self.collectTreasure(1, place)
 
+    ########## rework in to smaller function for a particular player
     def rollDices(self):
         print('')
         for place in range(1,4):
@@ -100,21 +129,45 @@ class Crypt:
                 roll = servant.roll()
                 if servant.color == 'Red':
                     if roll >= servant.effort_value:
+                        print('Red player rolls', roll)
                         self.players[0].recoverSingleServant()
-                        print('Red player rolls', roll, 'and recovers a servant')
                     else:
-                        print('Red player rolls', roll, 'and servant is exhausted')
+                        if self.players[0].hasIdol():
+                            print('Roll again? 1: Yes, 2: No')
+                            answer = self.get_input(1,2)
+                            if answer == '1':
+                                roll = servant.roll()
+                                if roll >= servant.effort_value:
+                                    print('Red player rolls', roll)
+                                    self.players[0].recoverSingleServant()
+                                else:
+                                    print('Red player rolls', roll, 'and servant is exhausted')  
+                        else:
+                            print('Red player rolls', roll, 'and servant is exhausted')
                 else:
                     if roll >= servant.effort_value:
+                        print('Blue player rolls', roll)
                         self.players[1].recoverSingleServant()
-                        print('Blue player rolls', roll, 'and recovers a servant')
                     else:
-                        print('Blue player rolls', roll, 'and servant is exhausted')
+                        if self.players[1].hasIdol():
+                            print('Roll again? 1: Yes, 2: No')
+                            answer = self.get_input(1,2)
+                            if answer == '1':
+                                roll = servant.roll()
+                                if roll >= servant.effort_value:
+                                    print('Blue player rolls', roll)
+                                    self.players[1].recoverSingleServant()
+                                else:
+                                    print('Blue player rolls', roll, 'and servant is exhausted')  
+                        else:
+                            print('Blue player rolls', roll, 'and servant is exhausted')
         print('===============================================')
         
 
     def collectTreasure(self, playerNr, place):
         card = self.board[place]['card']
+        if card.face_up:
+            card.turnCard()
         self.players[playerNr].addTreasure(card)
 
     def Action(self, playerNr):
@@ -127,7 +180,7 @@ class Crypt:
         self.printRoundInfo(playerNr)
         print('1: Claim a card')
         print('2: Recover all servants')
-        print('3: Use Treasures')
+        print('3: Use Remains cards to recover a servant')
         action = self.get_input(1,3)
         if action == '1':
             self.claimCard(playerNr)
@@ -140,6 +193,9 @@ class Crypt:
             self.players[playerNr].recoverServants()
             return
         elif action == '3':
+            if self.players[playerNr].hasRemains():
+                self.collectors[1].useCard(self.players[playerNr])
+                self.lastAction(playerNr)
             return
 
 

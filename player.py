@@ -21,9 +21,30 @@ class Player:
 
     def recoverSingleServant(self):
         self.servants.append(Servant(self.color))
+        print(self.color, 'player recovered a servant')
     
     def addTreasure(self, treasure):
         self.collection.append(treasure)
+
+    def turnAllCards(self):
+        for card in self.collection:
+            if not card.face_up:
+                card.turnCard()
+    
+    def hasIdol(self):
+        for card in self.collection:
+            if card.type == 2 and not card.face_up:
+                return True
+        return False
+    
+    def hasRemains(self):
+        count = 0
+        for card in self.collection:
+            if card.type == 1 and not card.face_up:
+                count += 1
+            if count == 2:
+                return True
+        return False
 
 
 
