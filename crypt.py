@@ -32,18 +32,18 @@ class Crypt:
         }
         self.turnsLeft = 8
     
-    def passTorchphase(self, loop):
+    def passTorchphase(self, game_over):
         if not self.deck:
             self.countBonus()
             self.calculateCollectionScore()
             self.countServants()
             self.printScore()
-            loop = False
+            game_over = True
         else:
             self.players[0].torch = not self.players[0].torch
             self.players[1].torch = not self.players[1].torch
-            loop = True
-        return loop
+            game_over = False
+        return game_over
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)
@@ -68,6 +68,7 @@ class Crypt:
             self.players[1].score += card.coinvalue
 
     def printScore(self):
+        print('GAME OVER!')
         print('Red Treasures: ', self.players[0].collection)
         print('Red servants: ', self.players[0].servants)
         print('Red score: ', self.players[0].score)
@@ -111,6 +112,7 @@ class Crypt:
     def printRoundInfo(self, playerNr):
         print(self.players[playerNr].color, 'turn!')
         print('Servants available:', self.players[playerNr].servants)
+        print('Treasures collected:', self.players[playerNr].collection)
         print('')
 
     def collectCards(self):
@@ -123,7 +125,7 @@ class Crypt:
 
     ########## rework in to smaller function for a particular player
     def rollDices(self):
-        print('')
+        print('====================================================')
         for place in range(1,4):
             for servant in self.board[place]['servants']:
                 roll = servant.roll()
@@ -132,16 +134,19 @@ class Crypt:
                         print('Red player rolls', roll)
                         self.players[0].recoverSingleServant()
                     else:
+                        print('Red player rolls', roll)
                         if self.players[0].hasIdol():
-                            print('Roll again? 1: Yes, 2: No')
+                            print(self.players[0].color, 'player: ','Roll again? 1: Yes, 2: No')
                             answer = self.get_input(1,2)
                             if answer == '1':
-                                roll = servant.roll()
-                                if roll >= servant.effort_value:
+                                roll = self.collectors[2].useCard(self.players[0])
+                                if roll >= servant.effort_value: 
                                     print('Red player rolls', roll)
                                     self.players[0].recoverSingleServant()
                                 else:
-                                    print('Red player rolls', roll, 'and servant is exhausted')  
+                                    print('Red player rolls', roll, 'and servant is exhausted')
+                            else:
+                                print('Red servant is exhausted')
                         else:
                             print('Red player rolls', roll, 'and servant is exhausted')
                 else:
@@ -149,19 +154,22 @@ class Crypt:
                         print('Blue player rolls', roll)
                         self.players[1].recoverSingleServant()
                     else:
+                        print('Blue player rolls', roll)
                         if self.players[1].hasIdol():
-                            print('Roll again? 1: Yes, 2: No')
+                            print(self.players[1].color, 'player: ','Roll again? 1: Yes, 2: No')
                             answer = self.get_input(1,2)
                             if answer == '1':
-                                roll = servant.roll()
+                                roll = self.collectors[2].useCard(self.players[1])
                                 if roll >= servant.effort_value:
                                     print('Blue player rolls', roll)
                                     self.players[1].recoverSingleServant()
                                 else:
-                                    print('Blue player rolls', roll, 'and servant is exhausted')  
+                                    print('Blue player rolls', roll, 'and servant is exhausted')
+                            else:
+                                print('Blue servant is exhausted')
                         else:
                             print('Blue player rolls', roll, 'and servant is exhausted')
-        print('===============================================')
+        print('====================================================')
         
 
     def collectTreasure(self, playerNr, place):
@@ -327,16 +335,6 @@ class Crypt:
         print('')
         print(self.turnsLeft, 'turns left')
         print('')
-        
-
-
-crypt = Crypt()
-loop = True
-while loop:
-    crypt.revealphase()
-    crypt.claimphase()
-    crypt.collectphase()
-    loop = crypt.passTorchphase(loop)
 
 
 

@@ -45,8 +45,14 @@ class RemainsCollector(CollectorCard):
     def __init__(self):
         super().__init__(1, 2)
 
-    #Kolla denna igen
     def useCard(self, player):
+        count = 0
+        for card in player.collection:
+            if card.type == 1 and not card.face_up:
+                count += 1
+                card.turnCard()
+            if count == 2:
+                break             
         player.recoverSingleServant()
 
 class IdolCollector(CollectorCard):
@@ -57,8 +63,8 @@ class IdolCollector(CollectorCard):
     def useCard(self, player):
         for index, card in enumerate(player.collection):
             if card.type == 2 and not card.face_up:
-                player.collection[index].turnCard()
-                return player.servants[0].roll()
+                card.turnCard()
+                return random.randint(1, 6)
 
 class JewelryCollector(CollectorCard):
 
@@ -129,14 +135,6 @@ class TapestryCollector(CollectorCard):
             player1.score += 5
         elif p2_score > p1_score:
             player2.score += 5
-        
-            
-                
-
-                
-        
-            
-
     
 
 class LeaderCard:

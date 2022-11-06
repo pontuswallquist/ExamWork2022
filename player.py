@@ -47,8 +47,6 @@ class Player:
         return False
 
 
-
-
 class Servant:
 
     def __init__(self, color):
