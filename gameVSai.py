@@ -3,10 +3,13 @@ import random
 from actionspace import Actions, ResultOfAction, getPlayerAction
 
 def revealPhase(state):
+    print('########## Reveal Phase ##########')
+    state.turnsLeft -= 1
+    print('Turns left: ', state.turnsLeft)
     state.updateNewBoard(1)
     state.updateNewBoard(2)
     state.updateNewBoard(3)
-    state.turnsLeft -= 1
+    
 
     return state
 
@@ -23,62 +26,74 @@ def claimPhase(state):
     phase_over = False
     while not phase_over:
 
-        state.printBoard()     
+        if turn == 4:
+            break
 
+        print('TURN: ', turn)
         #Player Turn
         if turn % 2 == 0:
+            state.printBoard()
             state.printRoundInfo(0)
-            list_of_actions = Actions(state, 0, turn, p0_played)
+            list_of_actions = Actions(state, 0, turn, p0_played) 
             if len(list_of_actions) == 0:
                 turn += 1
-                p0_played = True
                 continue
             action = getPlayerAction(list_of_actions)
             state = ResultOfAction(state, 0, action)
+            print('You played: ', action)
             if action == 'Recover':
+                p0_played = True
                 turn += 1
                 continue
-            else:
-                p0_played = True
-
-            print('\nTurn: ', turn)
-            
+     
+            p0_played = True
             if turn == 2 and state.players[0].hasTorch() and p0_played and p1_played:
-                phase_over = True          
+                phase_over = True
+            
+            if not state.players[0].servants:
+                turn += 1
+                continue
 
+            
         #Opponent Turn
-        elif turn % 2 == 1:
+        elif turn % 2 == 1:   
+            state.printBoard()
             state.printRoundInfo(1)
             list_of_actions = Actions(state, 1, turn, p1_played)
             if len(list_of_actions) == 0:
                 turn += 1
-                p1_played = True
                 continue
             #action = getAIAction(state, list_of_actions)
             # get random action
             action = random.choice(list_of_actions)
             state = ResultOfAction(state, 1, action)
+            print('NPC played: ', action)
             if action == 'Recover':
-                turn += 1
-                continue
-            else:
                 p1_played = True
-            
-            print('\nTurn: ', turn)
+                turn += 1                
+                continue
 
+            p1_played = True
             if turn == 3 and state.players[1].hasTorch() and p0_played and p1_played:
                 phase_over = True
-    
+            
+            if not state.players[1].servants:
+                turn += 1
+                continue
     return state
 
 
 def collectPhase(state):
-    state.collectCards()
-
+    print('########## Collect Phase ##########')
+    state.printBoard()
+    '''
     if not state.anyServants('Red'):
         state.players[0].recoverServants()
     if not state.anyServants('Blue'):
         state.players[1].recoverServants()
+    '''
+
+    state.collectCards()
     
     servants_to_roll = state.mergeServants()
     for servant in servants_to_roll:
@@ -86,7 +101,7 @@ def collectPhase(state):
             if state.players[0].hasIdol():
                 state.rollWithAction(0, servant)
             else:
-                state.rollWithoutAction(0)
+                state.rollWithoutAction(0, servant)
         elif servant.color == 'Blue':
             if state.players[1].hasIdol():
                 state.rollWithAction(1, servant)

@@ -135,14 +135,3 @@ class TapestryCollector(CollectorCard):
             player1.score += 5
         elif p2_score > p1_score:
             player2.score += 5
-    
-
-class LeaderCard:
-
-    def __init__(self):
-        self.type = "Leader"
-
-class LightsOut:
-
-    def __init__(self):
-        self.type = "Lights Out"

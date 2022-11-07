@@ -15,7 +15,7 @@ def mapActionSpace2(place, servant, value):
 def Actions(state, playerNr, turn, hasPlayed):
     actions = []
     servants_available = len(state.players[playerNr].servants)
-    if (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 0 and turn == 2 and not hasPlayed):
+    if (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
         if servants_available < 3:
             actions.append('Recover')
             if state.players[playerNr].hasRemains():

@@ -48,7 +48,7 @@ class Crypt:
     def anyServants(self, color):
         for place in self.board:
             for servant in self.board[place]:
-                if color in servant:
+                if servant.color == color:
                     return True
         return False
 
@@ -107,8 +107,10 @@ class Crypt:
         
         #Print Player needs to roll servant.effort_value or above to keep servant
         roll = servant.roll()
+        print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
         if roll < servant.effort_value:
             #Print players rolls roll and loses servant
+            print(self.players[playerNr].color + ' lost a servant')
             return
         else:
             #Print players rolls roll and keeps servant
@@ -119,15 +121,19 @@ class Crypt:
         roll = servant.roll()
         if roll < servant.effort_value:
             #Print players rolls roll and loses servant
+            print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
             newRoll = self.collectors[2].useCard(self.players[playerNr])
+            print(self.players[playerNr].color + ' used Idol card to roll', newRoll, 'against', servant.effort_value)
             if newRoll < servant.effort_value:
                 #Print players rolls newRoll and loses servant
+                print(self.players[playerNr].color + ' lost a servant')
                 return
             else:
                 #Print players rolls newRoll and keeps servant
                 self.players[playerNr].recoverSingleServant()
         else:
             #Print players rolls roll and keeps servant
+            print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
             self.players[playerNr].recoverSingleServant()
         
 
@@ -151,7 +157,15 @@ class Crypt:
 
 
     def addServant2Card(self, playerNr, place, servants, value):
-        for each in range(servants):
+
+        otherPlayerNr = 0 if playerNr == 1 else 1
+
+        
+        for i in range(len(self.board[place]['servants'])):
+            self.board[place]['servants'].pop()
+            self.players[otherPlayerNr].recoverSingleServant()
+
+        for i in range(servants):
             servant = self.players[playerNr].useServant(value)
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
@@ -162,7 +176,6 @@ class Crypt:
         print('2:', self.board[2]['card'], '|| Servants:', self.board[2]['servants'])
         print('3:', self.board[3]['card'], '|| Servants:', self.board[3]['servants'])
         print('')
-        print(self.turnsLeft, 'turns left')
         print('')
 
 
