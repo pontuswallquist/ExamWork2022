@@ -32,18 +32,6 @@ class Crypt:
         }
         self.turnsLeft = 8
     
-    def passTorchphase(self, game_over):
-        if not self.deck:
-            self.countBonus()
-            self.calculateCollectionScore()
-            self.countServants()
-            self.printScore()
-            game_over = True
-        else:
-            self.players[0].torch = not self.players[0].torch
-            self.players[1].torch = not self.players[1].torch
-            game_over = False
-        return game_over
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)
@@ -56,6 +44,20 @@ class Crypt:
             self.collectors[i].useCard(self.players[0])
             self.collectors[i].useCard(self.players[1])
         self.collectors[6].useCard(self.players[0], self.players[1])
+    
+    def anyServants(self, color):
+        for place in self.board:
+            for servant in self.board[place]:
+                if color in servant:
+                    return True
+        return False
+
+    def mergeServants(self):
+        #merge servants lists to one list
+        merged = []
+        for place in self.board:
+            merged.extend(self.board[place]['servants'])
+        return merged
         
 
     def calculateCollectionScore(self):
@@ -77,13 +79,7 @@ class Crypt:
         print('Blue servants: ', self.players[1].servants)
         print('Blue score: ', self.players[1].score)
 
-    def revealphase(self):
-        self.updateNewBoard(1)
-        self.updateNewBoard(2)
-        self.updateNewBoard(3)
-        self.turnsLeft -= 1
-        self.printBoard()
-    
+
     def updateNewBoard(self, place):
         card = self.deck.pop()
         if place <= 2:
