@@ -14,7 +14,13 @@ class Player:
         servant = self.servants.pop()
         servant.setValue(value)
         return servant
-        
+
+    def hasLessThan3Servants(self):
+        return len(self.servants) < 3
+    
+    def hasTorch(self):
+        return self.torch
+
     def recoverServants(self):
         self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
         print(self.color, 'player recovered all servants')

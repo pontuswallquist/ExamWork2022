@@ -61,7 +61,7 @@ class IdolCollector(CollectorCard):
         super().__init__(2, 1)
     
     def useCard(self, player):
-        for index, card in enumerate(player.collection):
+        for card in player.collection:
             if card.type == 2 and not card.face_up:
                 card.turnCard()
                 return random.randint(1, 6)
