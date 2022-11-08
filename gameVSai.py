@@ -26,7 +26,9 @@ def claimPhase(state):
     phase_over = False
     while not phase_over:
 
-        if turn == 4:
+        if turn == 3 and state.players[0].hasTorch():
+            break
+        elif turn == 4 and state.players[1].hasTorch():
             break
 
         print('TURN: ', turn)
@@ -86,12 +88,12 @@ def claimPhase(state):
 def collectPhase(state):
     print('########## Collect Phase ##########')
     state.printBoard()
-    '''
+    
     if not state.anyServants('Red'):
         state.players[0].recoverServants()
     if not state.anyServants('Blue'):
         state.players[1].recoverServants()
-    '''
+    
 
     state.collectCards()
     
@@ -117,6 +119,8 @@ def passTorchPhase(state, game_over):
         state.countServants()
         game_over = True
     else:
+        #Press any button to pass torch
+        input('\nPress enter to pass torch')
         state.players[0].torch = not state.players[0].torch
         state.players[1].torch = not state.players[1].torch
         game_over = False
@@ -141,5 +145,6 @@ def main():
         print('NPC won!')
     else:
         print('Tie Game!')
+
 
 main()

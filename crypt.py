@@ -46,8 +46,8 @@ class Crypt:
         self.collectors[6].useCard(self.players[0], self.players[1])
     
     def anyServants(self, color):
-        for place in self.board:
-            for servant in self.board[place]:
+        for place in self.board.keys():
+            for servant in self.board[place]['servants']:
                 if servant.color == color:
                     return True
         return False
@@ -100,8 +100,10 @@ class Crypt:
             for servant in self.board[place]['servants']:
                 if servant.color == 'Red':
                     self.collectTreasure(0, place)
-                else:
+                    break
+                elif servant.color == 'Blue':
                     self.collectTreasure(1, place)
+                    break
 
     def rollWithoutAction(self, playerNr, servant):
         
@@ -123,7 +125,7 @@ class Crypt:
             #Print players rolls roll and loses servant
             print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
             newRoll = self.collectors[2].useCard(self.players[playerNr])
-            print(self.players[playerNr].color + ' used Idol card to roll', newRoll, 'against', servant.effort_value)
+            print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value)
             if newRoll < servant.effort_value:
                 #Print players rolls newRoll and loses servant
                 print(self.players[playerNr].color + ' lost a servant')
@@ -160,10 +162,10 @@ class Crypt:
 
         otherPlayerNr = 0 if playerNr == 1 else 1
 
-        
-        for i in range(len(self.board[place]['servants'])):
-            self.board[place]['servants'].pop()
-            self.players[otherPlayerNr].recoverSingleServant()
+        if not len(self.board[place]['servants']) == 0:
+            for i in range(len(self.board[place]['servants'])):
+                self.board[place]['servants'].pop()
+                self.players[otherPlayerNr].recoverSingleServant()
 
         for i in range(servants):
             servant = self.players[playerNr].useServant(value)
