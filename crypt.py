@@ -1,5 +1,8 @@
 from cards import *
 from player import *
+from rich.console import Console
+from rich.table import Table
+console = Console()
 
 class Crypt:
 
@@ -70,14 +73,15 @@ class Crypt:
             self.players[1].score += card.coinvalue
 
     def printScore(self):
-        print('GAME OVER!')
-        print('Blue Treasures: ', self.players[1].collection)
-        print('Blue servants: ', self.players[1].servants)
-        print('Blue score: ', self.players[1].score)
-        print('')
-        print('Red Treasures: ', self.players[0].collection)
-        print('Red servants: ', self.players[0].servants)
-        print('Red score: ', self.players[0].score)
+        console.print('[bold italic underline green]GAME OVER!', justify='center')
+        console.print('[bold blue]Blue:')
+        console.print('Treasures: ', self.players[1].collection, justify='right')
+        console.print('Servants: ', self.players[1].servants, justify='right')
+        console.print('Score: ', self.players[1].score, justify='right')
+        console.print('[bold red]Red:')
+        console.print('Treasures: ', self.players[0].collection, justify='left')
+        console.print('Servants: ', self.players[0].servants, justify='left')
+        console.print('Score: ', self.players[0].score, justify='left')
         
 
 
@@ -90,10 +94,14 @@ class Crypt:
 
 
     def printRoundInfo(self, playerNr):
-        print(' || ' + self.players[playerNr].color, 'turn! ||')
-        print('Servants available:', self.players[playerNr].servants)
-        print('Treasures collected:', self.players[playerNr].collection)
-        print('')
+        if self.players[playerNr].color == 'Red':
+            console.print(' [red]|| Red turn ||', justify='left')
+            console.print('[red]Servants available:', self.players[playerNr].servants, justify='left')
+            console.print('[red]Treasures collected:', self.players[playerNr].collection, justify='left')
+        else:
+            console.print(' [blue]|| Blue turn ||', justify='right')
+            console.print('[blue]Servants available:', self.players[playerNr].servants, justify='right')
+            console.print('[blue]Treasures collected:', self.players[playerNr].collection, justify='right')
 
     def collectCards(self):
         for place in range(1, 4):
@@ -107,35 +115,27 @@ class Crypt:
 
     def rollWithoutAction(self, playerNr, servant):
         
-        #Print Player needs to roll servant.effort_value or above to keep servant
         roll = servant.roll()
-        print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
+        console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
         if roll < servant.effort_value:
-            #Print players rolls roll and loses servant
-            print(self.players[playerNr].color + ' lost a servant')
+            console.print(self.players[playerNr].color + ' lost a servant', justify='center')
             return
         else:
-            #Print players rolls roll and keeps servant
             self.players[playerNr].recoverSingleServant()
 
     def rollWithAction(self, playerNr, servant):
-        #Print Player needs to roll servant.effort_value or above to keep servant
         roll = servant.roll()
         if roll < servant.effort_value:
-            #Print players rolls roll and loses servant
-            print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
+            console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
             newRoll = self.collectors[2].useCard(self.players[playerNr])
-            print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value)
+            console.print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value, justify='center')
             if newRoll < servant.effort_value:
-                #Print players rolls newRoll and loses servant
-                print(self.players[playerNr].color + ' lost a servant')
+                console.print(self.players[playerNr].color + ' lost a servant', justify='center')
                 return
             else:
-                #Print players rolls newRoll and keeps servant
                 self.players[playerNr].recoverSingleServant()
         else:
-            #Print players rolls roll and keeps servant
-            print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
+            console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
             self.players[playerNr].recoverSingleServant()
         
 
@@ -173,12 +173,17 @@ class Crypt:
             self.board[place]['servants'].append(servant)
 
     def printBoard(self):
-        print('')
-        print('1:', self.board[1]['card'], '|| Servants:', self.board[1]['servants'])
-        print('2:', self.board[2]['card'], '|| Servants:', self.board[2]['servants'])
-        print('3:', self.board[3]['card'], '|| Servants:', self.board[3]['servants'])
-        print('')
-        print('')
+        console.print('')
+        board_table = Table(title='Board')
+        board_table.add_column('1', justify='center')
+        board_table.add_column('2', justify='center')
+        board_table.add_column('3', justify='center')
+        board_table.add_row(str(self.board[1]['card']), str(self.board[2]['card']), str(self.board[3]['card']))
+        board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
+        console.print(board_table, justify='center')
+        console.print('')
+
+        
 
 
 

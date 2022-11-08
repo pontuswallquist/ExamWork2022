@@ -23,9 +23,9 @@ class TreasureCard:
 
     def __repr__(self):
         if self.face_up:
-            return cardtypes[self.type] + ' : ' + str(self.coinvalue)
+            return str(cardtypes[self.type] + ' : ' + str(self.coinvalue))
         else:
-            return cardtypes[self.type]
+            return str(cardtypes[self.type])
 
 
 class CollectorCard:

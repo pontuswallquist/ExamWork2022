@@ -1,16 +1,8 @@
 import crypt
+from rich.console import Console
+from rich.table import Table
+console = Console()
 
-actionSpace2 = [
-    [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
-    [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
-    [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
-]
-
-def mapActionSpace2(place, servant, value):
-    placeIndex = place - 1
-    servantIndex = servant - 1
-    valueIndex = value - 1
-    return placeIndex, servantIndex, valueIndex
 
 def Actions(state, playerNr, turn, hasPlayed):
     actions = []
@@ -27,8 +19,6 @@ def Actions(state, playerNr, turn, hasPlayed):
         if not state.board[place]['servants']:
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
-                    #placeIndex, servantIndex, valueIndex = mapActionSpace2(place, servant, value)
-                    #actionSpace2[placeIndex][servantIndex][valueIndex] = 1
                     actions.append(str(place) + '-' + str(servant) + '-' + str(value))
         else:
             #If place is occupied, check if player already has a servant there
@@ -41,8 +31,6 @@ def Actions(state, playerNr, turn, hasPlayed):
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
                     if current_bid < value*servant:
-                        #placeIndex, servantIndex, valueIndex = mapActionSpace2(place, servant, value)
-                        #actionSpace2[placeIndex][servantIndex][valueIndex] = 1
                         actions.append(str(place) + '-' + str(servant) + '-' + str(value))
 
     return actions
@@ -61,11 +49,43 @@ def ResultOfAction(state, playerNr, action):
     
     return state
 
-def getPlayerAction(list_of_actions):
-    print('Choose an action:')
+def printAvailableActions(list_of_actions):
+    place1_actions = []
+    place2_actions = []
+    place3_actions = []
+    other_actions = []
     for i, action in enumerate(list_of_actions):
-        print(str(i) + ': ' + action, end=' || ')
-    print('')
+        if action == 'Recover':
+            other_actions.append((i,action))
+        elif action == 'UseRemains':
+            other_actions.append((i,action))
+        else:
+            place = action.split('-')[0]
+            if place == '1':
+                place1_actions.append((i, action))
+            elif place == '2':
+                place2_actions.append((i, action))
+            elif place == '3':
+                place3_actions.append((i, action))
+
+    if len(place1_actions) == len(place2_actions) == len(place3_actions):
+        for i in range(len(other_actions)):
+            console.print(f'{other_actions[i][0]}: {other_actions[i][1]}')
+        for i in range(len(place1_actions)):
+            console.print(f'{place1_actions[i][0]}: {place1_actions[i][1]}', f'{place2_actions[i][0]}: {place2_actions[i][1]}', f'{place3_actions[i][0]}: {place3_actions[i][1]}')
+    
+    else:
+        for i, action in enumerate(list_of_actions):
+            console.print(i,':',str(action), end=' || ')
+    console.print('')
+
+
+
+def getPlayerAction(list_of_actions):
+
+    console.print('\nPlace-NrOfServants-Value\n')
+    printAvailableActions(list_of_actions)
+    
     while True:
         try:
             action = int(input('Choose an action --> '))
@@ -79,18 +99,7 @@ def getPlayerAction(list_of_actions):
 
 
 
-''' #Test for cases
-state = crypt.Crypt()
-state.updateNewBoard(1)
-state.updateNewBoard(2)
-state.updateNewBoard(3)
-#state.addServant2Card(0, 1, 2, 4)
-#state.addServant2Card(0, 2, 1, 5)
-state.addServant2Card(1, 3, 1, 5)
-action_list = Actions(state, 0, 2)
-action = getPlayerAction(action_list)
-print(action)
-'''
+
             
     
     

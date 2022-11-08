@@ -1,11 +1,15 @@
 import crypt
 import random
 from actionspace import Actions, ResultOfAction, getPlayerAction
+from rich import print
+from rich.console import Console
+
+console = Console()
 
 def revealPhase(state):
-    print('########## Reveal Phase ##########')
+    console.print('[bold italic underline green]Reveal Phase', justify='center')
     state.turnsLeft -= 1
-    print('Turns left: ', state.turnsLeft)
+    console.print('Turns left: ', state.turnsLeft, justify='left')
     state.updateNewBoard(1)
     state.updateNewBoard(2)
     state.updateNewBoard(3)
@@ -31,7 +35,6 @@ def claimPhase(state):
         elif turn == 4 and state.players[1].hasTorch():
             break
 
-        print('TURN: ', turn)
         #Player Turn
         if turn % 2 == 0:
             state.printBoard()
@@ -42,7 +45,7 @@ def claimPhase(state):
                 continue
             action = getPlayerAction(list_of_actions)
             state = ResultOfAction(state, 0, action)
-            print('You played: ', action)
+            console.print('[red]You played: ', action, justify='left')
             if action == 'Recover':
                 p0_played = True
                 turn += 1
@@ -69,7 +72,7 @@ def claimPhase(state):
             # get random action
             action = random.choice(list_of_actions)
             state = ResultOfAction(state, 1, action)
-            print('NPC played: ', action)
+            console.print('[blue]NPC played: ', action, justify='right')
             if action == 'Recover':
                 p1_played = True
                 turn += 1                
@@ -86,7 +89,7 @@ def claimPhase(state):
 
 
 def collectPhase(state):
-    print('########## Collect Phase ##########')
+    console.print('[bold italic underline green]Collect Phase', justify='center')
     state.printBoard()
     
     if not state.anyServants('Red'):
@@ -140,11 +143,11 @@ def main():
     state = playGame(state)
     state.printScore()
     if state.players[0].score > state.players[1].score:
-        print('You won!')
+        console.print('[bold red]You won!', justify='left')
     elif state.players[0].score < state.players[1].score:
-        print('NPC won!')
+        console.print('[bold blue]NPC won!', justify='right')
     else:
-        print('Tie Game!')
+        console.print('[bold green]Tie Game!', justify='center')
 
 
 main()
