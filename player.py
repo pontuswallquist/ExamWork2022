@@ -23,11 +23,11 @@ class Player:
 
     def recoverServants(self):
         self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
-        print(self.color, 'player recovered all servants')
+        #print(self.color, 'player recovered all servants')
 
     def recoverSingleServant(self):
         self.servants.append(Servant(self.color))
-        print(self.color, 'player recovered a servant')
+        #print(self.color, 'player recovered a servant')
     
     def addTreasure(self, treasure):
         self.collection.append(treasure)

@@ -61,6 +61,7 @@ def ResultOfAction(state, playerNr, action):
     
     return state
 
+'''
 def getPlayerAction(list_of_actions):
     print('Choose an action:')
     for i, action in enumerate(list_of_actions):
@@ -76,22 +77,9 @@ def getPlayerAction(list_of_actions):
             print('Invalid input. Try again.')
     return list_of_actions[action]
     
-
-
-
-''' #Test for cases
-state = crypt.Crypt()
-state.updateNewBoard(1)
-state.updateNewBoard(2)
-state.updateNewBoard(3)
-#state.addServant2Card(0, 1, 2, 4)
-#state.addServant2Card(0, 2, 1, 5)
-state.addServant2Card(1, 3, 1, 5)
-action_list = Actions(state, 0, 2)
-action = getPlayerAction(action_list)
-print(action)
 '''
-            
+
+ 
     
     
 

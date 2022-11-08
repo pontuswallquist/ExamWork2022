@@ -107,35 +107,27 @@ class Crypt:
 
     def rollWithoutAction(self, playerNr, servant):
         
-        #Print Player needs to roll servant.effort_value or above to keep servant
         roll = servant.roll()
-        print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
+        #print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
         if roll < servant.effort_value:
-            #Print players rolls roll and loses servant
-            print(self.players[playerNr].color + ' lost a servant')
+            #print(self.players[playerNr].color + ' lost a servant')
             return
         else:
-            #Print players rolls roll and keeps servant
             self.players[playerNr].recoverSingleServant()
 
     def rollWithAction(self, playerNr, servant):
-        #Print Player needs to roll servant.effort_value or above to keep servant
         roll = servant.roll()
         if roll < servant.effort_value:
-            #Print players rolls roll and loses servant
-            print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
+            #print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
             newRoll = self.collectors[2].useCard(self.players[playerNr])
-            print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value)
+            #print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value)
             if newRoll < servant.effort_value:
-                #Print players rolls newRoll and loses servant
-                print(self.players[playerNr].color + ' lost a servant')
+                #print(self.players[playerNr].color + ' lost a servant')
                 return
             else:
-                #Print players rolls newRoll and keeps servant
                 self.players[playerNr].recoverSingleServant()
         else:
-            #Print players rolls roll and keeps servant
-            print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
+            #print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value)
             self.players[playerNr].recoverSingleServant()
         
 

@@ -3,9 +3,9 @@ import random
 from actionspace import Actions, ResultOfAction, getPlayerAction
 
 def revealPhase(state):
-    print('########## Reveal Phase ##########')
+    #print('########## Reveal Phase ##########')
     state.turnsLeft -= 1
-    print('Turns left: ', state.turnsLeft)
+    #print('Turns left: ', state.turnsLeft)
     state.updateNewBoard(1)
     state.updateNewBoard(2)
     state.updateNewBoard(3)
@@ -31,18 +31,18 @@ def claimPhase(state):
         elif turn == 4 and state.players[1].hasTorch():
             break
 
-        print('TURN: ', turn)
+        #print('TURN: ', turn)
         #Player Turn
         if turn % 2 == 0:
-            state.printBoard()
-            state.printRoundInfo(0)
+            #state.printBoard()
+            #state.printRoundInfo(0)
             list_of_actions = Actions(state, 0, turn, p0_played) 
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
             action = getPlayerAction(list_of_actions)
             state = ResultOfAction(state, 0, action)
-            print('You played: ', action)
+            #print('You played: ', action)
             if action == 'Recover':
                 p0_played = True
                 turn += 1
@@ -59,8 +59,8 @@ def claimPhase(state):
             
         #Opponent Turn
         elif turn % 2 == 1:   
-            state.printBoard()
-            state.printRoundInfo(1)
+            #state.printBoard()
+            #state.printRoundInfo(1)
             list_of_actions = Actions(state, 1, turn, p1_played)
             if len(list_of_actions) == 0:
                 turn += 1
@@ -69,7 +69,7 @@ def claimPhase(state):
             # get random action
             action = random.choice(list_of_actions)
             state = ResultOfAction(state, 1, action)
-            print('NPC played: ', action)
+            #print('NPC played: ', action)
             if action == 'Recover':
                 p1_played = True
                 turn += 1                
@@ -86,8 +86,8 @@ def claimPhase(state):
 
 
 def collectPhase(state):
-    print('########## Collect Phase ##########')
-    state.printBoard()
+    #print('########## Collect Phase ##########')
+    #state.printBoard()
     
     if not state.anyServants('Red'):
         state.players[0].recoverServants()
@@ -138,13 +138,16 @@ def playGame(state):
 def main():
     state = crypt.Crypt()
     state = playGame(state)
-    state.printScore()
+    #state.printScore()
     if state.players[0].score > state.players[1].score:
-        print('You won!')
+        #print('You won!')
+        pass
     elif state.players[0].score < state.players[1].score:
-        print('NPC won!')
+        #print('NPC won!')
+        pass
     else:
-        print('Tie Game!')
+        #print('Tie Game!')
+        pass
 
 
 main()
