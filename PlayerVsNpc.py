@@ -13,8 +13,6 @@ def revealPhase(state):
     state.updateNewBoard(1)
     state.updateNewBoard(2)
     state.updateNewBoard(3)
-    
-
     return state
 
 def claimPhase(state):
@@ -34,7 +32,6 @@ def claimPhase(state):
             break
         elif turn == 4 and state.players[1].hasTorch():
             break
-
         #Player Turn
         if turn % 2 == 0:
             state.printBoard()
@@ -58,8 +55,6 @@ def claimPhase(state):
             if not state.players[0].servants:
                 turn += 1
                 continue
-
-            
         #Opponent Turn
         elif turn % 2 == 1:   
             state.printBoard()
@@ -96,7 +91,6 @@ def collectPhase(state):
         state.players[0].recoverServants()
     if not state.anyServants('Blue'):
         state.players[1].recoverServants()
-    
 
     state.collectCards()
     
@@ -143,9 +137,9 @@ def main():
     state = playGame(state)
     state.printScore()
     if state.players[0].score > state.players[1].score:
-        console.print('[bold red]You won!', justify='left')
+        console.print('[bold red]You won!', justify='center')
     elif state.players[0].score < state.players[1].score:
-        console.print('[bold blue]NPC won!', justify='right')
+        console.print('[bold blue]NPC won!', justify='center')
     else:
         console.print('[bold green]Tie Game!', justify='center')
 

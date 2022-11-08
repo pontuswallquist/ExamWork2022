@@ -74,16 +74,14 @@ class Crypt:
 
     def printScore(self):
         console.print('[bold italic underline green]GAME OVER!', justify='center')
-        console.print('[bold blue]Blue:')
+        console.print('[bold blue]Blue:', justify='right')
         console.print('Treasures: ', self.players[1].collection, justify='right')
         console.print('Servants: ', self.players[1].servants, justify='right')
         console.print('Score: ', self.players[1].score, justify='right')
-        console.print('[bold red]Red:')
+        console.print('[bold red]Red:', justify='left')
         console.print('Treasures: ', self.players[0].collection, justify='left')
         console.print('Servants: ', self.players[0].servants, justify='left')
         console.print('Score: ', self.players[0].score, justify='left')
-        
-
 
     def updateNewBoard(self, place):
         card = self.deck.pop()
@@ -91,7 +89,6 @@ class Crypt:
             card.turnCard()
         self.board[place]['card'] = card
         self.board[place]['servants'] = []
-
 
     def printRoundInfo(self, playerNr):
         if self.players[playerNr].color == 'Red':
@@ -136,15 +133,13 @@ class Crypt:
                 self.players[playerNr].recoverSingleServant()
         else:
             console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
-            self.players[playerNr].recoverSingleServant()
-        
+            self.players[playerNr].recoverSingleServant()       
 
     def collectTreasure(self, playerNr, place):
         card = self.board[place]['card']
         if card.face_up:
             card.turnCard()
         self.players[playerNr].addTreasure(card)
-
 
     def get_input(self, start, end):
         while True:
@@ -156,7 +151,6 @@ class Crypt:
             except ValueError:
                 print('Invalid input')
         return str(choice)
-
 
     def addServant2Card(self, playerNr, place, servants, value):
 
@@ -182,10 +176,3 @@ class Crypt:
         board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
         console.print(board_table, justify='center')
         console.print('')
-
-        
-
-
-
-
-
