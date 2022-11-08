@@ -72,18 +72,6 @@ class Crypt:
         for card in self.players[1].collection:
             self.players[1].score += card.coinvalue
 
-    def printScore(self):
-        console.print('[bold italic underline green]GAME OVER!', justify='center')
-        console.print('[bold blue]Blue:')
-        console.print('Treasures: ', self.players[1].collection, justify='right')
-        console.print('Servants: ', self.players[1].servants, justify='right')
-        console.print('Score: ', self.players[1].score, justify='right')
-        console.print('[bold red]Red:')
-        console.print('Treasures: ', self.players[0].collection, justify='left')
-        console.print('Servants: ', self.players[0].servants, justify='left')
-        console.print('Score: ', self.players[0].score, justify='left')
-        
-
 
     def updateNewBoard(self, place):
         card = self.deck.pop()
@@ -92,16 +80,6 @@ class Crypt:
         self.board[place]['card'] = card
         self.board[place]['servants'] = []
 
-
-    def printRoundInfo(self, playerNr):
-        if self.players[playerNr].color == 'Red':
-            console.print(' [red]|| Red turn ||', justify='left')
-            console.print('[red]Servants available:', self.players[playerNr].servants, justify='left')
-            console.print('[red]Treasures collected:', self.players[playerNr].collection, justify='left')
-        else:
-            console.print(' [blue]|| Blue turn ||', justify='right')
-            console.print('[blue]Servants available:', self.players[playerNr].servants, justify='right')
-            console.print('[blue]Treasures collected:', self.players[playerNr].collection, justify='right')
 
     def collectCards(self):
         for place in range(1, 4):
@@ -116,9 +94,7 @@ class Crypt:
     def rollWithoutAction(self, playerNr, servant):
         
         roll = servant.roll()
-        console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
         if roll < servant.effort_value:
-            console.print(self.players[playerNr].color + ' lost a servant', justify='center')
             return
         else:
             self.players[playerNr].recoverSingleServant()
@@ -126,16 +102,12 @@ class Crypt:
     def rollWithAction(self, playerNr, servant):
         roll = servant.roll()
         if roll < servant.effort_value:
-            console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
             newRoll = self.collectors[2].useCard(self.players[playerNr])
-            console.print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value, justify='center')
             if newRoll < servant.effort_value:
-                console.print(self.players[playerNr].color + ' lost a servant', justify='center')
                 return
             else:
                 self.players[playerNr].recoverSingleServant()
         else:
-            console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
             self.players[playerNr].recoverSingleServant()
         
 
@@ -144,18 +116,6 @@ class Crypt:
         if card.face_up:
             card.turnCard()
         self.players[playerNr].addTreasure(card)
-
-
-    def get_input(self, start, end):
-        while True:
-            try:
-                choice = int(input('\nChoose an action -> '))
-                if choice < start or choice > end:
-                    raise ValueError
-                break
-            except ValueError:
-                print('Invalid input')
-        return str(choice)
 
 
     def addServant2Card(self, playerNr, place, servants, value):
@@ -171,17 +131,6 @@ class Crypt:
             servant = self.players[playerNr].useServant(value)
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
-
-    def printBoard(self):
-        console.print('')
-        board_table = Table(title='Board')
-        board_table.add_column('1', justify='center')
-        board_table.add_column('2', justify='center')
-        board_table.add_column('3', justify='center')
-        board_table.add_row(str(self.board[1]['card']), str(self.board[2]['card']), str(self.board[3]['card']))
-        board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
-        console.print(board_table, justify='center')
-        console.print('')
 
         
 

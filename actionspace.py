@@ -1,8 +1,3 @@
-import crypt
-from rich.console import Console
-from rich.table import Table
-console = Console()
-
 
 def Actions(state, playerNr, turn, hasPlayed):
     actions = []
@@ -49,52 +44,6 @@ def ResultOfAction(state, playerNr, action):
     
     return state
 
-def printAvailableActions(list_of_actions):
-    place1_actions = []
-    place2_actions = []
-    place3_actions = []
-    other_actions = []
-    for i, action in enumerate(list_of_actions):
-        if action == 'Recover':
-            other_actions.append((i,action))
-        elif action == 'UseRemains':
-            other_actions.append((i,action))
-        else:
-            place = action.split('-')[0]
-            if place == '1':
-                place1_actions.append((i, action))
-            elif place == '2':
-                place2_actions.append((i, action))
-            elif place == '3':
-                place3_actions.append((i, action))
-
-    if len(place1_actions) == len(place2_actions) == len(place3_actions):
-        for i in range(len(other_actions)):
-            console.print(f'{other_actions[i][0]}: {other_actions[i][1]}')
-        for i in range(len(place1_actions)):
-            console.print(f'{place1_actions[i][0]}: {place1_actions[i][1]}', f'{place2_actions[i][0]}: {place2_actions[i][1]}', f'{place3_actions[i][0]}: {place3_actions[i][1]}')
-    
-    else:
-        for i, action in enumerate(list_of_actions):
-            console.print(i,':',str(action), end=' || ')
-    console.print('')
-
-
-
-def getPlayerAction(list_of_actions):
-
-    console.print('\nPlace-NrOfServants-Value\n')
-    printAvailableActions(list_of_actions)
-    
-    while True:
-        try:
-            action = int(input('Choose an action --> '))
-            if action < 0 or action > len(list_of_actions) - 1:
-                raise ValueError
-            break
-        except ValueError:
-            print('Invalid input. Try again.')
-    return list_of_actions[action]
     
 
 
