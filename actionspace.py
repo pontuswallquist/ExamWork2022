@@ -86,6 +86,7 @@ def getPlayerAction(list_of_actions):
     console.print('\nPlace-NrOfServants-Value\n')
     printAvailableActions(list_of_actions)
     
+    
     while True:
         try:
             action = int(input('Choose an action --> '))

@@ -2,6 +2,7 @@ from cards import *
 from player import *
 from rich.console import Console
 from rich.table import Table
+from rich import print as rprint
 console = Console()
 
 class Crypt:
@@ -92,13 +93,14 @@ class Crypt:
 
     def printRoundInfo(self, playerNr):
         if self.players[playerNr].color == 'Red':
-            console.print(' [red]|| Red turn ||', justify='left')
-            console.print('[red]Servants available:', self.players[playerNr].servants, justify='left')
-            console.print('[red]Treasures collected:', self.players[playerNr].collection, justify='left')
+            console.print(' [bold red]|| Red turn ||', justify='left')
+            console.print('[bold red]Servants available:', self.players[playerNr].servants, justify='left')
+            console.print('[bold red]Treasures collected:', self.players[playerNr].collection, justify='left')
         else:
-            console.print(' [blue]|| Blue turn ||', justify='right')
-            console.print('[blue]Servants available:', self.players[playerNr].servants, justify='right')
-            console.print('[blue]Treasures collected:', self.players[playerNr].collection, justify='right')
+            console.print(' [bold blue]|| Blue turn ||', style='bold blue', justify='right')
+            console.print('[bold blue]Servants available:', self.players[playerNr].servants, justify='right')
+            console.print('[bold blue]Treasures collected:', self.players[playerNr].collection, justify='right')
+
 
     def collectCards(self):
         for place in range(1, 4):
@@ -166,6 +168,7 @@ class Crypt:
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
 
+    '''
     def printBoard(self):
         console.print('')
         board_table = Table(title='Board')
@@ -176,3 +179,37 @@ class Crypt:
         board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
         console.print(board_table, justify='center')
         console.print('')
+    '''
+    def anyServantsOnPlace(self, color, place):
+        for servant in self.board[place]['servants']:
+            if servant.color == color:
+                return True
+        return False
+
+    def printBoard(self):
+        console.print('')
+        board_table = Table(title='Board')
+        if self.anyServantsOnPlace('Red', 1):
+            board_table.add_column('1', justify='center', style='bold red')
+        elif self.anyServantsOnPlace('Blue', 1):
+            board_table.add_column('1', justify='center', style='bold blue')
+        else:
+            board_table.add_column('1', justify='center')
+        if self.anyServantsOnPlace('Red', 2):
+            board_table.add_column('2', justify='center', style='bold red')
+        elif self.anyServantsOnPlace('Blue', 2):
+            board_table.add_column('2', justify='center', style='bold blue')
+        else:
+            board_table.add_column('2', justify='center')
+        if self.anyServantsOnPlace('Red', 3):
+            board_table.add_column('3', justify='center', style='bold red')
+        elif self.anyServantsOnPlace('Blue', 3):
+            board_table.add_column('3', justify='center', style='bold blue')
+        else:
+            board_table.add_column('3', justify='center')
+        board_table.add_row(str(self.board[1]['card']), str(self.board[2]['card']), str(self.board[3]['card']))
+        board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
+        console.print(board_table, justify='center')
+        console.print('')
+
+

@@ -1,5 +1,5 @@
 from cards import *
-from rich.console import Console
+from rich.console import Console, ConsoleOptions, RenderResult
 import random
 console = Console()
 
@@ -70,6 +70,7 @@ class Servant:
 
     def __repr__(self):
         return str(self.color + '-' + str(self.value))
+
 
     def roll(self):
         return random.randint(1, 6)
