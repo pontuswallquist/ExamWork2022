@@ -1,8 +1,5 @@
 from cards import *
 from player import *
-from rich.console import Console
-from rich.table import Table
-console = Console()
 
 class Crypt:
 
@@ -34,7 +31,6 @@ class Crypt:
             3: {'card': None, 'servants': [] }
         }
         self.turnsLeft = 8
-    
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)
@@ -61,13 +57,11 @@ class Crypt:
         for place in self.board:
             merged.extend(self.board[place]['servants'])
         return merged
-        
 
     def calculateCollectionScore(self):
         #Player 1 score
         for card in self.players[0].collection:
             self.players[0].score += card.coinvalue
-
         #Player 2 score
         for card in self.players[1].collection:
             self.players[1].score += card.coinvalue
@@ -91,8 +85,7 @@ class Crypt:
                     self.collectTreasure(1, place)
                     break
 
-    def rollWithoutAction(self, playerNr, servant):
-        
+    def rollWithoutAction(self, playerNr, servant): 
         roll = servant.roll()
         if roll < servant.effort_value:
             return
@@ -109,8 +102,7 @@ class Crypt:
                 self.players[playerNr].recoverSingleServant()
         else:
             self.players[playerNr].recoverSingleServant()
-        
-
+    
     def collectTreasure(self, playerNr, place):
         card = self.board[place]['card']
         if card.face_up:
@@ -119,9 +111,7 @@ class Crypt:
 
 
     def addServant2Card(self, playerNr, place, servants, value):
-
         otherPlayerNr = 0 if playerNr == 1 else 1
-
         if not len(self.board[place]['servants']) == 0:
             for i in range(len(self.board[place]['servants'])):
                 self.board[place]['servants'].pop()
@@ -131,10 +121,3 @@ class Crypt:
             servant = self.players[playerNr].useServant(value)
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
-
-        
-
-
-
-
-

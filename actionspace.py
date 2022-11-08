@@ -43,17 +43,3 @@ def ResultOfAction(state, playerNr, action):
         state.addServant2Card(playerNr, place, servant, value)
     
     return state
-
-    
-
-
-
-
-            
-    
-    
-
-    
-    
-    
-    

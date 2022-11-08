@@ -1,7 +1,5 @@
 from cards import *
-from rich.console import Console
-import random
-console = Console()
+
 
 class Player:
 
@@ -52,7 +50,6 @@ class Player:
                 return True
         return False
 
-
 class Servant:
 
     def __init__(self, color):
@@ -74,13 +71,3 @@ class Servant:
 
     def setValue(self, value):
         self.value = value
-
-        
-
-    
-    
-
-    
-
-
-
