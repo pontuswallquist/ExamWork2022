@@ -1,5 +1,8 @@
 from cards import *
 from player import *
+from rich.console import Console, ConsoleOptions, RenderResult
+from rich.table import Table
+from rich.panel import Panel
 
 class Crypt:
 
@@ -31,7 +34,21 @@ class Crypt:
             3: {'card': None, 'servants': [] }
         }
         self.turnsLeft = 8
-    
+
+    def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+        '''
+        board_table = Table( '1', '2', '3', show_header=True, header_style="bold magenta")
+        board_table.add_row(*[str(self.board[1]['card']), str(self.board[2]['card']), str(self.board[3]['card'])])
+        board_table.add_row(*[str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants'])])
+        yield board_table
+        ''' 
+        place1 = Panel(str(self.board[1]['card']))
+        place2 = Panel(str(self.board[2]['card']))
+        place3 = Panel(str(self.board[3]['card']))
+        my_panel = Panel(place1, place2, place3, title="Board", border_style="magenta")
+        yield my_panel
+
+
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)

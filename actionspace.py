@@ -61,7 +61,7 @@ def ResultOfAction(state, playerNr, action):
     
     return state
 
-'''
+
 def getPlayerAction(list_of_actions):
     print('Choose an action:')
     for i, action in enumerate(list_of_actions):
@@ -77,7 +77,7 @@ def getPlayerAction(list_of_actions):
             print('Invalid input. Try again.')
     return list_of_actions[action]
     
-'''
+
 
  
     
