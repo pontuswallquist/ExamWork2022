@@ -80,7 +80,6 @@ def printAvailableActions(list_of_actions):
     console.print('')
 
 
-
 def getPlayerAction(list_of_actions):
 
     console.print('\nPlace-NrOfServants-Value\n')
