@@ -36,7 +36,7 @@ def claimPhase(state):
         if turn % 2 == 0:
             state.printBoard()
             state.printRoundInfo(0)
-            list_of_actions = Actions(state, 0, turn, p0_played) 
+            list_of_actions, _ = Actions(state, 0, turn, p0_played) 
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
@@ -59,7 +59,7 @@ def claimPhase(state):
         elif turn % 2 == 1:   
             state.printBoard()
             state.printRoundInfo(1)
-            list_of_actions = Actions(state, 1, turn, p1_played)
+            list_of_actions, actionspace = Actions(state, 1, turn, p1_played)
             if len(list_of_actions) == 0:
                 turn += 1
                 continue

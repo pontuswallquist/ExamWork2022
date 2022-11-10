@@ -3,22 +3,41 @@ from rich.console import Console
 from rich.table import Table
 console = Console()
 
+actionspace = [
+    [0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+
+def ActiontoIndex(place, servant, value):
+    servantIndex = servant - 1
+    valueIndex = value - 1
+    rowIndex = place
+    columnIndex = servantIndex * 6 + valueIndex
+    return rowIndex, columnIndex
+
 
 def Actions(state, playerNr, turn, hasPlayed):
     actions = []
     servants_available = len(state.players[playerNr].servants)
     if (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
         if servants_available < 3:
+            actionspace[0][0] = 1
             actions.append('Recover')
             if state.players[playerNr].hasRemains():
+                actionspace[0][1] = 1
                 actions.append('UseRemains')
     if servants_available == 0:
-        return actions
+        return actions, actionspace
     
     for place in state.board.keys():
         if not state.board[place]['servants']:
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
+                    # If action is valid, add it to the list of actions and add it to the action space
+                    rowIndex, columnIndex = ActiontoIndex(place, servant, value)
+                    actionspace[rowIndex][columnIndex] = 1
                     actions.append(str(place) + '-' + str(servant) + '-' + str(value))
         else:
             #If place is occupied, check if player already has a servant there
@@ -31,9 +50,11 @@ def Actions(state, playerNr, turn, hasPlayed):
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
                     if current_bid < value*servant:
+                        rowIndex, columnIndex = ActiontoIndex(place, servant, value)
+                        actionspace[rowIndex][columnIndex] = 1
                         actions.append(str(place) + '-' + str(servant) + '-' + str(value))
 
-    return actions
+    return actions, actionspace
 
 def ResultOfAction(state, playerNr, action):
     if action == 'Recover':
