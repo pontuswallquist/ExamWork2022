@@ -17,6 +17,14 @@ def ActiontoIndex(place, servant, value):
     columnIndex = servantIndex * 6 + valueIndex
     return rowIndex, columnIndex
 
+def makeActionSpace1D(actionspace):
+    actionspace1D = []
+    actionspace1D.extend(actionspace[0])
+    actionspace1D.extend(actionspace[1])
+    actionspace1D.extend(actionspace[2])
+    actionspace1D.extend(actionspace[3])
+    return actionspace1D
+
 
 def Actions(state, playerNr, turn, hasPlayed):
     actions = []
