@@ -143,16 +143,6 @@ class Crypt:
             card.turnCard()
         self.players[playerNr].addTreasure(card)
 
-    def get_input(self, start, end):
-        while True:
-            try:
-                choice = int(input('\nChoose an action -> '))
-                if choice < start or choice > end:
-                    raise ValueError
-                break
-            except ValueError:
-                print('Invalid input')
-        return str(choice)
 
     def addServant2Card(self, playerNr, place, servants, value):
 
@@ -168,18 +158,6 @@ class Crypt:
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
 
-    '''
-    def printBoard(self):
-        console.print('')
-        board_table = Table(title='Board')
-        board_table.add_column('1', justify='center')
-        board_table.add_column('2', justify='center')
-        board_table.add_column('3', justify='center')
-        board_table.add_row(str(self.board[1]['card']), str(self.board[2]['card']), str(self.board[3]['card']))
-        board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
-        console.print(board_table, justify='center')
-        console.print('')
-    '''
     def anyServantsOnPlace(self, color, place):
         for servant in self.board[place]['servants']:
             if servant.color == color:

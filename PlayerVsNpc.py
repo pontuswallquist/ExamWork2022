@@ -117,6 +117,8 @@ def collectPhase(state):
 
 def passTorchPhase(state, game_over):
     if not state.deck:
+        state.players[0].score = 0
+        state.players[1].score = 0
         state.countBonus()
         state.calculateCollectionScore()
         state.countServants()

@@ -38,6 +38,7 @@ class Player:
             console.print('[bold blue]Blue', 'player recovered a servant', justify='center')
     
     def addTreasure(self, treasure):
+        self.score += treasure.coinvalue
         self.collection.append(treasure)
 
     def turnAllCards(self):
