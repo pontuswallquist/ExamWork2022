@@ -1,6 +1,10 @@
 import cryptwithprint as crypt
 import random
 from actionspace import Actions, ResultOfAction
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 
 def revealPhase(state):
     console.print('[bold italic underline green]Reveal Phase', justify='center')
