@@ -1,5 +1,5 @@
 from cards import *
-from rich.console import Console, ConsoleOptions, RenderResult
+from rich.console import Console
 import random
 console = Console()
 
@@ -26,16 +26,16 @@ class Player:
     def recoverServants(self):
         self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
         if self.color == 'Red':
-            console.print('[bold red]Red', 'player recovered all servants', justify='left')
+            console.print('[bold red]Red', 'player recovered all servants', justify='center')
         else:
-            console.print('[bold blue]Blue', 'player recovered all servants', justify='right')
+            console.print('[bold blue]Blue', 'player recovered all servants', justify='center')
 
     def recoverSingleServant(self):
         self.servants.append(Servant(self.color))
         if self.color == 'Red':
-            console.print('[bold red]Red', 'player recovered a servant', justify='left')
+            console.print('[bold red]Red', 'player recovered a servant', justify='center')
         else:
-            console.print('[bold blue]Blue', 'player recovered a servant', justify='right')
+            console.print('[bold blue]Blue', 'player recovered a servant', justify='center')
     
     def addTreasure(self, treasure):
         self.collection.append(treasure)
