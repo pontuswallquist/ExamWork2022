@@ -1,6 +1,8 @@
 import cryptwithprint as crypt
 import random
 from actionspace import Actions, ResultOfAction
+from rich.console import Console
+console = Console()
 
 def revealPhase(state):
     state.turnsLeft -= 1
@@ -28,13 +30,10 @@ def claimPhase(state):
             break
         #Player Turn
         if turn % 2 == 0:
-<<<<<<<< HEAD:PlayerVsNpc/PlayerVsNpc.py
             state.printBoard()
             state.printRoundInfo(0)
             list_of_actions, _ = Actions(state, 0, turn, p0_played) 
-========
             list_of_actions = Actions(state, 0, turn, p0_played) 
->>>>>>>> NPCvsNPC:NpcVsNpc.py
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
@@ -55,13 +54,10 @@ def claimPhase(state):
                 continue
         #Opponent Turn
         elif turn % 2 == 1:   
-<<<<<<<< HEAD:PlayerVsNpc/PlayerVsNpc.py
             state.printBoard()
             state.printRoundInfo(1)
             list_of_actions, actionspace = Actions(state, 1, turn, p1_played)
-========
             list_of_actions = Actions(state, 1, turn, p1_played)
->>>>>>>> NPCvsNPC:NpcVsNpc.py
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
@@ -133,15 +129,12 @@ def main():
     state = crypt.Crypt()
     state = playGame(state)
     if state.players[0].score > state.players[1].score:
-<<<<<<<< HEAD:PlayerVsNpc/PlayerVsNpc.py
         console.print('[bold red]You won!', justify='center')
     elif state.players[0].score < state.players[1].score:
         console.print('[bold blue]NPC won!', justify='center')
-========
         print('Red wins with a score of ' + str(state.players[0].score) + ' against ' + str(state.players[1].score))
     elif state.players[0].score < state.players[1].score:
         print('Blue wins with a score of ' + str(state.players[1].score) + ' against ' + str(state.players[0].score))
->>>>>>>> NPCvsNPC:NpcVsNpc.py
     else:
         print('It is a tie with a score of ' + str(state.players[0].score))
 
