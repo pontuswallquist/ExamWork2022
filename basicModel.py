@@ -1,4 +1,4 @@
-import cryptwithprint as crypt
+import crypt as crypt
 from actionspace import Actions, makeActionSpace1D
 import numpy as np
 import tensorflow as tf

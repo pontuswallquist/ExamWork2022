@@ -1,6 +1,8 @@
-import cryptwithprint as crypt
+import crypt
 import random
-from actionspace import Actions, ResultOfAction
+from actionspace import Actions, ResultOfAction, getPlayerAction
+from rich.console import Console
+console = Console()
 
 def revealPhase(state):
     state.turnsLeft -= 1
@@ -34,8 +36,8 @@ def claimPhase(state):
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
-            #action = getAIAction(state, list_of_actions)
-            action = random.choice(list_of_actions)
+            
+            action = getPlayerAction(list_of_actions)
             state = ResultOfAction(state, 0, action)
             if action == 'Recover':
                 p0_played = True
