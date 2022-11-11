@@ -1,5 +1,5 @@
 import random
-from player import *
+from PlayerVsNpc.player import Player
 
 cardtypes = {
     1: 'Remains',
