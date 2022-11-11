@@ -1,11 +1,11 @@
 import cryptwithprint as crypt
 import random
 from actionspace import Actions, ResultOfAction
-from rich.console import Console
-console = Console()
 
 def revealPhase(state):
+    console.print('[bold italic underline green]Reveal Phase', justify='center')
     state.turnsLeft -= 1
+    console.print('Turns left: ', state.turnsLeft, justify='left')
     state.updateNewBoard(1)
     state.updateNewBoard(2)
     state.updateNewBoard(3)
@@ -30,16 +30,19 @@ def claimPhase(state):
             break
         #Player Turn
         if turn % 2 == 0:
+<<<<<<<< HEAD:PlayerVsNpc/PlayerVsNpc.py
             state.printBoard()
             state.printRoundInfo(0)
             list_of_actions, _ = Actions(state, 0, turn, p0_played) 
+========
             list_of_actions = Actions(state, 0, turn, p0_played) 
+>>>>>>>> NPCvsNPC:NpcVsNpc.py
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
-            #action = getAIAction(state, list_of_actions)
-            action = random.choice(list_of_actions)
+            action = getPlayerAction(list_of_actions)
             state = ResultOfAction(state, 0, action)
+            console.print('[red]You played: ', action, justify='left')
             if action == 'Recover':
                 p0_played = True
                 turn += 1
@@ -54,10 +57,13 @@ def claimPhase(state):
                 continue
         #Opponent Turn
         elif turn % 2 == 1:   
+<<<<<<<< HEAD:PlayerVsNpc/PlayerVsNpc.py
             state.printBoard()
             state.printRoundInfo(1)
             list_of_actions, actionspace = Actions(state, 1, turn, p1_played)
+========
             list_of_actions = Actions(state, 1, turn, p1_played)
+>>>>>>>> NPCvsNPC:NpcVsNpc.py
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
@@ -65,6 +71,7 @@ def claimPhase(state):
             # get random action
             action = random.choice(list_of_actions)
             state = ResultOfAction(state, 1, action)
+            console.print('[blue]NPC played: ', action, justify='right')
             if action == 'Recover':
                 p1_played = True
                 turn += 1                
@@ -81,7 +88,9 @@ def claimPhase(state):
 
 
 def collectPhase(state):
-
+    console.print('[bold italic underline green]Collect Phase', justify='center')
+    state.printBoard()
+    
     if not state.anyServants('Red'):
         state.players[0].recoverServants()
     if not state.anyServants('Blue'):
@@ -111,6 +120,8 @@ def passTorchPhase(state, game_over):
         state.countServants()
         game_over = True
     else:
+        #Press any button to pass torch
+        input('\nPress enter to pass torch')
         state.players[0].torch = not state.players[0].torch
         state.players[1].torch = not state.players[1].torch
         game_over = False
@@ -128,15 +139,19 @@ def playGame(state):
 def main():
     state = crypt.Crypt()
     state = playGame(state)
+    state.printScore()
     if state.players[0].score > state.players[1].score:
+<<<<<<<< HEAD:PlayerVsNpc/PlayerVsNpc.py
         console.print('[bold red]You won!', justify='center')
     elif state.players[0].score < state.players[1].score:
         console.print('[bold blue]NPC won!', justify='center')
+========
         print('Red wins with a score of ' + str(state.players[0].score) + ' against ' + str(state.players[1].score))
     elif state.players[0].score < state.players[1].score:
         print('Blue wins with a score of ' + str(state.players[1].score) + ' against ' + str(state.players[0].score))
+>>>>>>>> NPCvsNPC:NpcVsNpc.py
     else:
-        print('It is a tie with a score of ' + str(state.players[0].score))
+        console.print('[bold green]Tie Game!', justify='center')
 
 
 main()
