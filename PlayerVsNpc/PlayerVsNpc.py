@@ -1,4 +1,4 @@
-import crypt
+import cryptwithprint as crypt
 import random
 from actionspace import Actions, ResultOfAction, getPlayerAction
 from rich import print
