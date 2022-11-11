@@ -11,13 +11,6 @@ total_actions_possible = 56
 total_states_possible = 3
 
 
-gamma = 0.95
-epsilon = 1.0
-epsilon_min = 0.01
-epsilon_decay = 0.995
-learning_rate = 0.01
-
-
 def basicModel(nr_states, nr_actions):
     inputs = Input(shape=(nr_states,))
     layer1 = Dense(24, activation='relu')(inputs)
@@ -27,7 +20,7 @@ def basicModel(nr_states, nr_actions):
 model = basicModel(total_states_possible, total_actions_possible)
 model.summary()
 
-optimizer = Adam(learning_rate=learning_rate)
+optimizer = Adam(learning_rate=0.01)
 
 model.compile(optimizer=optimizer, loss='mse')
 
