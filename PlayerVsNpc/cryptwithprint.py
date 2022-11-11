@@ -1,5 +1,5 @@
 from cards import *
-from player import *
+from playerwithprint import *
 from rich.console import Console
 from rich.table import Table
 from rich import print as rprint
