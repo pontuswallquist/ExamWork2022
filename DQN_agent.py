@@ -33,23 +33,17 @@ class DQNAgent:
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
 
-    def step(self, gamestate, train, turn, hasPlayed):
+    def step(self, input_state, action_list, train):
         if train:
             self.epsilon *= self.epsilon_decay
             self.epsilon = max(self.epsilon_min, self.epsilon)
 
             if np.random.random() < self.epsilon:
-                action_list, _ = Actions(gamestate, 0, turn, hasPlayed)
-                action = random.choice(action_list)
-                return action
+                return action_list
         
-        #get actionspace for masking the illegal actions
-        action_list, action_space = Actions(gamestate, 0, turn, hasPlayed)
-        actionspace1d = makeActionSpace1D(action_space)
-        #handle the state differently later on
-        inputs = gamestate.get_input_state()
-        action = self.get_prediction(inputs, action_list, actionspace1d)
-        return action
+        inputs = tf.expand_dims(input_state, 0)
+        output = self.model.predict(inputs)[0]
+        return output
 
     def replay(self):
         batch_size = 32
@@ -58,6 +52,10 @@ class DQNAgent:
         samples = random.sample(self.memory, batch_size)
         for sample in samples:
             input_state, action, reward, next_state, done = sample
+            inputs = tf.expand_dims(input_state, 0)
+            target = self.target_model.predict(inputs)
+            if done:
+                target[0][action] = reward
             
 
     def get_prediction(self, state, action_list, action_space, target=False):

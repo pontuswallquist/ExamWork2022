@@ -1,6 +1,7 @@
 import crypt
 import random
-from actionspace import Actions, ResultOfAction
+from actionspace import Actions, ResultOfAction, ReducePossibleActions
+import numpy as np
 
 def revealPhase(state):
     state.turnsLeft -= 1
@@ -29,13 +30,26 @@ def claimPhase(state):
 
         #Player Turn
         if turn % 2 == 0:
-            list_of_actions = Actions(state, 0, turn, p0_played) 
+            list_of_actions, actionspace = Actions(state, 0, turn, p0_played) 
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
-            #action = getAIAction(state, list_of_actions)
+
+
+            action_list = agent.step(state.get_input_state(), list_of_actions, True)
+            if action_list == list_of_actions:
+                action = random.choice(list_of_actions)
+            else:
+                legal_outputs = ReducePossibleActions(actionspace, action_list)
+                action_id = np.argmax(legal_outputs)
+                action = list_of_actions[action_id]
+
             action = random.choice(list_of_actions)
-            state = ResultOfAction(state, 0, action)
+            curr_state = state
+            next_state, reward = ResultOfAction(curr_state, 0, action)
+            # call Rembember with the state before action, action, reward, state after action, done
+            #agent.remember(curr_state.get_input_state(), action, reward, next_state.get_input_state(), done)
+            state = next_state
             if action == 'Recover':
                 p0_played = True
                 turn += 1
@@ -56,10 +70,10 @@ def claimPhase(state):
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
-            #action = getAIAction(state, list_of_actions)
+
             # get random action
             action = random.choice(list_of_actions)
-            state = ResultOfAction(state, 1, action)
+            state, _ = ResultOfAction(state, 1, action)
             if action == 'Recover':
                 p1_played = True
                 turn += 1                

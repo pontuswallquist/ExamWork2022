@@ -1,10 +1,4 @@
 
-actionspace = [
-    [0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-]
 
 def ActiontoIndex(place, servant, value):
     servantIndex = servant - 1
@@ -23,6 +17,12 @@ def makeActionSpace1D(actionspace):
 
 
 def Actions(state, playerNr, turn, hasPlayed):
+    actionspace = [
+    [0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ]
     actions = []
     servants_available = len(state.players[playerNr].servants)
     if (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
@@ -71,10 +71,11 @@ def ResultOfAction(state, playerNr, action):
         servant = int(servant)
         value = int(value)
         state.addServant2Card(playerNr, place, servant, value)
-    
-    return state
+        reward = state.board[place]['card'].coinvalue
+    return state, reward
 
-def ReducePossibleActions(actionspace1d, actions):
+def ReducePossibleActions(actionspace, actions):
+    actionspace1d = makeActionSpace1D(actionspace)
     for i in range(len(actionspace1d)):
         actions[i] = actions[i] * actionspace1d[i]
     return actions
