@@ -18,18 +18,20 @@ epsilon_decay = 0.995
 learning_rate = 0.01
 
 
-def basicModel(nr_states, nr_actions):
+def createModel(nr_states, nr_actions):
     inputs = Input(shape=(nr_states,))
     layer1 = Dense(24, activation='relu')(inputs)
     action = Dense(nr_actions, activation='softmax')(layer1)
-    return keras.Model(inputs=inputs, outputs=action)
+    model = keras.Model(inputs=inputs, outputs=action)
+    optimizer = Adam(learning_rate=learning_rate)
+    model.compile(optimizer=optimizer, loss='mean_squared_error')
+    return model
 
-model = basicModel(total_states_possible, total_actions_possible)
+model = createModel(total_states_possible, total_actions_possible)
 model.summary()
 
-optimizer = Adam(learning_rate=learning_rate)
 
-model.compile(optimizer=optimizer, loss='mse')
+
 
 
 gamestate = crypt.Crypt()
@@ -43,6 +45,8 @@ gamestate.addServant2Card(0, 3, 1, 2)
 actions, actionspace = Actions(gamestate, 1, 1, False)
 actionspace1d = makeActionSpace1D(actionspace)
 
+
+
 def ReducePossibleActions(actionspace1d, actions):
     for i in range(len(actionspace1d)):
         actions[i] = actions[i] * actionspace1d[i]
@@ -50,9 +54,13 @@ def ReducePossibleActions(actionspace1d, actions):
 
 
 # To use the model and get the action
+
 state_tensor = tf.convert_to_tensor(np.array([1, 4, 2])) # Input state
 state_tensor = tf.expand_dims(state_tensor, 0)
 action_probs = model(state_tensor, training=False)
+
+
+
 
 # Reduce the actions to the possible actions
 legal_actions = ReducePossibleActions(actionspace1d, action_probs[0].numpy())
@@ -61,3 +69,5 @@ print(legal_actions)
 #Pick the action with highest value
 action = tf.argmax(legal_actions).numpy()
 print(action)
+
+
