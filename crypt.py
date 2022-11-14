@@ -1,5 +1,6 @@
 from cards import *
 from player import *
+import numpy as np
 
 class Crypt:
 
@@ -31,6 +32,9 @@ class Crypt:
             3: {'card': None, 'servants': [] }
         }
         self.turnsLeft = 8
+
+    def get_input_state(self):
+        return np.array([self.board[1]['card'].coinvalue, self.board[2]['card'].coinvalue, self.board[3]['card'].coinvalue])
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)

@@ -4,6 +4,9 @@ from keras.layers import Input, Dense
 from keras.models import Model
 from keras.optimizers import Adam
 from collections import deque
+from actionspace import *
+from crypt import crypt
+import tensorflow as tf
 
 class DQNAgent:
     def __init__(self):
@@ -30,42 +33,50 @@ class DQNAgent:
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
 
+    def step(self, gamestate, train, turn, hasPlayed):
+        if train:
+            self.epsilon *= self.epsilon_decay
+            self.epsilon = max(self.epsilon_min, self.epsilon)
+
+            if np.random.random() < self.epsilon:
+                action_list, _ = Actions(gamestate, 0, turn, hasPlayed)
+                action = random.choice(action_list)
+                return action
+        
+        #get actionspace for masking the illegal actions
+        action_list, action_space = Actions(gamestate, 0, turn, hasPlayed)
+        actionspace1d = makeActionSpace1D(action_space)
+        #handle the state differently later on
+        inputs = gamestate.get_input_state()
+        action = self.get_prediction(inputs, action_list, actionspace1d)
+        return action
+
+    def replay(self):
+        batch_size = 32
+        if len(self.memory) < batch_size:
+            return
+        samples = random.sample(self.memory, batch_size)
+        for sample in samples:
+            input_state, action, reward, next_state, done = sample
+            
+
+    def get_prediction(self, state, action_list, action_space, target=False):
+        state_tensor = tf.convert_to_tensor(state)
+        state_tensor = tf.expand_dims(state_tensor, 0)
+        #get the valued actions from the model
+        if target:
+            action_probs = self.target_model(state_tensor, training=False)
+        else:
+            action_probs = self.model(state_tensor, training=False)
+
+        action_probs = action_probs[0].numpy()
+        #reduce the actions to the possible actions
+        legal_actions = ReducePossibleActions(action_space, action_probs)
+        #pick the action with highest value
+        action_id = tf.argmax(legal_actions).numpy()
+        action = action_list[action_id]
+        return action
 
 
-gamestate = crypt.Crypt()
-gamestate.updateNewBoard(1)
-gamestate.updateNewBoard(2)
-gamestate.updateNewBoard(3)
-
-gamestate.addServant2Card(0, 2, 2, 2)
-gamestate.addServant2Card(0, 3, 1, 2)
-
-actions, actionspace = Actions(gamestate, 1, 1, False)
-actionspace1d = makeActionSpace1D(actionspace)
-
-
-
-def ReducePossibleActions(actionspace1d, actions):
-    for i in range(len(actionspace1d)):
-        actions[i] = actions[i] * actionspace1d[i]
-    return actions
-
-
-# To use the model and get the action
-
-state_tensor = tf.convert_to_tensor(np.array([1, 4, 2])) # Input state
-state_tensor = tf.expand_dims(state_tensor, 0)
-action_probs = model(state_tensor, training=False)
-
-
-
-
-# Reduce the actions to the possible actions
-legal_actions = ReducePossibleActions(actionspace1d, action_probs[0].numpy())
-print(legal_actions)
-
-#Pick the action with highest value
-action = tf.argmax(legal_actions).numpy()
-print(action)
 
     

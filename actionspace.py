@@ -1,19 +1,47 @@
 
+actionspace = [
+    [0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+]
+
+def ActiontoIndex(place, servant, value):
+    servantIndex = servant - 1
+    valueIndex = value - 1
+    rowIndex = place
+    columnIndex = servantIndex * 6 + valueIndex
+    return rowIndex, columnIndex
+
+def makeActionSpace1D(actionspace):
+    actionspace1D = []
+    actionspace1D.extend(actionspace[0])
+    actionspace1D.extend(actionspace[1])
+    actionspace1D.extend(actionspace[2])
+    actionspace1D.extend(actionspace[3])
+    return actionspace1D
+
+
 def Actions(state, playerNr, turn, hasPlayed):
     actions = []
     servants_available = len(state.players[playerNr].servants)
     if (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
         if servants_available < 3:
+            actionspace[0][0] = 1
             actions.append('Recover')
             if state.players[playerNr].hasRemains():
+                actionspace[0][1] = 1
                 actions.append('UseRemains')
     if servants_available == 0:
-        return actions
+        return actions, actionspace
     
     for place in state.board.keys():
         if not state.board[place]['servants']:
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
+                    # If action is valid, add it to the list of actions and add it to the action space
+                    rowIndex, columnIndex = ActiontoIndex(place, servant, value)
+                    actionspace[rowIndex][columnIndex] = 1
                     actions.append(str(place) + '-' + str(servant) + '-' + str(value))
         else:
             #If place is occupied, check if player already has a servant there
@@ -26,14 +54,11 @@ def Actions(state, playerNr, turn, hasPlayed):
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
                     if current_bid < value*servant:
+                        rowIndex, columnIndex = ActiontoIndex(place, servant, value)
+                        actionspace[rowIndex][columnIndex] = 1
                         actions.append(str(place) + '-' + str(servant) + '-' + str(value))
 
-    return actions
-
-def ReducePossibleActions(actionspace1d, actions):
-    for i in range(len(actionspace1d)):
-        actions[i] = actions[i] * actionspace1d[i]
-    return actions
+    return actions, actionspace
 
 def ResultOfAction(state, playerNr, action):
     if action == 'Recover':
@@ -48,3 +73,8 @@ def ResultOfAction(state, playerNr, action):
         state.addServant2Card(playerNr, place, servant, value)
     
     return state
+
+def ReducePossibleActions(actionspace1d, actions):
+    for i in range(len(actionspace1d)):
+        actions[i] = actions[i] * actionspace1d[i]
+    return actions
