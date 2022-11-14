@@ -63,8 +63,10 @@ def Actions(state, playerNr, turn, hasPlayed):
 def ResultOfAction(state, playerNr, action):
     if action == 'Recover':
         state.players[playerNr].recoverServants()
+        reward = 3
     elif action == 'UseRemains':
         state.collectors[1].useCard(state.players[playerNr])
+        reward = 5
     else:
         place, servant, value = action.split('-')
         place = int(place)

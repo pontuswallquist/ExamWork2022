@@ -125,3 +125,12 @@ class Crypt:
             servant = self.players[playerNr].useServant(value)
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
+
+    def printTrainScore(self):
+        if self.players[0].score > self.players[1].score:
+            winner = 'Model'
+        elif self.players[0].score < self.players[1].score:
+            winner = 'Random'
+        else:
+            winner = 'Draw'
+        print('Model Score: ', self.players[0].score, ' - ', 'Random AI Score: ', self.players[1].score, ' - ', 'Winner: ', winner)

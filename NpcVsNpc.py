@@ -1,7 +1,8 @@
-import crypt
+from crypt import Crypt
 import random
 from actionspace import Actions, ResultOfAction, ReducePossibleActions
 import numpy as np
+from DQN_agent import DQNAgent
 
 def revealPhase(state):
     state.turnsLeft -= 1
@@ -10,7 +11,7 @@ def revealPhase(state):
     state.updateNewBoard(3)
     return state
 
-def claimPhase(state):
+def claimPhase(state, agent, train, train_target):
     
     if state.players[0].hasTorch():
         turn = 0
@@ -35,21 +36,26 @@ def claimPhase(state):
                 turn += 1
                 continue
 
+            action_list = agent.step(state.get_input_state(), list_of_actions, train)
 
-            action_list = agent.step(state.get_input_state(), list_of_actions, True)
-            if action_list == list_of_actions:
+            if isinstance(action_list, list):
                 action = random.choice(list_of_actions)
             else:
                 legal_outputs = ReducePossibleActions(actionspace, action_list)
                 action_id = np.argmax(legal_outputs)
                 action = list_of_actions[action_id]
 
-            action = random.choice(list_of_actions)
             curr_state = state
             next_state, reward = ResultOfAction(curr_state, 0, action)
-            # call Rembember with the state before action, action, reward, state after action, done
-            #agent.remember(curr_state.get_input_state(), action, reward, next_state.get_input_state(), done)
+            # call Rembember with the state before action, action, reward, state after action
+            if train is True:
+                agent.remember(curr_state.get_input_state(), action, reward, next_state.get_input_state())
+                agent.replay()
+                if train_target is True:
+                    agent.target_train()
+
             state = next_state
+            
             if action == 'Recover':
                 p0_played = True
                 turn += 1
@@ -62,16 +68,15 @@ def claimPhase(state):
             if not state.players[0].servants:
                 turn += 1
                 continue
-
-            
+        
         #Opponent Turn
         elif turn % 2 == 1:   
-            list_of_actions = Actions(state, 1, turn, p1_played)
+            list_of_actions, _ = Actions(state, 1, turn, p1_played)
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
 
-            # get random action
+            # Random action AI
             action = random.choice(list_of_actions)
             state, _ = ResultOfAction(state, 1, action)
             if action == 'Recover':
@@ -126,24 +131,29 @@ def passTorchPhase(state, game_over):
         game_over = False
     return state, game_over
 
-def playGame(state):
+def playGame(state, agent, train, train_target):
     game_over = False
     while not game_over:
         state = revealPhase(state)
-        state = claimPhase(state)
+        state = claimPhase(state, agent, train, train_target)
         state = collectPhase(state)
         state, game_over = passTorchPhase(state, game_over)
+        train_target = False
     return state
 
-def main():
-    state = crypt.Crypt()
-    state = playGame(state)
-    if state.players[0].score > state.players[1].score:
-        print('Red wins with a score of ' + str(state.players[0].score) + ' against ' + str(state.players[1].score))
-    elif state.players[0].score < state.players[1].score:
-        print('Blue wins with a score of ' + str(state.players[1].score) + ' against ' + str(state.players[0].score))
-    else:
-        print('It is a tie with a score of ' + str(state.players[0].score))
+def trainAgent():
+    train = True
+    nr_of_games = 10
+    agent = DQNAgent()
 
+    for i in range(nr_of_games):
+        state = Crypt()
+        train_target = True
+        state = playGame(state, agent, train, train_target)
+        print('Game: ', i)
+        state.printTrainScore()
+        del state
+    
+    agent.save_model('1st_model')
 
-main()
+trainAgent()
