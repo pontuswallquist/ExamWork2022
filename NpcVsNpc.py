@@ -39,7 +39,10 @@ def claimPhase(state, agent, train, train_target):
             action_list = agent.step(state.get_input_state(), list_of_actions, train)
 
             if isinstance(action_list, list):
-                action = random.choice(list_of_actions)
+                # Fix so a specific action will always have the same index
+
+                action_id = random.randint(0, len(action_list)-1)
+                action = action_list[action_id]
             else:
                 legal_outputs = ReducePossibleActions(actionspace, action_list)
                 action_id = np.argmax(legal_outputs)
@@ -49,7 +52,7 @@ def claimPhase(state, agent, train, train_target):
             next_state, reward = ResultOfAction(curr_state, 0, action)
             # call Rembember with the state before action, action, reward, state after action
             if train is True:
-                agent.remember(curr_state.get_input_state(), action, reward, next_state.get_input_state())
+                agent.remember(curr_state.get_input_state(), action_id, reward, next_state.get_input_state())
                 agent.replay()
                 if train_target is True:
                     agent.target_train()
