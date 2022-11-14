@@ -30,6 +30,11 @@ def Actions(state, playerNr, turn, hasPlayed):
 
     return actions
 
+def ReducePossibleActions(actionspace1d, actions):
+    for i in range(len(actionspace1d)):
+        actions[i] = actions[i] * actionspace1d[i]
+    return actions
+
 def ResultOfAction(state, playerNr, action):
     if action == 'Recover':
         state.players[playerNr].recoverServants()
