@@ -31,7 +31,7 @@ def Actions(state, playerNr, turn, hasPlayed):
             actions.append('Recover')
             if state.players[playerNr].hasRemains():
                 actionspace[0][1] = 1
-                actions.append('UseRemains')
+                actions.append('useRemains')
     if servants_available == 0:
         return actions, actionspace
     
@@ -64,7 +64,7 @@ def ResultOfAction(state, playerNr, action):
     if action == 'Recover':
         state.players[playerNr].recoverServants()
         reward = 3
-    elif action == 'UseRemains':
+    elif action == 'useRemains':
         state.collectors[1].useCard(state.players[playerNr])
         reward = 5
     else:

@@ -4,6 +4,7 @@ from actionspace import Actions, ResultOfAction, ReducePossibleActions
 import numpy as np
 from DQN_agent import DQNAgent
 from rich.console import Console
+from keras.models import load_model
 console = Console()
 
 
@@ -188,13 +189,13 @@ def trainNewAgent():
         del state
     
     console.print(game_scores, justify='left')
-    agent.save_model('model_1')
+    agent.save_model('model_1.h5')
 
-def continueTraining():
+def continueTraining(modelname):
     train = True
     nr_of_games = 5
     agent = DQNAgent()
-    agent.load_model('model_1')
+    agent.load_model(modelname)
     game_scores = []
 
     for i in range(nr_of_games):
@@ -206,6 +207,6 @@ def continueTraining():
         del state
     
     console.print(game_scores, justify='left')
-    agent.save_model('model_1')
+    agent.save_model(modelname)
 
-continueTraining()
+continueTraining('model_1.h5')
