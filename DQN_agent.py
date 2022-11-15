@@ -58,8 +58,8 @@ class DQNAgent:
             
             next_inputs = tf.expand_dims(next_state, 0)
             Q_future = max(self.target_model.predict(next_inputs)[0])
-            target[0][action] = reward + Q_future * self.gamma  # this line causes the error
-            self.model.fit(inputs, target, epochs=1, verbose=0)
+            target[0][action] = reward + Q_future * self.gamma
+            self.training_history = self.model.fit(inputs, target, epochs=1, verbose=0)
                 
     def target_train(self):
         weights = self.model.get_weights()

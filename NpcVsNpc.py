@@ -3,6 +3,25 @@ import random
 from actionspace import Actions, ResultOfAction, ReducePossibleActions
 import numpy as np
 from DQN_agent import DQNAgent
+from rich.console import Console
+console = Console()
+
+
+map_actions_to_id = {
+    'Recover': 0,
+    'useRemains': 1,
+    '1-1-1': 2, '1-1-2': 3, '1-1-3': 4, '1-1-4': 5, '1-1-5': 6, '1-1-6': 7,
+    '1-2-1': 8, '1-2-2': 9, '1-2-3': 10, '1-2-4': 11, '1-2-5': 12, '1-2-6': 13,
+    '1-3-1': 14, '1-3-2': 15, '1-3-3': 16, '1-3-4': 17, '1-3-5': 18, '1-3-6': 19,
+    '2-1-1': 20, '2-1-2': 21, '2-1-3': 22, '2-1-4': 23, '2-1-5': 24, '2-1-6': 25,
+    '2-2-1': 26, '2-2-2': 27, '2-2-3': 28, '2-2-4': 29, '2-2-5': 30, '2-2-6': 31,
+    '2-3-1': 32, '2-3-2': 33, '2-3-3': 34, '2-3-4': 35, '2-3-5': 36, '2-3-6': 37,
+    '3-1-1': 38, '3-1-2': 39, '3-1-3': 40, '3-1-4': 41, '3-1-5': 42, '3-1-6': 43,
+    '3-2-1': 44, '3-2-2': 45, '3-2-3': 46, '3-2-4': 47, '3-2-5': 48, '3-2-6': 49,
+    '3-3-1': 50, '3-3-2': 51, '3-3-3': 52, '3-3-4': 53, '3-3-5': 54, '3-3-6': 55
+}
+
+map_id_to_actions = {v: k for k, v in map_actions_to_id.items()}
 
 def revealPhase(state):
     state.turnsLeft -= 1
@@ -38,15 +57,14 @@ def claimPhase(state, agent, train, train_target):
 
             action_list = agent.step(state.get_input_state(), list_of_actions, train)
 
+            # if we got back a list, then take random action otherwise take the models action
             if isinstance(action_list, list):
-                # Fix so a specific action will always have the same index
-
-                action_id = random.randint(0, len(action_list)-1)
-                action = action_list[action_id]
+                action = random.choice(action_list)
+                action_id = map_actions_to_id[action]
             else:
                 legal_outputs = ReducePossibleActions(actionspace, action_list)
                 action_id = np.argmax(legal_outputs)
-                action = list_of_actions[action_id]
+                action = map_id_to_actions[action_id]
 
             curr_state = state
             next_state, reward = ResultOfAction(curr_state, 0, action)
@@ -144,19 +162,50 @@ def playGame(state, agent, train, train_target):
         train_target = False
     return state
 
-def trainAgent():
+def get_score_and_winner(state):
+    if state.players[0].score > state.players[1].score:
+        winner = 'Model'
+    elif state.players[0].score < state.players[1].score:
+        winner = 'Random'
+    else:
+        winner = 'Tie'
+
+    return f"Model: {state.players[0].score} Random: {state.players[1].score} Winner: {winner}"
+
+
+def trainNewAgent():
     train = True
-    nr_of_games = 10
+    nr_of_games = 5
     agent = DQNAgent()
+    game_scores = []
 
     for i in range(nr_of_games):
         state = Crypt()
         train_target = True
         state = playGame(state, agent, train, train_target)
-        print('Game: ', i)
-        state.printTrainScore()
+        console.print('[bold green]Game: ', i, justify='center')
+        game_scores.append(get_score_and_winner(state))
         del state
     
-    agent.save_model('1st_model')
+    console.print(game_scores, justify='left')
+    agent.save_model('model_1')
 
-trainAgent()
+def continueTraining():
+    train = True
+    nr_of_games = 5
+    agent = DQNAgent()
+    agent.load_model('model_1')
+    game_scores = []
+
+    for i in range(nr_of_games):
+        state = Crypt()
+        train_target = True
+        state = playGame(state, agent, train, train_target)
+        console.print('[bold green]Game: ', i, justify='center')
+        game_scores.append(get_score_and_winner(state))
+        del state
+    
+    console.print(game_scores, justify='left')
+    agent.save_model('model_1')
+
+continueTraining()
