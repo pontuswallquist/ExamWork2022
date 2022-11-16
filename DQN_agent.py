@@ -26,7 +26,7 @@ class DQNAgent:
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
         hidden_layer = Dense(32, activation='relu')(input_layer)
-        output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
+        output_layer = Dense(self.nr_actions, activation='linear')(hidden_layer)
         model = Model(inputs=input_layer, outputs=output_layer)
         model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate))
         return model

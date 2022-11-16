@@ -72,6 +72,7 @@ class IdolCollector(CollectorCard):
             if card.type == 2 and not card.face_up:
                 card.turnCard()
                 return random.randint(1, 6)
+        
 
     def get_reward(self, player):
         return 1

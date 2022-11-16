@@ -53,19 +53,22 @@ def claimPhase(state, agent, train, train_target):
                 turn += 1
                 continue
 
-            action_list = agent.step(state.get_input_state(0), list_of_actions, train)
+            outputs = agent.step(state.get_input_state(0), list_of_actions, train)
 
             # if we got back a list, then take random action otherwise take the models action
-            if isinstance(action_list, list):
-                action = random.choice(action_list)
+            if train is True:
+                action = random.choice(outputs)
                 action_id = map_actions_to_id[action]
             else:
-                legal_outputs = ReducePossibleActions(actionspace, action_list)
+                legal_outputs = ReducePossibleActions(actionspace, outputs)
                 action_id = np.argmax(legal_outputs)
                 action = map_id_to_actions[action_id]
 
             curr_state = state
             next_state, reward = ResultOfAction(curr_state, 0, action)
+            state = next_state
+
+            p0_played = True
             # call Rembember with the state before action, action, reward, state after action
             if train is True:
                 agent.remember(curr_state.get_input_state(0), action_id, reward, next_state.get_input_state(0))
@@ -75,16 +78,13 @@ def claimPhase(state, agent, train, train_target):
                     agent.target_train()
                     train_target = False
 
-            state = next_state
-            
-            if action == 'Recover':
-                p0_played = True
-                turn += 1
-                continue
-     
-            p0_played = True
             if turn == 2 and state.players[0].hasTorch() and p0_played and p1_played:
                 phase_over = True
+
+
+            if action == 'Recover':
+                turn += 1
+                continue
             
             if not state.players[0].servants:
                 turn += 1

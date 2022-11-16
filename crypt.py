@@ -131,7 +131,7 @@ class Crypt:
         otherPlayerNr = 0 if playerNr == 1 else 1
         if not len(self.board[place]['servants']) == 0:
             for i in range(len(self.board[place]['servants'])):
-                self.board[place]['servants'].pop()
+                self.board[place]['servants'].pop() 
                 self.players[otherPlayerNr].recoverSingleServant()
 
         for i in range(servants):

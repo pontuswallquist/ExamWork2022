@@ -25,13 +25,19 @@ def Actions(state, playerNr, turn, hasPlayed):
     ]
     actions = []
     servants_available = len(state.players[playerNr].servants)
-    if (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
+
+
+    if (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
         if servants_available < 3:
             actionspace[0][0] = 1
             actions.append('Recover')
-            if state.players[playerNr].hasRemains():
+        
+
+    if servants_available < 3:
+        if state.players[playerNr].hasRemains():
                 actionspace[0][1] = 1
                 actions.append('useRemains')
+
     if servants_available == 0:
         return actions, actionspace
     

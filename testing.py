@@ -14,14 +14,10 @@ def ActiontoIndex(place, servant, value):
     columnIndex = servantIndex * 6 + valueIndex
     return rowIndex, columnIndex
 
+nr = 4
 
-def testActionSpace():
-    for place in range(1, 4):
-        for servant in range(1, 4):
-            for value in range(1,7):
-                rowIndex, columnIndex = ActiontoIndex(place, servant, value)
-                print(str(place) + '-' + str(servant) + '-' + str(value))
-                actionspace[rowIndex][columnIndex] = 1
+for i in range(nr):
+    print(i)
 
 
 

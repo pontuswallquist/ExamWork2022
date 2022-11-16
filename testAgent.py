@@ -19,7 +19,7 @@ train = False
 train_target = False
 nr_of_games = 200
 agent = DQNAgent()
-agent.load_model('model_1.h5')
+agent.load_model('model_2.h5')
 model_wins = []
 random_wins = []
 ties = []

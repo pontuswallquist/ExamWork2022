@@ -42,19 +42,18 @@ class Player:
                 card.turnCard()
     
     def hasIdol(self):
-        for card in self.collection:
-            if card.type == 2 and not card.face_up:
-                return True
-        return False
+        count = sum(1 for x in self.collection if x.type == 2 and not x.face_up)
+        if count >= 1:
+            return True
+        else:
+            return False
     
     def hasRemains(self):
-        count = 0
-        for card in self.collection:
-            if card.type == 1 and not card.face_up:
-                count += 1
-            if count == 2:
-                return True
-        return False
+        count = sum(1 for x in self.collection if x.type == 1 and not x.face_up)
+        if count >= 2:
+            return True
+        else:
+            return False
 
     def nr_remains(self):
         count = sum(1 for x in self.collection if x.type == 1)
