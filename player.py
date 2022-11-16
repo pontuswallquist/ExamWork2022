@@ -29,6 +29,8 @@ class Player:
         self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
 
     def recoverSingleServant(self):
+        if len(self.servants) == 3:
+            return
         self.servants.append(Servant(self.color))
     
     def addTreasure(self, treasure):

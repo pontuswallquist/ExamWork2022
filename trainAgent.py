@@ -2,6 +2,7 @@ from crypt import Crypt
 from DQN_agent import DQNAgent
 from NpcVsNpc import playGame
 from rich.console import Console
+import time
 console = Console()
 
 def get_score_and_winner(state):
@@ -17,17 +18,19 @@ def get_score_and_winner(state):
 
 
 train = True
-nr_of_games = 5
+nr_of_games = 100
 agent = DQNAgent()
-game_scores = []
 
+start = time.time()
 for i in range(nr_of_games):
     state = Crypt()
     train_target = True
     state = playGame(state, agent, train, train_target)
     console.print('[bold green]Game: ', i, justify='center')
-    game_scores.append(get_score_and_winner(state))
     del state
     
-console.print(game_scores, justify='left')
+end = time.time()
+
+console.print(f"Time: {int((end-start)/3600)} hours and {int(((end-start)%3600)/60)} minutes")
+
 agent.save_model('model_1.h5')
