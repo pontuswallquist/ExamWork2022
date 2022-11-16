@@ -73,7 +73,11 @@ def ResultOfAction(state, playerNr, action):
         servant = int(servant)
         value = int(value)
         state.addServant2Card(playerNr, place, servant, value)
+        card_type = state.board[place]['card'].type
+
         reward = state.board[place]['card'].coinvalue
+        reward += state.collectors[card_type].get_reward(state.players[playerNr])
+        
     return state, reward
 
 def ReducePossibleActions(actionspace, actions):

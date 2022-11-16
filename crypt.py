@@ -33,8 +33,21 @@ class Crypt:
         }
         self.turnsLeft = 8
 
-    def get_input_state(self):
-        return np.array([self.board[1]['card'].coinvalue, self.board[2]['card'].coinvalue, self.board[3]['card'].coinvalue])
+    def get_current_bid(self, place):
+        current_bid = 0
+        for dice in self.board[place]['servants']:
+            current_bid += dice.value
+        return current_bid
+
+    def get_input_state(self, playerNr):
+        return np.array([
+        self.board[1]['card'].coinvalue, self.board[1]['card'].type, self.get_current_bid(1), 
+        self.board[2]['card'].coinvalue, self.board[2]['card'].type, self.get_current_bid(2),
+        self.board[3]['card'].type, self.get_current_bid(3),
+        self.players[playerNr].nr_remains(), self.players[playerNr].nr_idols(), self.players[playerNr].nr_jewelry(),
+        self.players[playerNr].nr_manuscripts(), self.players[playerNr].nr_pottery(), self.players[playerNr].nr_tapestries(),
+        self.players[playerNr].nr_servants(), self.players[playerNr].score
+        ])
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)

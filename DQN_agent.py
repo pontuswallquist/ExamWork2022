@@ -18,14 +18,14 @@ class DQNAgent:
         self.learning_rate = 0.005
         self.training_history = None
         self.nr_actions = 56
-        self.nr_states = 3
+        self.nr_states = 16
 
         self.model = self.create_model()
         self.target_model = self.create_model()
 
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
-        hidden_layer = Dense(24, activation='relu')(input_layer)
+        hidden_layer = Dense(32, activation='relu')(input_layer)
         output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
         model = Model(inputs=input_layer, outputs=output_layer)
         model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate))

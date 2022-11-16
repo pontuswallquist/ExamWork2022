@@ -18,6 +18,9 @@ class Player:
 
     def hasLessThan3Servants(self):
         return len(self.servants) < 3
+
+    def nr_servants(self):
+        return len(self.servants)
     
     def hasTorch(self):
         return self.torch
@@ -50,6 +53,30 @@ class Player:
             if count == 2:
                 return True
         return False
+
+    def nr_remains(self):
+        count = sum(1 for x in self.collection if x.type == 1)
+        return count
+
+    def nr_idols(self):
+        count = sum(1 for x in self.collection if x.type == 2)
+        return count
+
+    def nr_jewelry(self):
+        count = sum(1 for x in self.collection if x.type == 3)
+        return count
+    
+    def nr_manuscripts(self):
+        count = sum(1 for x in self.collection if x.type == 4)
+        return count
+    
+    def nr_pottery(self):
+        count = sum(1 for x in self.collection if x.type == 5)
+        return count
+    
+    def nr_tapestries(self):
+        count = sum(1 for x in self.collection if x.type == 6)
+        return count
 
 class Servant:
 

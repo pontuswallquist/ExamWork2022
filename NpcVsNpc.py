@@ -56,7 +56,7 @@ def claimPhase(state, agent, train, train_target):
                 turn += 1
                 continue
 
-            action_list = agent.step(state.get_input_state(), list_of_actions, train)
+            action_list = agent.step(state.get_input_state(0), list_of_actions, train)
 
             # if we got back a list, then take random action otherwise take the models action
             if isinstance(action_list, list):
@@ -71,7 +71,7 @@ def claimPhase(state, agent, train, train_target):
             next_state, reward = ResultOfAction(curr_state, 0, action)
             # call Rembember with the state before action, action, reward, state after action
             if train is True:
-                agent.remember(curr_state.get_input_state(), action_id, reward, next_state.get_input_state())
+                agent.remember(curr_state.get_input_state(0), action_id, reward, next_state.get_input_state(0))
                 agent.replay()
                 if train_target is True:
                     agent.target_train()
@@ -162,51 +162,3 @@ def playGame(state, agent, train, train_target):
         state, game_over = passTorchPhase(state, game_over)
         train_target = False
     return state
-
-def get_score_and_winner(state):
-    if state.players[0].score > state.players[1].score:
-        winner = 'Model'
-    elif state.players[0].score < state.players[1].score:
-        winner = 'Random'
-    else:
-        winner = 'Tie'
-
-    return f"Model: {state.players[0].score} Random: {state.players[1].score} Winner: {winner}"
-
-
-def trainNewAgent():
-    train = True
-    nr_of_games = 5
-    agent = DQNAgent()
-    game_scores = []
-
-    for i in range(nr_of_games):
-        state = Crypt()
-        train_target = True
-        state = playGame(state, agent, train, train_target)
-        console.print('[bold green]Game: ', i, justify='center')
-        game_scores.append(get_score_and_winner(state))
-        del state
-    
-    console.print(game_scores, justify='left')
-    agent.save_model('model_1.h5')
-
-def continueTraining(modelname):
-    train = True
-    nr_of_games = 5
-    agent = DQNAgent()
-    agent.load_model(modelname)
-    game_scores = []
-
-    for i in range(nr_of_games):
-        state = Crypt()
-        train_target = True
-        state = playGame(state, agent, train, train_target)
-        console.print('[bold green]Game: ', i, justify='center')
-        game_scores.append(get_score_and_winner(state))
-        del state
-    
-    console.print(game_scores, justify='left')
-    agent.save_model(modelname)
-
-continueTraining('model_1.h5')
