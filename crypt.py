@@ -39,15 +39,19 @@ class Crypt:
             current_bid += dice.value
         return current_bid
 
-    def get_input_state(self, playerNr):
+    def get_input_state(self):
         return np.array([
         self.board[1]['card'].coinvalue, self.board[1]['card'].type, self.get_current_bid(1), 
         self.board[2]['card'].coinvalue, self.board[2]['card'].type, self.get_current_bid(2),
         self.board[3]['card'].type, self.get_current_bid(3),
-        self.players[playerNr].nr_remains(), self.players[playerNr].nr_idols(), self.players[playerNr].nr_jewelry(),
-        self.players[playerNr].nr_manuscripts(), self.players[playerNr].nr_pottery(), self.players[playerNr].nr_tapestries(),
-        self.players[playerNr].nr_servants(), self.players[playerNr].score
-        ])
+        self.players[0].nr_remains(), self.players[0].nr_idols(), self.players[0].nr_jewelry(),
+        self.players[0].nr_manuscripts(), self.players[0].nr_pottery(), self.players[0].nr_tapestries(),
+        self.players[0].nr_servants(), self.players[0].score,
+        self.players[1].nr_remains(), self.players[1].nr_idols(), self.players[1].nr_jewelry(),
+        self.players[1].nr_manuscripts(), self.players[1].nr_pottery(), self.players[1].nr_tapestries(),
+        self.players[1].nr_servants(), self.players[1].score,
+        self.turnsLeft
+    ])
 
     def countServants(self):
         self.players[0].score += len(self.players[0].servants)
@@ -82,6 +86,27 @@ class Crypt:
         #Player 2 score
         for card in self.players[1].collection:
             self.players[1].score += card.coinvalue
+
+
+    def get_total_score(self):
+        player1 = self.players[0]
+        player2 = self.players[1]
+
+        p1_score = 0
+        p2_score = 0
+
+        for i in range(1, 3):
+            p1_score += self.collectors[i].get_score(player1)
+            p2_score += self.collectors[i].get_score(player2)
+
+        for i in range(3, 6):
+            p1_score += self.collectors[i].get_score(player1)
+            p2_score += self.collectors[i].get_score(player2)
+        man1_score, man2_score = self.collectors[6].get_score(player1, player2)
+        p1_score += man1_score
+        p2_score += man2_score
+
+        return p1_score, p2_score
 
 
     def updateNewBoard(self, place):

@@ -18,21 +18,21 @@ class DQNAgent:
         self.learning_rate = 0.005
         self.training_history = None
         self.nr_actions = 56
-        self.nr_states = 16
+        self.nr_states = 25
 
         self.model = self.create_model()
         self.target_model = self.create_model()
 
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
-        hidden_layer = Dense(32, activation='relu')(input_layer)
+        hidden_layer = Dense(40, activation='relu')(input_layer)
         output_layer = Dense(self.nr_actions, activation='linear')(hidden_layer)
         model = Model(inputs=input_layer, outputs=output_layer)
         model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate))
         return model
 
-    def remember(self, state, action, reward, next_state):
-        self.memory.append((state, action, reward, next_state))
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
 
     def step(self, input_state, action_list, train):
         if train:
@@ -52,14 +52,16 @@ class DQNAgent:
             return
         samples = random.sample(self.memory, batch_size)
         for sample in samples:
-            input_state, action, reward, next_state = sample
+            input_state, action, reward, next_state, done = sample
             inputs = tf.expand_dims(input_state, 0)
             target = self.target_model.predict(inputs)
-            
-            next_inputs = tf.expand_dims(next_state, 0)
-            Q_future = max(self.target_model.predict(next_inputs)[0])
-            target[0][action] = reward + Q_future * self.gamma
-            self.training_history = self.model.fit(inputs, target, epochs=1, verbose=0)
+            if done:
+                target[0][action] = reward
+            else:
+                next_inputs = tf.expand_dims(next_state, 0)
+                Q_future = max(self.target_model.predict(next_inputs)[0])
+                target[0][action] = reward + Q_future * self.gamma
+                self.training_history = self.model.fit(inputs, target, epochs=1, verbose=0)
                 
     def target_train(self):
         weights = self.model.get_weights()

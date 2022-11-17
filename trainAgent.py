@@ -7,7 +7,7 @@ console = Console()
 
 
 train = True
-nr_of_games = 100
+nr_of_games = 250
 agent = DQNAgent()
 
 start = time.time()

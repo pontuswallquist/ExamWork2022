@@ -54,6 +54,10 @@ class RemainsCollector(CollectorCard):
             if count == 2:
                 break             
         player.recoverSingleServant()
+    
+    def get_score(self, player):
+        score = sum(x.coinvalue for x in player.collection if x.type == 1)
+        return score
 
     def get_reward(self, player):
         nr_eligible_cards = sum(1 for x in player.collection if x.type == 1 and not x.face_up)
@@ -73,6 +77,9 @@ class IdolCollector(CollectorCard):
                 card.turnCard()
                 return random.randint(1, 6)
         
+    def get_score(self, player):
+        score = sum(x.coinvalue for x in player.collection if x.type == 2)
+        return score
 
     def get_reward(self, player):
         return 1
@@ -94,6 +101,19 @@ class JewelryCollector(CollectorCard):
                     max_index = index
         if count >= self.requirement:
             player.collection[max_index].coinvalue *= 2
+
+    def get_score(self, player):
+        score = 0
+        jewelry_cards = [x for x in player.collection if x.type == 3]
+        if len(jewelry_cards) >= 2:
+            for card in jewelry_cards:
+                score += card.coinvalue
+            score += max(card.coinvalue for card in jewelry_cards)
+            return score
+        else:
+            for card in jewelry_cards:
+                score += card.coinvalue
+            return score
 
     def get_reward(self, player):
         nr_eligible_cards = sum(1 for x in player.collection if x.type == 3)
@@ -118,10 +138,22 @@ class ManuscriptCollector(CollectorCard):
                 for manuscriptcard in indexes:
                     player.collection[manuscriptcard].coinvalue = 4
 
+        def get_score(self, player):
+            score = 0
+            manuscript_cards = [x for x in player.collection if x.type == 4]
+            if len(manuscript_cards) >= 2:
+                for card in manuscript_cards:
+                    score += 4
+                return score
+            else:
+                for card in manuscript_cards:
+                    score += card.coinvalue
+                return score
+
         def get_reward(self, player):
             nr_eligible_cards = sum(1 for x in player.collection if x.type == 4)
             if nr_eligible_cards >= 1:
-                return 3
+                return 4
             else:
                 return 0
 
@@ -141,6 +173,29 @@ class PotteryCollector(CollectorCard):
             player.score += 4
         elif count >= 4:
             player.score += 8
+
+    def get_score(self, player):
+        score = 0
+        pottery_cards = [x for x in player.collection if x.type == 5]
+        if len(pottery_cards) == 2:
+            for card in pottery_cards:
+                score += card.coinvalue
+            score += 2
+            return score
+        elif len(pottery_cards) == 3:
+            for card in pottery_cards:
+                score += card.coinvalue
+            score += 4
+            return score
+        elif len(pottery_cards) >= 4:
+            for card in pottery_cards:
+                score += card.coinvalue
+            score += 8
+            return score
+        else:
+            for card in pottery_cards:
+                score += card.coinvalue
+            return score
 
     def get_reward(self, player):
         nr_eligible_cards = sum(1 for x in player.collection if x.type == 5)
@@ -171,6 +226,26 @@ class TapestryCollector(CollectorCard):
             player1.score += 5
         elif p2_score > p1_score:
             player2.score += 5
+
+    def get_score(self, player1, player2):
+        player1_score = 0
+        player2_score = 0
+        tapestry_1 = [x for x in player1.collection if x.type == 6]
+        tapestry_2 = [x for x in player2.collection if x.type == 6]
+        for card in tapestry_1:
+            player1_score += card.coinvalue
+        for card in tapestry_2:
+            player2_score += card.coinvalue
+        if player1_score > player2_score:
+            player1_score += 5
+            return player1_score, player2_score
+        elif player2_score > player1_score:
+            player2_score += 5
+            return player1_score, player2_score
+        else:
+            player1_score += 5
+            player2_score += 5
+            return player1_score, player2_score
     
     def get_reward(self, player):
         return 2

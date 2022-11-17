@@ -53,10 +53,10 @@ def claimPhase(state, agent, train, train_target):
                 turn += 1
                 continue
 
-            outputs = agent.step(state.get_input_state(0), list_of_actions, train)
+            outputs = agent.step(state.get_input_state(), list_of_actions, train)
 
-            # if we got back a list, then take random action otherwise take the models action
-            if train is True:
+            # if outputs is a list, then take random action, otherwise its a numpy array
+            if isinstance(outputs, list):
                 action = random.choice(outputs)
                 action_id = map_actions_to_id[action]
             else:
@@ -67,11 +67,13 @@ def claimPhase(state, agent, train, train_target):
             curr_state = state
             next_state, reward = ResultOfAction(curr_state, 0, action)
             state = next_state
-
             p0_played = True
-            # call Rembember with the state before action, action, reward, state after action
+
+            
+            # call Rembember with the state before action, action, reward, state after action, done
             if train is True:
-                agent.remember(curr_state.get_input_state(0), action_id, reward, next_state.get_input_state(0))
+                done, reward = checkIfDone(next_state, reward)
+                agent.remember(curr_state.get_input_state(), action_id, reward, next_state.get_input_state(), done)
                 agent.replay()
                 if train_target is True:
                     print('-----updating target network-----')
@@ -142,6 +144,9 @@ def collectPhase(state):
 
 def passTorchPhase(state, game_over):
     if not state.deck:
+        # reset score and count score
+        state.players[0].score = 0
+        state.players[1].score = 0
         state.countBonus()
         state.calculateCollectionScore()
         state.countServants()
@@ -151,6 +156,21 @@ def passTorchPhase(state, game_over):
         state.players[1].torch = not state.players[1].torch
         game_over = False
     return state, game_over
+
+def checkIfDone(state, reward):
+    if state.turnsLeft == 0 and state.players[0].nr_servants() == 0:
+        done = True
+        player1_score, player2_score = state.get_total_score()
+
+        if player1_score > player2_score:
+            reward = 20
+            return done, reward
+        else:
+            reward = -20
+            return done, reward
+    else:
+        done = False
+        return done, reward
 
 def playGame(state, agent, train, train_target):
     game_over = False
