@@ -15,7 +15,7 @@ class DQNAgent:
         self.epsilon = 1.0  # exploration rate
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.999
-        self.learning_rate = 0.005
+        self.learning_rate = 0.005 # Optimize learning rate
         self.training_history = None
         self.nr_actions = 56
         self.nr_states = 25
