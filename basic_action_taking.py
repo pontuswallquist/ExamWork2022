@@ -8,7 +8,7 @@ from keras.layers import Dense, Input, Softmax
 from keras.optimizers import Adam
 
 total_actions_possible = 56
-total_states_possible = 3
+total_states_possible = 25
 
 
 gamma = 0.95
@@ -20,7 +20,7 @@ learning_rate = 0.01
 
 def createModel(nr_states, nr_actions):
     inputs = Input(shape=(nr_states,))
-    layer1 = Dense(24, activation='relu')(inputs)
+    layer1 = Dense(40, activation='relu')(inputs)
     outputs = Dense(nr_actions, activation='softmax')(layer1)
     model = keras.Model(inputs=inputs, outputs=outputs, name='DQN')
     optimizer = Adam(learning_rate=learning_rate)
@@ -43,10 +43,20 @@ actions, actionspace = Actions(gamestate, 1, 1, False)
 
 # To get outputs from the model
 inputs = tf.expand_dims(gamestate.get_input_state(), 0)
-output = model.predict(inputs)[0]
+output = model(inputs)[0].numpy()
 
+target = tf.expand_dims(output, 0)
+
+#print(output)
+
+
+
+
+
+'''
 legal_outputs = ReducePossibleActions(actionspace, output)
 action = np.argmax(legal_outputs)
 
 print(legal_outputs)
 print(action)
+'''

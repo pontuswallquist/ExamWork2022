@@ -12,7 +12,10 @@ class Player:
         self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
 
     def useServant(self, value):
-        servant = self.servants.pop()
+        try:
+            servant = self.servants.pop()
+        except IndexError:  # temporary fix
+            servant = Servant(self.color)
         servant.setValue(value)
         return servant
 

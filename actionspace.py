@@ -42,7 +42,7 @@ def Actions(state, playerNr, turn, hasPlayed):
         return actions, actionspace
     
     for place in state.board.keys():
-        if not state.board[place]['servants']:
+        if len(state.board[place]['servants']) == 0:
             for servant in range(1, servants_available + 1):
                 for value in range(1,7):
                     # If action is valid, add it to the list of actions and add it to the action space
@@ -74,10 +74,12 @@ def ResultOfAction(state, playerNr, action):
         state.collectors[1].useCard(state.players[playerNr])
         reward = 5
     else:
-        place, servant, value = action.split('-')
-        place = int(place)
-        servant = int(servant)
-        value = int(value)
+        bid = action.split('-')
+
+        place = int(bid[0])
+        servant = int(bid[1])
+        value = int(bid[2])
+
         state.addServant2Card(playerNr, place, servant, value)
         card_type = state.board[place]['card'].type
 

@@ -76,7 +76,7 @@ def claimPhase(state, agent, train, train_target):
                 agent.remember(curr_state.get_input_state(), action_id, reward, next_state.get_input_state(), done)
                 agent.replay()
                 if train_target is True:
-                    print('-----updating target network-----')
+                    #print('-----updating target network-----')
                     agent.target_train()
                     train_target = False
 

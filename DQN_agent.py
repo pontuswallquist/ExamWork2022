@@ -20,6 +20,7 @@ class DQNAgent:
         self.nr_actions = 56
         self.nr_states = 25
 
+
         self.model = self.create_model()
         self.target_model = self.create_model()
 
@@ -43,7 +44,7 @@ class DQNAgent:
                 return action_list
         
         inputs = tf.expand_dims(input_state, 0)
-        output = self.model.predict(inputs)[0]
+        output = self.model(inputs)[0].numpy()
         return output
 
     def replay(self):
@@ -54,13 +55,15 @@ class DQNAgent:
         for sample in samples:
             input_state, action, reward, next_state, done = sample
             inputs = tf.expand_dims(input_state, 0)
-            target = self.target_model.predict(inputs)
+            target = self.target_model(inputs, training=True)[0].numpy()
+            
             if done:
-                target[0][action] = reward
+                target[action] = reward
             else:
                 next_inputs = tf.expand_dims(next_state, 0)
-                Q_future = max(self.target_model.predict(next_inputs)[0])
-                target[0][action] = reward + Q_future * self.gamma
+                Q_future = max(self.target_model(next_inputs, training=True)[0].numpy())
+                target[action] = reward + Q_future * self.gamma
+                target = tf.expand_dims(target, 0)
                 self.training_history = self.model.fit(inputs, target, epochs=1, verbose=0)
                 
     def target_train(self):
