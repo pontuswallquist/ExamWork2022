@@ -2,6 +2,8 @@ import random
 from actionspace import Actions, ResultOfAction, ReducePossibleActions
 import numpy as np
 from rich.console import Console
+from log_actions import log_action
+import copy
 console = Console()
 
 
@@ -28,7 +30,7 @@ def revealPhase(state):
     state.updateNewBoard(3)
     return state
 
-def claimPhase(state, agent, train, train_target):
+def claimPhase(state, agent, train, train_target, log):
     
     if state.players[0].hasTorch():
         turn = 0
@@ -64,19 +66,21 @@ def claimPhase(state, agent, train, train_target):
                 action_id = np.argmax(legal_outputs)
                 action = map_id_to_actions[action_id]
 
-            curr_state = state
-            next_state, reward = ResultOfAction(curr_state, 0, action)
-            state = next_state
+            curr_state = copy.deepcopy(state)
+            state, reward = ResultOfAction(state, 0, action)
+            
             p0_played = True
+            
+            if log is True:
+                log_action(curr_state, action, 0)
 
             
-            # call Rembember with the state before action, action, reward, state after action, done
+            # call Remember with the state before action, action, reward, state after action, done
             if train is True:
-                done, reward = checkIfDone(next_state, reward)
-                agent.remember(curr_state.get_input_state(), action_id, reward, next_state.get_input_state(), done)
+                done, reward = checkIfDone(state, reward)
+                agent.remember(curr_state.get_input_state(), action_id, reward, state.get_input_state(), done)
                 agent.replay()
                 if train_target is True:
-                    #print('-----updating target network-----')
                     agent.target_train()
                     train_target = False
 
@@ -101,7 +105,12 @@ def claimPhase(state, agent, train, train_target):
 
             # Random action AI
             action = random.choice(list_of_actions)
+            curr_state = copy.deepcopy(state)
             state, _ = ResultOfAction(state, 1, action)
+
+            if log is True:
+                log_action(curr_state, action, 1)
+
             if action == 'Recover':
                 p1_played = True
                 turn += 1                
@@ -172,11 +181,11 @@ def checkIfDone(state, reward):
         done = False
         return done, reward
 
-def playGame(state, agent, train, train_target):
+def playGame(state, agent, train, train_target, log):
     game_over = False
     while not game_over:
         state = revealPhase(state)
-        state = claimPhase(state, agent, train, train_target)
+        state = claimPhase(state, agent, train, train_target, log)
         state = collectPhase(state)
         state, game_over = passTorchPhase(state, game_over)
         train_target = False

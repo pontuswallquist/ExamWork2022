@@ -45,9 +45,6 @@ def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
         f.write(f"Learning rate: {agent.learning_rate}\n")
 
 
-trainAgent(100, 1, 0.005, 0.95, 0.95)
-trainAgent(100, 2, 0.01, 0.95, 0.85)
-trainAgent(100, 3, 0.05, 0.99, 0.95)
-trainAgent(100, 4, 0.1, 0.99, 0.85)
+trainAgent(25, 1, 0.01, 0.95, 0.85)
 
 

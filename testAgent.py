@@ -18,6 +18,7 @@ def append_winner(state, model_wins, random_wins, ties):
 train = False
 train_target = False
 nr_of_games = 200
+log = True
 
 
 agent = DQNAgent()
@@ -26,15 +27,18 @@ model_1_wins = []
 random1_wins = []
 ties1 = []
 
+state = Crypt()
+playGame(state, agent, train, train_target, log)
+console.print('[bold green]DONE')
+
+
+'''
 for i in range(nr_of_games):
     state = Crypt()
-    state = playGame(state, agent, train, train_target)
+    state = playGame(state, agent, train, train_target, log)
     console.print('[bold green]Game: ', i)
     append_winner(state, model_1_wins, random1_wins, ties1)
     del state
-
-
-
 
 agent = DQNAgent()
 agent.load_model('model_2.h5')
@@ -44,7 +48,7 @@ ties2 = []
 
 for i in range(nr_of_games):
     state = Crypt()
-    state = playGame(state, agent, train, train_target)
+    state = playGame(state, agent, train, train_target, log)
     console.print('[bold green]Game: ', i)
     append_winner(state, model_2_wins, random_wins2, ties2)
     del state
@@ -67,3 +71,4 @@ console.print(f"Random win percentage: {(len(random_wins2)/nr_of_games)*100} %")
 
 console.print(f"Ties: {len(ties2)}")
 
+'''
