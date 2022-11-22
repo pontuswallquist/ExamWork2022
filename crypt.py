@@ -157,18 +157,21 @@ class Crypt:
 
 
     def addServant2Card(self, playerNr, place, servants, value):
-        
+        bumped_off = False
         otherPlayerNr = 0 if playerNr == 1 else 1
         if not len(self.board[place]['servants']) == 0:
             nr_servants_on_card = len(self.board[place]['servants'])
             for i in range(nr_servants_on_card):
                 self.players[otherPlayerNr].bump_off_servant()
             self.board[place]['servants'].clear()
+            bumped_off = True
 
         for i in range(servants):
             servant = self.players[playerNr].useServant(value)
             servant.setEffort(value)
             self.board[place]['servants'].append(servant)
+
+        return bumped_off
 
     def printTrainScore(self):
         if self.players[0].score > self.players[1].score:

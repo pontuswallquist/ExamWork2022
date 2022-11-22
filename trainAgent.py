@@ -46,8 +46,8 @@ def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
         
 
 
-trainAgent(250, 1, 0.001, 0.999, 0.95)
-trainAgent(250, 2, 0.0005, 0.999, 0.95)
+trainAgent(250, 1, 0.001, 0.999, 0.85)
+trainAgent(250, 2, 0.0005, 0.999, 0.75)
 
 
 

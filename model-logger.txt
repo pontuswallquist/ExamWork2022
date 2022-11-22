@@ -1,2 +1,8 @@
 
 
+
+model_1
+Trained for 250 games
+Learning rate: 0.001
+Epsilon decay: 0.95
+Gamma: 0.95

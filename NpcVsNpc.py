@@ -131,6 +131,9 @@ def collectPhase(state):
     
 
     state.collectCards()
+    state.players[0].score = 0
+    state.players[1].score = 0
+    state.players[0].score, state.players[1].score = state.get_total_score()
     
     servants_to_roll = state.mergeServants()
     for servant in servants_to_roll:
@@ -164,11 +167,13 @@ def passTorchPhase(state, game_over):
 
 def checkIfDone(state, action, reward, turn, hasPlayed):
 
-    if state.turnsLeft == 0 and not hasAvailableActions(state, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
-        done = True
-        player1_score, player2_score = state.get_total_score()
+    state.players[0].score = 0
+    state.players[1].score = 0
+    state.players[0].score, state.players[1].score = state.get_total_score()
 
-        if player1_score > player2_score:
+    if state.turnsLeft == 0 and not hasAvailableActions(state, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
+        done = True    
+        if  state.players[0].score > state.players[1].score:
             reward = 20
             return done, reward
         else:
