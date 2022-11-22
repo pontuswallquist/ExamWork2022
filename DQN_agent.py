@@ -3,19 +3,19 @@ import random
 from keras.layers import Input, Dense
 from keras.models import Model, load_model
 
-from keras.optimizers import Adam
+from keras.optimizers import Adam, SGD
 from collections import deque
 from actionspace import *
 import tensorflow as tf
 
 class DQNAgent:
-    def __init__(self):
-        self.memory = deque(maxlen=5000)
-        self.gamma = 0.95    # discount rate
-        self.epsilon = 1.0  # exploration rate
+    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.999 , gamma=0.95):
+        self.memory = deque(maxlen=10000)
+        self.gamma = gamma    # discount rate
+        self.epsilon = epsilon # exploration rate
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.999
-        self.learning_rate = 0.005 # Optimize learning rate
+        self.epsilon_decay = epsilon_decay
+        self.learning_rate = learning_rate
         self.training_history = None
         self.nr_actions = 56
         self.nr_states = 25
@@ -29,7 +29,7 @@ class DQNAgent:
         hidden_layer = Dense(40, activation='relu')(input_layer)
         output_layer = Dense(self.nr_actions, activation='linear')(hidden_layer)
         model = Model(inputs=input_layer, outputs=output_layer)
-        model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate))
+        model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate), metrics=['accuracy'])
         return model
 
     def remember(self, state, action, reward, next_state, done):
@@ -54,7 +54,7 @@ class DQNAgent:
         samples = random.sample(self.memory, batch_size)
         for sample in samples:
             input_state, action, reward, next_state, done = sample
-            inputs = tf.expand_dims(input_state, 0)
+            inputs = tf.expand_dims(input_state, 0) # make tensorflow tensor
             target = self.target_model(inputs, training=True)[0].numpy()
             
             if done:

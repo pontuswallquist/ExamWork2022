@@ -12,10 +12,8 @@ console = Console()
 def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
 
     train = True
-    agent = DQNAgent()
-    agent.learning_rate = learning_rate
-    agent.epsilon_decay = epsilon_decay
-    agent.gamma = gamma
+    log = False
+    agent = DQNAgent(learning_rate, epsilon_decay, gamma)
 
     writer = tf.summary.create_file_writer(logdir=f"tensorboard/model_{model_number}")
 
@@ -23,12 +21,13 @@ def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
     for i in track(range(nr_of_games), description=f'Training agent {model_number}...'):
         state = Crypt()
         train_target = True
-        state = playGame(state, agent, train, train_target)
+        state = playGame(state, agent, train, train_target, log)
         if i > 2:
             with writer.as_default():
                 tf.summary.scalar("Score each game", state.players[0].score, step=i)
                 tf.summary.scalar("Epsilon each game", agent.epsilon, step=i)
                 tf.summary.scalar("Loss ", np.average(agent.training_history.history['loss']), step=i)
+                tf.summary.scalar("Accuracy", np.average(agent.training_history.history['accuracy']), step=i)
         del state
     
     end = time.time()
@@ -40,11 +39,16 @@ def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
         f.write('\n')
         f.write(f'model_{model_number}\n')
         f.write(f"Trained for {nr_of_games} games\n")
-        f.write(f"Gamma: {agent.gamma}\n")
-        f.write(f"Epsilon decay: {agent.epsilon_decay}\n")
         f.write(f"Learning rate: {agent.learning_rate}\n")
+        f.write(f"Epsilon decay: {agent.epsilon_decay}\n")
+        f.write(f"Gamma: {agent.gamma}\n")
+        
+        
 
 
-trainAgent(25, 1, 0.01, 0.95, 0.85)
+trainAgent(250, 1, 0.001, 0.999, 0.95)
+trainAgent(250, 2, 0.0005, 0.999, 0.95)
+
+
 
 

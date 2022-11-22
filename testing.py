@@ -14,11 +14,12 @@ def ActiontoIndex(place, servant, value):
     columnIndex = servantIndex * 6 + valueIndex
     return rowIndex, columnIndex
 
-nr = 4
+hej = [1,2,3]
 
-for i in range(nr):
-    print(i)
+if hej:
+    print('hej')
 
+hejdå = []
 
-
-
+if not hejdå:
+    print('hejdå')

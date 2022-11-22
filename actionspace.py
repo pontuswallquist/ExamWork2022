@@ -24,17 +24,17 @@ def Actions(state, playerNr, turn, hasPlayed):
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     ]
     actions = []
-    servants_available = len(state.players[playerNr].servants)
 
+    servants_available = state.players[playerNr].nr_servants_available()
 
     if (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
-        if servants_available < 3:
+        if state.players[playerNr].hasExhaustedServants():
             actionspace[0][0] = 1
             actions.append('Recover')
         
-
-    if servants_available < 3:
-        if state.players[playerNr].hasRemains():
+    # Servant needs to be exhausted to be used by remains card or recover
+    if state.players[playerNr].hasExhaustedServants():
+        if state.players[playerNr].hasRemainsCards():
                 actionspace[0][1] = 1
                 actions.append('useRemains')
 
@@ -67,9 +67,16 @@ def Actions(state, playerNr, turn, hasPlayed):
     return actions, actionspace
 
 def ResultOfAction(state, playerNr, action):
+    reward = 0
     if action == 'Recover':
-        state.players[playerNr].recoverServants()
-        reward = 3
+        if state.players[playerNr].nr_servants_available() == 0:
+            reward = 3
+        elif state.players[playerNr].nr_servants_available() == 1:
+            reward = 2
+        elif state.players[playerNr].nr_servants_available() == 2:
+            reward = 0
+        state.players[playerNr].recoverAllExhaustedServants()
+
     elif action == 'useRemains':
         state.collectors[1].useCard(state.players[playerNr])
         reward = 5
@@ -85,6 +92,9 @@ def ResultOfAction(state, playerNr, action):
 
         reward = state.board[place]['card'].coinvalue
         reward += state.collectors[card_type].get_reward(state.players[playerNr])
+        
+        # Times the probability of rolling equal or above the value of the servant
+        reward *= (7 - value) / 6
         
     return state, reward
 

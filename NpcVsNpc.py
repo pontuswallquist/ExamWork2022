@@ -55,6 +55,7 @@ def claimPhase(state, agent, train, train_target, log):
                 turn += 1
                 continue
 
+            # return a single action
             outputs = agent.step(state.get_input_state(), list_of_actions, train)
 
             # if outputs is a list, then take random action, otherwise its a numpy array
@@ -77,22 +78,20 @@ def claimPhase(state, agent, train, train_target, log):
             
             # call Remember with the state before action, action, reward, state after action, done
             if train is True:
-                done, reward = checkIfDone(state, reward)
+                done, reward = checkIfDone(state, action, reward, turn, p0_played)
                 agent.remember(curr_state.get_input_state(), action_id, reward, state.get_input_state(), done)
                 agent.replay()
                 if train_target is True:
                     agent.target_train()
                     train_target = False
+                if done:
+                    turn += 1
+                    continue
 
             if turn == 2 and state.players[0].hasTorch() and p0_played and p1_played:
                 phase_over = True
 
-
             if action == 'Recover':
-                turn += 1
-                continue
-            
-            if not state.players[0].servants:
                 turn += 1
                 continue
         
@@ -107,31 +106,28 @@ def claimPhase(state, agent, train, train_target, log):
             action = random.choice(list_of_actions)
             curr_state = copy.deepcopy(state)
             state, _ = ResultOfAction(state, 1, action)
+            p1_played = True
 
             if log is True:
                 log_action(curr_state, action, 1)
 
-            if action == 'Recover':
-                p1_played = True
-                turn += 1                
-                continue
 
-            p1_played = True
             if turn == 3 and state.players[1].hasTorch() and p0_played and p1_played:
                 phase_over = True
             
-            if not state.players[1].servants:
-                turn += 1
+            if action == 'Recover':
+                turn += 1                
                 continue
+
     return state
 
 
 def collectPhase(state):
 
-    if not state.anyServants('Red'):
-        state.players[0].recoverServants()
-    if not state.anyServants('Blue'):
-        state.players[1].recoverServants()
+    if state.players[0].ifAllServantsPushedOut():
+        state.players[0].recoverAllExhaustedServants()
+    elif state.players[1].ifAllServantsPushedOut():
+        state.players[1].recoverAllExhaustedServants()
     
 
     state.collectCards()
@@ -166,8 +162,9 @@ def passTorchPhase(state, game_over):
         game_over = False
     return state, game_over
 
-def checkIfDone(state, reward):
-    if state.turnsLeft == 0 and state.players[0].nr_servants() == 0:
+def checkIfDone(state, action, reward, turn, hasPlayed):
+
+    if state.turnsLeft == 0 and not hasAvailableActions(state, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
         done = True
         player1_score, player2_score = state.get_total_score()
 
@@ -180,6 +177,14 @@ def checkIfDone(state, reward):
     else:
         done = False
         return done, reward
+
+def hasAvailableActions(state, turn, hasPlayed):
+    action_list, _ = Actions(state, 0, turn, hasPlayed)
+    if len(action_list) == 0:
+        return False
+    else:
+        return True
+        
 
 def playGame(state, agent, train, train_target, log):
     game_over = False

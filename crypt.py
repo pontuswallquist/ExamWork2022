@@ -46,16 +46,16 @@ class Crypt:
         self.board[3]['card'].type, self.get_current_bid(3),
         self.players[0].nr_remains(), self.players[0].nr_idols(), self.players[0].nr_jewelry(),
         self.players[0].nr_manuscripts(), self.players[0].nr_pottery(), self.players[0].nr_tapestries(),
-        self.players[0].nr_servants(), self.players[0].score,
+        self.players[0].nr_servants_available(), self.players[0].score,
         self.players[1].nr_remains(), self.players[1].nr_idols(), self.players[1].nr_jewelry(),
         self.players[1].nr_manuscripts(), self.players[1].nr_pottery(), self.players[1].nr_tapestries(),
-        self.players[1].nr_servants(), self.players[1].score,
+        self.players[1].nr_servants_available(), self.players[1].score,
         self.turnsLeft
     ])
 
     def countServants(self):
-        self.players[0].score += len(self.players[0].servants)
-        self.players[1].score += len(self.players[1].servants)
+        self.players[0].score += self.players[0].nr_servants_available()
+        self.players[1].score += self.players[1].nr_servants_available()
 
     def countBonus(self):
         self.players[0].turnAllCards()
@@ -86,6 +86,8 @@ class Crypt:
         #Player 2 score
         for card in self.players[1].collection:
             self.players[1].score += card.coinvalue
+
+
 
 
     def get_total_score(self):
@@ -130,20 +132,22 @@ class Crypt:
     def rollWithoutAction(self, playerNr, servant): 
         roll = servant.roll()
         if roll < servant.effort_value:
+            self.players[playerNr].exhaustAServant()
             return
         else:
-            self.players[playerNr].recoverSingleServant()
+            self.players[playerNr].recoverServantFromCard()
 
     def rollWithAction(self, playerNr, servant):
         roll = servant.roll()
         if roll < servant.effort_value:
             newRoll = self.collectors[2].useCard(self.players[playerNr])
             if newRoll < servant.effort_value:
+                self.players[playerNr].exhaustAServant()
                 return
             else:
-                self.players[playerNr].recoverSingleServant()
+                self.players[playerNr].recoverServantFromCard()
         else:
-            self.players[playerNr].recoverSingleServant()
+            self.players[playerNr].recoverServantFromCard()
     
     def collectTreasure(self, playerNr, place):
         card = self.board[place]['card']
@@ -153,11 +157,13 @@ class Crypt:
 
 
     def addServant2Card(self, playerNr, place, servants, value):
+        
         otherPlayerNr = 0 if playerNr == 1 else 1
         if not len(self.board[place]['servants']) == 0:
-            for i in range(len(self.board[place]['servants'])):
-                self.board[place]['servants'].pop() 
-                self.players[otherPlayerNr].recoverSingleServant()
+            nr_servants_on_card = len(self.board[place]['servants'])
+            for i in range(nr_servants_on_card):
+                self.players[otherPlayerNr].bump_off_servant()
+            self.board[place]['servants'].clear()
 
         for i in range(servants):
             servant = self.players[playerNr].useServant(value)

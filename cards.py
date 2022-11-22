@@ -53,7 +53,7 @@ class RemainsCollector(CollectorCard):
                 card.turnCard()
             if count == 2:
                 break             
-        player.recoverSingleServant()
+        player.recoverExhaustedServant()
     
     def get_score(self, player):
         score = sum(x.coinvalue for x in player.collection if x.type == 1)

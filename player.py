@@ -1,3 +1,4 @@
+import copy
 from cards import *
 import random
 
@@ -9,32 +10,71 @@ class Player:
         self.torch = torch
         self.collection = []
         self.score = 0
-        self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
+        self.servants = { 1: Servant(color), 2: Servant(color), 3: Servant(color) }
 
     def useServant(self, value):
-        try:
-            servant = self.servants.pop()
-        except IndexError:  # temporary fix
-            servant = Servant(self.color)
-        servant.setValue(value)
-        return servant
+        for servant in self.servants.values():
+            if servant.isExhausted or servant.onCard:
+                continue
+            else:
+                servant.onCard = True
+                servant.setValue(value)
+                return servant
 
-    def hasLessThan3Servants(self):
-        return len(self.servants) < 3
+    def hasExhaustedServants(self):
+        for servant in self.servants.values():
+            if servant.isExhausted:
+                return True
+        return False
 
-    def nr_servants(self):
-        return len(self.servants)
+
+    def nr_servants_available(self):
+        count = 0
+        for servant in self.servants.values():
+            if servant.isExhausted or servant.onCard:
+                continue
+            else:
+                count += 1
+        return count
     
     def hasTorch(self):
         return self.torch
 
-    def recoverServants(self):
-        self.servants = [Servant(self.color), Servant(self.color), Servant(self.color)]
+    def ifAllServantsPushedOut(self):
+        for servant in self.servants.values():
+            if servant.onCard and not servant.isExhausted:
+                return False
+        return True
 
-    def recoverSingleServant(self):
-        if len(self.servants) == 3:
-            return
-        self.servants.append(Servant(self.color))
+    def recoverAllExhaustedServants(self):
+        for servant in self.servants.values():
+            if servant.isExhausted:
+                servant.isExhausted = False
+
+    def bump_off_servant(self):
+        for servant in self.servants.values():
+            if servant.onCard and not servant.isExhausted:
+                servant.onCard = False
+                return
+  
+    def recoverExhaustedServant(self):
+        for servant in self.servants.values():
+            if servant.isExhausted:
+                servant.isExhausted = False
+                return
+
+    def recoverServantFromCard(self):
+        for servant in self.servants.values():
+            if servant.onCard:
+                servant.onCard = False
+                return
+
+    def exhaustAServant(self):
+        for servant in self.servants.values():
+            if not servant.isExhausted and servant.onCard:
+                servant.isExhausted = True
+                servant.onCard = False
+                return
     
     def addTreasure(self, treasure):
         self.collection.append(treasure)
@@ -51,7 +91,7 @@ class Player:
         else:
             return False
     
-    def hasRemains(self):
+    def hasRemainsCards(self):
         count = sum(1 for x in self.collection if x.type == 1 and not x.face_up)
         if count >= 2:
             return True
@@ -88,6 +128,8 @@ class Servant:
         self.color = color
         self.value = 0
         self.effort_value = 0
+        self.isExhausted = False
+        self.onCard = False
 
     def __repr__(self):
         return str(self.color + '-' + str(self.value))

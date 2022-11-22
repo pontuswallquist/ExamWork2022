@@ -14,61 +14,25 @@ def append_winner(state, model_wins, random_wins, ties):
 
 
 
+def testAgent(model_number, nr_of_games):
+    train = False
+    train_target = False
+    log = False
+    agent = DQNAgent(epsilon=0.01)
+    agent.load_model(f'model_{model_number}.h5')
+    model_wins = []
+    random_wins = []
+    ties = []
+    for i in range(nr_of_games):
+        state = Crypt()
+        train_target = False
+        state = playGame(state, agent, train, train_target, log)
+        append_winner(state, model_wins, random_wins, ties)
+        del state
+    console.print(f"Model {model_number} won {len(model_wins)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_number} lost {len(random_wins)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_number} tied {len(ties)/nr_of_games*100}% of the games")
+    
 
-train = False
-train_target = False
-nr_of_games = 200
-log = True
+testAgent(2, 250)
 
-
-agent = DQNAgent()
-agent.load_model('model_1.h5')
-model_1_wins = []
-random1_wins = []
-ties1 = []
-
-state = Crypt()
-playGame(state, agent, train, train_target, log)
-console.print('[bold green]DONE')
-
-
-'''
-for i in range(nr_of_games):
-    state = Crypt()
-    state = playGame(state, agent, train, train_target, log)
-    console.print('[bold green]Game: ', i)
-    append_winner(state, model_1_wins, random1_wins, ties1)
-    del state
-
-agent = DQNAgent()
-agent.load_model('model_2.h5')
-model_2_wins = []
-random_wins2 = []
-ties2 = []
-
-for i in range(nr_of_games):
-    state = Crypt()
-    state = playGame(state, agent, train, train_target, log)
-    console.print('[bold green]Game: ', i)
-    append_winner(state, model_2_wins, random_wins2, ties2)
-    del state
-
-
-console.print(f"Model 1 wins: {len(model_1_wins)}", justify='right')
-console.print(f"Model 1 win percentage: {(len(model_1_wins)/nr_of_games)*100} %", justify='right')
-
-console.print(f"Random wins: {len(random1_wins)}", justify='right')
-console.print(f"Random win percentage: {(len(random1_wins)/nr_of_games)*100} %", justify='right')
-
-console.print(f"Ties: {len(ties1)}", justify='right')
-
-
-console.print(f"Model 2 wins: {len(model_2_wins)}")
-console.print(f"Model 2 win percentage: {(len(model_2_wins)/nr_of_games)*100} %")
-
-console.print(f"Random wins: {len(random_wins2)}")
-console.print(f"Random win percentage: {(len(random_wins2)/nr_of_games)*100} %")
-
-console.print(f"Ties: {len(ties2)}")
-
-'''
