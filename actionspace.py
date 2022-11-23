@@ -70,9 +70,9 @@ def ResultOfAction(state, playerNr, action):
     reward = 0
     if action == 'Recover':
         if state.players[playerNr].nr_servants_available() == 0:
-            reward = 3
-        elif state.players[playerNr].nr_servants_available() == 1:
             reward = 2
+        elif state.players[playerNr].nr_servants_available() == 1:
+            reward = 1
         elif state.players[playerNr].nr_servants_available() == 2:
             reward = 0
         state.players[playerNr].recoverAllExhaustedServants()
@@ -88,34 +88,36 @@ def ResultOfAction(state, playerNr, action):
         value = int(bid[2])
 
         
-        #bumped_off = state.addServant2Card(playerNr, place, servant, value)
-        state.addServant2Card(playerNr, place, servant, value)
+        bumped_off = state.addServant2Card(playerNr, place, servant, value)
+        
 
         card = state.board[place]['card']
 
-        reward = state.board[place]['card'].coinvalue
-        reward += state.collectors[card.type].get_reward(state.players[playerNr])
+        #reward = state.board[place]['card'].coinvalue
+        #reward += state.collectors[card.type].get_reward(state.players[playerNr])
        
-        ##### maybe make this the reward of the action
-        '''
+
         #subtract potential score for the player who was bumped off card
         otherPlayerNr = 1 if playerNr == 0 else 0
         if bumped_off:
             if card.type == 6:
-                state.players[otherplayerNr].score -= state.collectors[card.type].potentialValue(card, state.players[otherPlayerNr], state.players[playerNr])
+                state.players[otherPlayerNr].score -= state.collectors[card.type].potentialValue(card, state.players[otherPlayerNr], state.players[playerNr])
             else:
-                state.players[otherplayerNr].score -= state.collectors[card.type].potentialValue(card, state.players[playerNr])
+                state.players[otherPlayerNr].score -= state.collectors[card.type].potentialValue(card, state.players[playerNr])
 
         #Add potential score for the player who owns the card
         if card.type == 6:
-            state.players[playerNr].score += state.collectors[6].potentialValue(card, state.players[playerNr], state.players[otherPlayerNr])
+            reward = state.collectors[card.type].potentialValue(card, state.players[playerNr], state.players[otherPlayerNr])
         else:
-            state.players[playerNr].score += state.collectors[card.type].potentialValue(card, state.players[playerNr])
-        '''
-        #####
+            reward = state.collectors[card.type].potentialValue(card, state.players[playerNr])
+        
+        state.players[playerNr].score += reward
 
-        # Times the probability of rolling equal or above the value of the servant
-        reward *= (7 - value) / 6
+        #Times the probability of rolling equal or above the value of the servant
+        if value == 1:
+            reward *= 0.9
+        else:
+            reward *= ((7 - value) / 6)
         
     return state, reward
 

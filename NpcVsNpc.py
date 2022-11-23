@@ -73,6 +73,7 @@ def claimPhase(state, agent, train, train_target, log):
             p0_played = True
             
             if log is True:
+                console.print(curr_state.get_input_state(), action, reward, state.get_input_state(), sep='\n', end='\n\n')
                 log_action(curr_state, action, 0)
 
             

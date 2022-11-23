@@ -9,11 +9,12 @@ import time
 console = Console()
 
 
-def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
+def trainAgent(nr_of_games, model_number, learning_rate, gamma):
 
+    avg_score = 0
     train = True
     log = False
-    agent = DQNAgent(learning_rate, epsilon_decay, gamma)
+    agent = DQNAgent(learning_rate=learning_rate, epsilon_decay=0.995, gamma=gamma)
 
     writer = tf.summary.create_file_writer(logdir=f"tensorboard/model_{model_number}")
 
@@ -22,6 +23,7 @@ def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
         state = Crypt()
         train_target = True
         state = playGame(state, agent, train, train_target, log)
+        avg_score += state.players[0].score
         if i > 2:
             with writer.as_default():
                 tf.summary.scalar("Score each game", state.players[0].score, step=i)
@@ -42,12 +44,13 @@ def trainAgent(nr_of_games, model_number, learning_rate, epsilon_decay, gamma):
         f.write(f"Learning rate: {agent.learning_rate}\n")
         f.write(f"Epsilon decay: {agent.epsilon_decay}\n")
         f.write(f"Gamma: {agent.gamma}\n")
+        f.write(f"Average score: {avg_score/nr_of_games}\n")
         
         
 
 
-trainAgent(250, 1, 0.001, 0.999, 0.85)
-trainAgent(250, 2, 0.0005, 0.999, 0.75)
+trainAgent(500, 7, 0.001, 0.95)
+
 
 
 

@@ -33,6 +33,19 @@ def testAgent(model_number, nr_of_games):
     console.print(f"Model {model_number} lost {len(random_wins)/nr_of_games*100}% of the games")
     console.print(f"Model {model_number} tied {len(ties)/nr_of_games*100}% of the games")
     
+def playSingleGame(model_number):
+    train = False
+    train_target = False
+    log = True
+    agent = DQNAgent(epsilon=0.01)
+    agent.load_model(f'model_{model_number}.h5')
+    state = Crypt()
+    train_target = False
+    state = playGame(state, agent, train, train_target, log)
+    print("Done!")
 
-testAgent(2, 250)
+    
+#testAgent(7, 250)
+playSingleGame(7)
+
 
