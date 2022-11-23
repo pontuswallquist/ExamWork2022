@@ -67,7 +67,8 @@ def claimPhase(state, agent, train, train_target, log):
                 action_id = np.argmax(legal_outputs)
                 action = map_id_to_actions[action_id]
 
-            curr_state = copy.deepcopy(state)
+            if train is True or log is True:
+                curr_state = copy.deepcopy(state)
             state, reward = ResultOfAction(state, 0, action)
             
             p0_played = True
@@ -75,12 +76,13 @@ def claimPhase(state, agent, train, train_target, log):
             if log is True:
                 console.print(curr_state.get_input_state(), action, reward, state.get_input_state(), sep='\n', end='\n\n')
                 log_action(curr_state, action, 0)
+                del curr_state
 
-            
             # call Remember with the state before action, action, reward, state after action, done
             if train is True:
                 done, reward = checkIfDone(state, action, reward, turn, p0_played)
                 agent.remember(curr_state.get_input_state(), action_id, reward, state.get_input_state(), done)
+                del curr_state
                 agent.replay()
                 if train_target is True:
                     agent.target_train()
@@ -105,12 +107,14 @@ def claimPhase(state, agent, train, train_target, log):
 
             # Random action AI
             action = random.choice(list_of_actions)
-            curr_state = copy.deepcopy(state)
+            if log is True:
+                curr_state = copy.deepcopy(state)
             state, _ = ResultOfAction(state, 1, action)
             p1_played = True
 
             if log is True:
                 log_action(curr_state, action, 1)
+                del curr_state
 
 
             if turn == 3 and state.players[1].hasTorch() and p0_played and p1_played:
@@ -170,16 +174,15 @@ def checkIfDone(state, action, reward, turn, hasPlayed):
 
     state.players[0].score = 0
     state.players[1].score = 0
-    state.players[0].score, state.players[1].score = state.get_total_score()
+    model_score, opponent_score = state.get_total_score()
+    state.players[0].score = model_score
+    state.players[1].score = opponent_score
+
+    diff = model_score - opponent_score
 
     if state.turnsLeft == 0 and not hasAvailableActions(state, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
-        done = True    
-        if  state.players[0].score > state.players[1].score:
-            reward = 20
-            return done, reward
-        else:
-            reward = -20
-            return done, reward
+        done = True
+        reward = 5 * diff
     else:
         done = False
         return done, reward
