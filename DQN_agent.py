@@ -26,7 +26,7 @@ class ReplayMemory:
 
 
 class DQNAgent:
-    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.999 , gamma=0.95):
+    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.995 , gamma=0.95):
         self.memory = ReplayMemory(10000)
         self.gamma = gamma    # discount rate
         self.epsilon = epsilon # exploration rate
