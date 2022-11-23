@@ -113,11 +113,14 @@ def ResultOfAction(state, playerNr, action):
         
         state.players[playerNr].score += reward
 
+        
         #Times the probability of rolling equal or above the value of the servant
+        '''
         if value == 1:
             reward *= 0.9
         else:
             reward *= ((7 - value) / 6)
+        '''
         
     return state, reward
 

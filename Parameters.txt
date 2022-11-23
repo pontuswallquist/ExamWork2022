@@ -1,4 +1,4 @@
 
-Epsilon decay = 0.995
+Epsilon decay = 0.999
 Gamma = 0.85
 Learning rate = 
