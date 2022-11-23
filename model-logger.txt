@@ -1,3 +1,4 @@
+All models tested on 250 games vs Random Agent
 
 With inital rewards system
 
@@ -13,7 +14,8 @@ Learning rate: 0.0005
 Epsilon decay: 0.95
 Gamma: 0.95
 
-With potential Score added after every bid as reward, with penalty reward -= (7-value) / 6
+With potential Score added after every bid as reward, with penalty reward *= (7-value) / 6
+Better action taking with this but value 1 is played too often
 
 model_3 69 %
 Trained for 100 games

@@ -8,9 +8,26 @@ from collections import deque
 from actionspace import *
 import tensorflow as tf
 
+class ReplayMemory:
+    def __init__(self, max_size):
+        self.buffer = [None] * max_size
+        self.max_size = max_size
+        self.index = 0
+        self.size = 0
+
+    def append(self, obj):
+        self.buffer[self.index] = obj
+        self.size = min(self.size + 1, self.max_size)
+        self.index = (self.index + 1) % self.max_size
+
+    def sample(self, batch_size):
+        indices = random.sample(range(self.size), batch_size)
+        return [self.buffer[index] for index in indices]
+
+
 class DQNAgent:
     def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.999 , gamma=0.95):
-        self.memory = deque(maxlen=10000)
+        self.memory = ReplayMemory(10000)
         self.gamma = gamma    # discount rate
         self.epsilon = epsilon # exploration rate
         self.epsilon_min = 0.01
@@ -51,7 +68,7 @@ class DQNAgent:
         batch_size = 32
         if len(self.memory) < batch_size:
             return
-        samples = random.sample(self.memory, batch_size)
+        samples = self.memory.sample(batch_size)
         for sample in samples:
             input_state, action, reward, next_state, done = sample
             inputs = tf.expand_dims(input_state, 0) # make tensorflow tensor

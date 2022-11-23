@@ -170,16 +170,15 @@ def checkIfDone(state, action, reward, turn, hasPlayed):
 
     state.players[0].score = 0
     state.players[1].score = 0
-    state.players[0].score, state.players[1].score = state.get_total_score()
+    model_score, opponent_score = state.get_total_score()
+    state.players[0].score = model_score
+    state.players[1].score = opponent_score
+
+    diff = model_score - opponent_score
 
     if state.turnsLeft == 0 and not hasAvailableActions(state, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
-        done = True    
-        if  state.players[0].score > state.players[1].score:
-            reward = 20
-            return done, reward
-        else:
-            reward = -20
-            return done, reward
+        done = True
+        reward = 5 * diff
     else:
         done = False
         return done, reward
