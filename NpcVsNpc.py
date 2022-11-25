@@ -1,5 +1,5 @@
 import random
-from actionspace import Actions, ResultOfAction, ReducePossibleActions
+from actionspace import Actions, ResultOfAction
 import numpy as np
 from rich.console import Console
 from log_actions import log_action
@@ -55,7 +55,7 @@ def claimPhase(state, agent, train, log):
             p0_played = True
             
             if log is True:
-                console.print(curr__input_state, action, reward, state.get_input_state(), sep='\n', end='\n\n', justify='center', soft_wrap=True)
+                console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', soft_wrap=False)
                 #log_action(curr__input_state, action, 0)
 
             # call Remember with the state before action, action, reward, state after action, done
