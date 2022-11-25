@@ -27,7 +27,7 @@ def Actions(state, playerNr, turn, hasPlayed):
 
     servants_available = state.players[playerNr].nr_servants_available()
 
-    if (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 2 and not state.players[0].hasTorch() and not hasPlayed):
+    if (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 1 and turn == 1 and not hasPlayed) or (playerNr == 0 and turn == 2 and not hasPlayed) or (playerNr == 1 and turn == 3 and not hasPlayed):
         if state.players[playerNr].hasExhaustedServants():
             actionspace[0][0] = 1
             actions.append('Recover')

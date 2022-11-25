@@ -23,7 +23,7 @@ class Player:
 
     def hasExhaustedServants(self):
         for servant in self.servants.values():
-            if servant.isExhausted:
+            if servant.isExhausted and not servant.onCard:
                 return True
         return False
 
@@ -55,7 +55,6 @@ class Player:
         for servant in self.servants.values():
             if servant.onCard and not servant.isExhausted:
                 servant.onCard = False
-                servant.isExhausted = False
                 return
   
     def recoverExhaustedServant(self):

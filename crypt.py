@@ -168,7 +168,7 @@ class Crypt:
 
         for i in range(servants):
             servant = self.players[playerNr].useServant(value)
-            servant.setEffort(value)
+            servant.setEffort(value) #servant was None
             self.board[place]['servants'].append(servant)
 
         return bumped_off

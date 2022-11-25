@@ -14,13 +14,7 @@ def revealPhase(state):
     state.updateNewBoard(3)
     return state
 
-def claimPhase(state, agent, train, log):
-
-    #lostAServant = False
-    # Penalty for lost servant last turn
-    #if state.players[0].nr_servants_available() < 3:
-    #    penalty = 10 * (state.players[0].nr_servants_available() - 3)
-    #    lostAServant = True
+def claimPhase(state, enemy_agent, train_agent, train, log):
     
     if state.players[0].hasTorch():
         turn = 0
@@ -38,66 +32,65 @@ def claimPhase(state, agent, train, log):
         elif turn == 4 and state.players[1].hasTorch():
             break
 
-        #Player Turn
+        #Model to train against
         if turn % 2 == 0:
-            list_of_actions, actionspace = Actions(state, 0, turn, p0_played) 
+            list_of_actions, actionspace = Actions(state, 0, turn, p0_played)
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
-
-            action, action_id = agent.step(state.get_input_state(), list_of_actions, actionspace, train)            
+            
+            #Make sure we only train one agent against the other
+            if train:
+                train = False
+            action, action_id = enemy_agent.step(state.get_input_state(), list_of_actions, actionspace, train)
+            train = True
 
             if train is True or log is True:
                 curr__input_state = copy.deepcopy(state.get_input_state())
                 
             state, reward = ResultOfAction(state, 0, action)
-            
             p0_played = True
             
             if log is True:
-                console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', soft_wrap=False)
+                console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', style='bold red')
                 #log_action(curr__input_state, action, 0)
 
-            # call Remember with the state before action, action, reward, state after action, done
-            if train is True:
-                #reward += penalty
-                done, reward = checkIfDone(state, action, reward, turn, p0_played)
-                agent.remember(curr__input_state, action_id, reward, state.get_input_state(), done)
-                agent.replay()
-                
-                if done:
-                    if train is True:
-                        agent.target_train()
-                    turn += 1
-                    continue
-
             if turn == 2 and state.players[0].hasTorch() and p0_played and p1_played:
-                #if train is True:
-                #    agent.target_train()
                 phase_over = True
-
 
             if action == 'Recover':
                 turn += 1
                 continue
-        
-        #Opponent Turn
+    ##################################################################################
+        #Model to train
         elif turn % 2 == 1:   
-            list_of_actions, _ = Actions(state, 1, turn, p1_played)
+            list_of_actions, actionspace = Actions(state, 1, turn, p1_played)
             if len(list_of_actions) == 0:
                 turn += 1
                 continue
 
-            # Random action AI
-            action = random.choice(list_of_actions)
-            if log is True:
+            action, action_id = train_agent.step(state.get_input_state(), list_of_actions, actionspace, train)
+
+            if train is True or log is True:
                 curr__input_state = copy.deepcopy(state.get_input_state())
-            state, _ = ResultOfAction(state, 1, action)
+
+            state, reward = ResultOfAction(state, 1, action)
             p1_played = True
 
             if log is True:
-                #log_action(curr__input_state, action, 1)
-                pass
+                console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', style='bold blue')
+                
+            # call Remember with the state before action, action, reward, state after action, done
+            if train is True:
+                done, reward = checkIfDone(state, 1, action, reward, turn, p0_played)
+                train_agent.remember(curr__input_state, action_id, reward, state.get_input_state(), done)
+                train_agent.replay()
+                
+                if done:
+                    if train is True:
+                        train_agent.target_train()
+                    turn += 1
+                    continue
 
             if turn == 3 and state.players[1].hasTorch() and p0_played and p1_played:
                 phase_over = True
@@ -152,34 +145,34 @@ def passTorchPhase(state, game_over):
         game_over = False
     return state, game_over
 
-def checkIfDone(state, action, reward, turn, hasPlayed):
+def checkIfDone(state, playerNr, action, reward, turn, hasPlayed):
+    otherPlayerNr = 0 if playerNr == 1 else 1
 
     state.players[0].score = 0
     state.players[1].score = 0
     state.players[0].score, state.players[1].score  = state.get_total_score()
 
 
-    if state.turnsLeft == 0 and not hasAvailableActions(state, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
+    if state.turnsLeft == 0 and not hasAvailableActions(state, playerNr, turn, hasPlayed) or state.turnsLeft == 0 and action == 'Recover':
         done = True
-        reward = 10 * (state.players[0].score - state.players[1].score)
+        reward = 10 * (state.players[playerNr].score - state.players[otherPlayerNr].score)
     else:
         done = False
     
     return done, reward
 
-def hasAvailableActions(state, turn, hasPlayed):
-    action_list, _ = Actions(state, 0, turn, hasPlayed)
+def hasAvailableActions(state, playerNr, turn, hasPlayed):
+    action_list, _ = Actions(state, playerNr, turn, hasPlayed)
     if len(action_list) == 0:
         return False
     else:
         return True
-        
 
-def playGame(state, agent, train, log):
+def playGame(state, enemy_agent, train_agent, train, log):
     game_over = False
     while not game_over:
         state = revealPhase(state)
-        state = claimPhase(state, agent, train, log)
+        state = claimPhase(state, enemy_agent, train_agent, train, log)
         state = collectPhase(state)
         state, game_over = passTorchPhase(state, game_over)
     return state
