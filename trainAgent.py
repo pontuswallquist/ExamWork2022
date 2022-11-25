@@ -6,23 +6,22 @@ from rich.progress import track
 import tensorflow as tf
 import numpy as np
 import time
-console = Console()
+
 
 
 def trainAgent(nr_of_games, model_number, learning_rate, gamma):
-
+    console = Console()
     avg_score = 0
     train = True
     log = False
-    agent = DQNAgent(learning_rate=learning_rate, epsilon_decay=0.995, gamma=gamma)
+    agent = DQNAgent(learning_rate=learning_rate, epsilon_decay=0.9975, gamma=gamma)
 
     writer = tf.summary.create_file_writer(logdir=f"tensorboard/model_{model_number}")
 
     start = time.time()
     for i in track(range(nr_of_games), description=f'Training agent {model_number}...'):
         state = Crypt()
-        train_target = True
-        state = playGame(state, agent, train, train_target, log)
+        state = playGame(state, agent, train, log)
         avg_score += state.players[0].score
         if i > 2:
             with writer.as_default():
@@ -49,7 +48,7 @@ def trainAgent(nr_of_games, model_number, learning_rate, gamma):
         
 
 
-trainAgent(500, 7, 0.001, 0.95)
+trainAgent(500, 15, 0.002, 0.85)
 
 
 

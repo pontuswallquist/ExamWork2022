@@ -48,25 +48,28 @@ class Player:
 
     def recoverAllExhaustedServants(self):
         for servant in self.servants.values():
-            if servant.isExhausted:
-                servant.isExhausted = False
+            servant.isExhausted = False
+            servant.onCard = False
 
     def bump_off_servant(self):
         for servant in self.servants.values():
             if servant.onCard and not servant.isExhausted:
                 servant.onCard = False
+                servant.isExhausted = False
                 return
   
     def recoverExhaustedServant(self):
         for servant in self.servants.values():
-            if servant.isExhausted:
+            if servant.isExhausted and not servant.onCard:
                 servant.isExhausted = False
+                servant.onCard = False
                 return
 
     def recoverServantFromCard(self):
         for servant in self.servants.values():
-            if servant.onCard:
+            if servant.onCard and not servant.isExhausted:
                 servant.onCard = False
+                servant.isExhausted = False
                 return
 
     def exhaustAServant(self):

@@ -583,3 +583,1226 @@ Servants: 1
 [Pottery, Idol : 3, Manuscript, Jewelry, Tapestry, Jewelry, Manuscript, Idol]                                 
 Action:  3-1-6                                                                                                
 ============================                                                                                  
+Board:                                                                                                                  
+Remains : 4                                                                                                             
+[]                                                                                                                      
+Idol : 2                                                                                                                
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[]                                                                                                                      
+Action:  3-3-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Remains : 4
+                                                                                                                      []
+                                                                                                                Idol : 2
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                   [Red-6, Red-6, Red-6]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                                      []
+                                                                                                          Action:  1-3-6
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Pottery : 2
+                                                                                                                      []
+                                                                                                            Tapestry : 3
+                                                                                                                      []
+                                                                                                                    Idol
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                                               [Remains]
+                                                                                                          Action:  1-1-6
+                                                                                            ============================
+Board:                                                                                                                  
+Pottery : 2                                                                                                             
+[Blue-6]                                                                                                                
+Tapestry : 3                                                                                                            
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Tapestry]                                                                                                              
+Action:  Recover                                                                                                        
+============================                                                                                            
+Board:                                                                                                                  
+Remains : 3                                                                                                             
+[]                                                                                                                      
+Jewelry : 1                                                                                                             
+[]                                                                                                                      
+Pottery                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[Tapestry]                                                                                                              
+Action:  3-3-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Remains : 3
+                                                                                                                      []
+                                                                                                             Jewelry : 1
+                                                                                                                      []
+                                                                                                                 Pottery
+                                                                                                   [Red-6, Red-6, Red-6]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 0
+                                                                                                      [Remains, Pottery]
+                                                                                                        Action:  Recover
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                          Manuscript : 4
+                                                                                                                      []
+                                                                                                             Jewelry : 2
+                                                                                                                      []
+                                                                                                                 Jewelry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                      [Remains, Pottery]
+                                                                                                          Action:  1-2-5
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                          Manuscript : 4
+                                                                                                        [Blue-5, Blue-5]
+                                                                                                             Jewelry : 2
+                                                                                                                      []
+                                                                                                                 Jewelry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                                      [Remains, Pottery]
+                                                                                                          Action:  2-1-6
+                                                                                            ============================
+Board:                                                                                                                  
+Manuscript : 4                                                                                                          
+[Blue-5, Blue-5]                                                                                                        
+Jewelry : 2                                                                                                             
+[Blue-6]                                                                                                                
+Jewelry                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Tapestry, Pottery]                                                                                                     
+Action:  Recover                                                                                                        
+============================                                                                                            
+Board:                                                                                                                  
+Tapestry : 4                                                                                                            
+[]                                                                                                                      
+Manuscript : 3                                                                                                          
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[Tapestry, Pottery]                                                                                                     
+Action:  3-3-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                            Tapestry : 4
+                                                                                                                      []
+                                                                                                          Manuscript : 3
+                                                                                                                      []
+                                                                                                                    Idol
+                                                                                                   [Red-6, Red-6, Red-6]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                 [Remains, Pottery, Manuscript, Jewelry]
+                                                                                                        Action:  Recover
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Pottery : 1
+                                                                                                                      []
+                                                                                                             Remains : 2
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                 [Remains, Pottery, Manuscript, Jewelry]
+                                                                                                          Action:  1-2-6
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Pottery : 1
+                                                                                                        [Blue-6, Blue-6]
+                                                                                                             Remains : 2
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                 [Remains, Pottery, Manuscript, Jewelry]
+                                                                                                          Action:  3-1-5
+                                                                                            ============================
+Board:                                                                                                                  
+Pottery : 1                                                                                                             
+[Blue-6, Blue-6]                                                                                                        
+Remains : 2                                                                                                             
+[]                                                                                                                      
+Tapestry                                                                                                                
+[Blue-5]                                                                                                                
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Pottery, Idol : 1]                                                                                           
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[]                                                                                                                      
+Idol : 3                                                                                                                
+[]                                                                                                                      
+Manuscript                                                                                                              
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Tapestry, Pottery, Idol : 1, Remains]                                                                                  
+Action:  Recover                                                                                                        
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Pottery : 4
+                                                                                                                      []
+                                                                                                                Idol : 3
+                                                                                                                      []
+                                                                                                              Manuscript
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                              [Remains, Pottery, Manuscript, Jewelry, Pottery, Tapestry]
+                                                                                                          Action:  2-1-5
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Pottery : 4
+                                                                                                                      []
+                                                                                                                Idol : 3
+                                                                                                                [Blue-5]
+                                                                                                              Manuscript
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                              [Remains, Pottery, Manuscript, Jewelry, Pottery, Tapestry]
+                                                                                                          Action:  3-1-4
+                                                                                            ============================
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[]                                                                                                                      
+Idol : 3                                                                                                                
+[Blue-5]                                                                                                                
+Manuscript                                                                                                              
+[Blue-4]                                                                                                                
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[Tapestry, Pottery, Idol : 1, Remains]                                                                                  
+Action:  1-2-4                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Jewelry : 3
+                                                                                                                      []
+                                                                                                          Manuscript : 1
+                                                                                                                      []
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                        [Remains, Pottery, Manuscript, Jewelry, Pottery, Tapestry, Idol : 3, Manuscript]
+                                                                                                          Action:  2-1-1
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Manuscript : 1                                                                                                          
+[Blue-1]                                                                                                                
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Tapestry, Pottery, Idol : 1, Remains, Pottery]                                                                         
+Action:  2-1-5                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Manuscript : 1                                                                                                          
+[Red-5]                                                                                                                 
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Pottery, Idol : 1, Remains, Pottery]                                                                         
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Jewelry : 3
+                                                                                                                 [Red-6]
+                                                                                                          Manuscript : 1
+                                                                                                                 [Red-5]
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                        [Remains, Pottery, Manuscript, Jewelry, Pottery, Tapestry, Idol : 3, Manuscript]
+                                                                                                          Action:  3-1-6
+                                                                                            ============================
+Board:                                                                                                                  
+Idol : 3                                                                                                                
+[]                                                                                                                      
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Jewelry                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[]                                                                                                                      
+Action:  2-3-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                                Idol : 3
+                                                                                                                      []
+                                                                                                          Manuscript : 2
+                                                                                                   [Red-6, Red-6, Red-6]
+                                                                                                                 Jewelry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                                      []
+                                                                                                          Action:  1-3-1
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                            Tapestry : 3
+                                                                                                                      []
+                                                                                                             Remains : 1
+                                                                                                                      []
+                                                                                                                    Idol
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                                  [Idol]
+                                                                                                          Action:  2-3-2
+                                                                                            ============================
+Board:                                                                                                                  
+Tapestry : 3                                                                                                            
+[]                                                                                                                      
+Remains : 1                                                                                                             
+[Blue-2, Blue-2, Blue-2]                                                                                                
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Manuscript]                                                                                                            
+Action:  Recover                                                                                                        
+============================                                                                                            
+Board:                                                                                                                  
+Idol : 1                                                                                                                
+[]                                                                                                                      
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[Manuscript]                                                                                                            
+Action:  1-2-3                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Idol : 1                                                                                                                
+[Red-3, Red-3]                                                                                                          
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Manuscript]                                                                                                            
+Action:  3-1-4                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                                Idol : 1
+                                                                                                          [Red-3, Red-3]
+                                                                                                             Jewelry : 3
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                 [Red-4]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                         [Idol, Remains]
+                                                                                                          Action:  2-3-5
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Jewelry : 1
+                                                                                                                      []
+                                                                                                          Manuscript : 4
+                                                                                                                      []
+                                                                                                                 Pottery
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 0
+                                                                                            [Idol : 3, Remains, Jewelry]
+                                                                                                        Action:  Recover
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 1                                                                                                             
+[]                                                                                                                      
+Manuscript : 4                                                                                                          
+[]                                                                                                                      
+Pottery                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Manuscript, Idol : 1, Tapestry]                                                                                        
+Action:  1-2-3                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Jewelry : 1
+                                                                                                          [Red-3, Red-3]
+                                                                                                          Manuscript : 4
+                                                                                                                      []
+                                                                                                                 Pottery
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                            [Idol : 3, Remains, Jewelry]
+                                                                                                          Action:  2-2-2
+                                                                                            ============================
+Board:                                                                                                                  
+Manuscript : 3                                                                                                          
+[]                                                                                                                      
+Idol : 4                                                                                                                
+[]                                                                                                                      
+Jewelry                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Manuscript, Idol : 1, Tapestry, Jewelry]                                                                               
+Action:  1-2-3                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                          Manuscript : 3
+                                                                                                          [Red-3, Red-3]
+                                                                                                                Idol : 4
+                                                                                                                      []
+                                                                                                                 Jewelry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                                                [Idol : 3, Remains, Jewelry, Manuscript]
+                                                                                                          Action:  3-2-6
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                            Tapestry : 4
+                                                                                                                      []
+                                                                                                             Pottery : 2
+                                                                                                                      []
+                                                                                                                 Pottery
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                       [Idol : 3, Remains, Jewelry, Manuscript, Jewelry]
+                                                                                                          Action:  1-1-3
+                                                                                            ============================
+Board:                                                                                                                  
+Tapestry : 4                                                                                                            
+[Blue-3]                                                                                                                
+Pottery : 2                                                                                                             
+[]                                                                                                                      
+Pottery                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Manuscript, Idol : 1, Tapestry, Jewelry, Manuscript]                                                                   
+Action:  3-1-1                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Tapestry : 1                                                                                                            
+[]                                                                                                                      
+Manuscript : 1                                                                                                          
+[]                                                                                                                      
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Manuscript, Idol : 1, Tapestry, Jewelry, Manuscript, Pottery]                                                          
+Action:  3-1-1                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                            Tapestry : 1
+                                                                                                                      []
+                                                                                                          Manuscript : 1
+                                                                                                                      []
+                                                                                                                 Remains
+                                                                                                                 [Red-1]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                             [Idol : 3, Remains, Jewelry, Manuscript, Jewelry, Tapestry]
+                                                                                                          Action:  1-1-3
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Pottery : 4
+                                                                                                                      []
+                                                                                                             Remains : 3
+                                                                                                                      []
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                   [Idol : 3, Remains, Jewelry, Manuscript, Jewelry, Tapestry, Tapestry]
+                                                                                                          Action:  3-1-5
+                                                                                            ============================
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[]                                                                                                                      
+Remains : 3                                                                                                             
+[]                                                                                                                      
+Remains                                                                                                                 
+[Blue-5]                                                                                                                
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Manuscript, Idol : 1, Tapestry, Jewelry, Manuscript, Pottery, Remains]                                                 
+Action:  1-1-1                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Remains : 1                                                                                                             
+[]                                                                                                                      
+Idol : 3                                                                                                                
+[]                                                                                                                      
+Jewelry                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[]                                                                                                                      
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Remains : 1                                                                                                             
+[]                                                                                                                      
+Idol : 3                                                                                                                
+[Red-6]                                                                                                                 
+Jewelry                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[]                                                                                                                      
+Action:  3-2-5                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Remains : 1
+                                                                                                                      []
+                                                                                                                Idol : 3
+                                                                                                                 [Red-6]
+                                                                                                                 Jewelry
+                                                                                                          [Red-5, Red-5]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                                      []
+                                                                                                          Action:  1-1-5
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Remains : 1
+                                                                                                                [Blue-5]
+                                                                                                                Idol : 3
+                                                                                                                 [Red-6]
+                                                                                                                 Jewelry
+                                                                                                          [Red-5, Red-5]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                                                                                      []
+                                                                                                          Action:  2-2-6
+                                                                                            ============================
+Board:                                                                                                                  
+Remains : 1                                                                                                             
+[Blue-5]                                                                                                                
+Idol : 3                                                                                                                
+[Blue-6, Blue-6]                                                                                                        
+Jewelry                                                                                                                 
+[Red-5, Red-5]                                                                                                          
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[]                                                                                                                      
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                          Manuscript : 3
+                                                                                                                      []
+                                                                                                             Remains : 4
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                                                                              [Idol : 3]
+                                                                                                          Action:  1-1-3
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                          Manuscript : 3
+                                                                                                                [Blue-3]
+                                                                                                             Remains : 4
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                                              [Idol : 3]
+                                                                                                          Action:  3-1-4
+                                                                                            ============================
+Board:                                                                                                                  
+Manuscript : 3                                                                                                          
+[Blue-3]                                                                                                                
+Remains : 4                                                                                                             
+[]                                                                                                                      
+Tapestry                                                                                                                
+[Blue-4]                                                                                                                
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Remains, Jewelry]                                                                                                      
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Manuscript : 3                                                                                                          
+[Blue-3]                                                                                                                
+Remains : 4                                                                                                             
+[Red-6]                                                                                                                 
+Tapestry                                                                                                                
+[Blue-4]                                                                                                                
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains, Jewelry]                                                                                                      
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[]                                                                                                                      
+Remains : 2                                                                                                             
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains, Jewelry, Manuscript, Remains]                                                                                 
+Action:  1-1-4                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[Red-4]                                                                                                                 
+Remains : 2                                                                                                             
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Remains, Jewelry, Manuscript, Remains]                                                                                 
+Action:  useRemains                                                                                                     
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[Red-4]                                                                                                                 
+Remains : 2                                                                                                             
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4]                                                                         
+Action:  3-1-1                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Pottery : 4
+                                                                                                                 [Red-4]
+                                                                                                             Remains : 2
+                                                                                                                      []
+                                                                                                                    Idol
+                                                                                                                 [Red-1]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                                                                    [Idol : 3, Tapestry]
+                                                                                                          Action:  2-2-3
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Pottery : 3
+                                                                                                                      []
+                                                                                                                Idol : 2
+                                                                                                                      []
+                                                                                                                 Pottery
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                                                           [Idol : 3, Tapestry, Remains]
+                                                                                                          Action:  3-2-1
+                                                                                            ============================
+Board:                                                                                                                  
+Pottery : 3                                                                                                             
+[]                                                                                                                      
+Idol : 2                                                                                                                
+[]                                                                                                                      
+Pottery                                                                                                                 
+[Blue-1, Blue-1]                                                                                                        
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol]                                                          
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 3                                                                                                             
+[Red-6]                                                                                                                 
+Idol : 2                                                                                                                
+[]                                                                                                                      
+Pottery                                                                                                                 
+[Blue-1, Blue-1]                                                                                                        
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol]                                                          
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Manuscript : 4                                                                                                          
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol : 4, Pottery, Idol]                                       
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Manuscript : 4                                                                                                          
+[Red-6]                                                                                                                 
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol : 4, Pottery, Idol]                                       
+Action:  3-1-4                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                          Manuscript : 2
+                                                                                                                      []
+                                                                                                          Manuscript : 4
+                                                                                                                 [Red-6]
+                                                                                                                Tapestry
+                                                                                                                 [Red-4]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 2
+                                                                                  [Idol : 3, Tapestry, Remains, Pottery]
+                                                                                                          Action:  3-2-6
+                                                                                            ============================
+Board:                                                                                                                  
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Manuscript : 4                                                                                                          
+[Red-6]                                                                                                                 
+Tapestry                                                                                                                
+[Blue-6, Blue-6]                                                                                                        
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol : 4, Pottery, Idol]                                       
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Remains : 3
+                                                                                                                      []
+                                                                                                                Idol : 1
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 0
+                                                                        [Idol : 3, Tapestry, Remains, Pottery, Tapestry]
+                                                                                                        Action:  Recover
+                                                                                            ============================
+Board:                                                                                                                  
+Remains : 3                                                                                                             
+[]                                                                                                                      
+Idol : 1                                                                                                                
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol : 4, Pottery, Idol : 2, Manuscript, Manuscript]           
+Action:  Recover                                                                                                        
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Remains : 3
+                                                                                                                      []
+                                                                                                                Idol : 1
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                        [Idol : 3, Tapestry, Remains, Pottery, Tapestry]
+                                                                                                          Action:  3-1-4
+                                                                                            ============================
+Board:                                                                                                                  
+Manuscript : 1                                                                                                          
+[]                                                                                                                      
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Jewelry                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol : 4, Pottery, Idol : 2, Manuscript, Manuscript]           
+Action:  3-2-5                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Manuscript : 1                                                                                                          
+[]                                                                                                                      
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Jewelry                                                                                                                 
+[Red-5, Red-5]                                                                                                          
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Remains : 1, Jewelry, Manuscript, Remains : 4, Pottery, Idol : 4, Pottery, Idol : 2, Manuscript, Manuscript]           
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                          Manuscript : 1
+                                                                                                                      []
+                                                                                                             Jewelry : 3
+                                                                                                                 [Red-6]
+                                                                                                                 Jewelry
+                                                                                                          [Red-5, Red-5]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                              [Idol : 3, Tapestry, Remains, Pottery, Tapestry, Tapestry]
+                                                                                                          Action:  1-3-1
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Jewelry : 1
+                                                                                                                      []
+                                                                                                            Tapestry : 2
+                                                                                                                      []
+                                                                                                                 Pottery
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                  [Idol : 3, Tapestry, Remains, Pottery, Tapestry, Tapestry, Manuscript]
+                                                                                                          Action:  2-3-6
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 1                                                                                                             
+[]                                                                                                                      
+Tapestry : 2                                                                                                            
+[Blue-6, Blue-6, Blue-6]                                                                                                
+Pottery                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[                                                                                                                       
+    Remains : 1,                                                                                                        
+    Jewelry,                                                                                                            
+    Manuscript,                                                                                                         
+    Remains : 4,                                                                                                        
+    Pottery,                                                                                                            
+    Idol : 4,                                                                                                           
+    Pottery,                                                                                                            
+    Idol : 2,                                                                                                           
+    Manuscript,                                                                                                         
+    Manuscript,                                                                                                         
+    Jewelry,                                                                                                            
+    Jewelry                                                                                                             
+]                                                                                                                       
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Tapestry : 4                                                                                                            
+[]                                                                                                                      
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[]                                                                                                                      
+Action:  3-1-2                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Tapestry : 4                                                                                                            
+[]                                                                                                                      
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Tapestry                                                                                                                
+[Red-2]                                                                                                                 
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[]                                                                                                                      
+Action:  1-2-1                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                            Tapestry : 4
+                                                                                                          [Red-1, Red-1]
+                                                                                                          Manuscript : 2
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                 [Red-2]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                                      []
+                                                                                                          Action:  3-2-5
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                            Tapestry : 4
+                                                                                                          [Red-1, Red-1]
+                                                                                                          Manuscript : 2
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                        [Blue-5, Blue-5]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                                                      []
+                                                                                                          Action:  1-1-3
+                                                                                            ============================
+Board:                                                                                                                  
+Tapestry : 4                                                                                                            
+[Blue-3]                                                                                                                
+Manuscript : 2                                                                                                          
+[]                                                                                                                      
+Tapestry                                                                                                                
+[Blue-5, Blue-5]                                                                                                        
+
+Player 0                                                                                                                
+Servants: 3                                                                                                             
+[]                                                                                                                      
+Action:  1-1-5                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Jewelry : 2
+                                                                                                                      []
+                                                                                                                Idol : 1
+                                                                                                                      []
+                                                                                                                    Idol
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                                              [Tapestry]
+                                                                                                          Action:  1-1-4
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 2                                                                                                             
+[Blue-4]                                                                                                                
+Idol : 1                                                                                                                
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Tapestry]                                                                                                              
+Action:  3-1-2                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Jewelry : 2                                                                                                             
+[Blue-4]                                                                                                                
+Idol : 1                                                                                                                
+[]                                                                                                                      
+Idol                                                                                                                    
+[Red-2]                                                                                                                 
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry]                                                                                                              
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 2                                                                                                             
+[]                                                                                                                      
+Tapestry : 3                                                                                                            
+[]                                                                                                                      
+Manuscript                                                                                                              
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Tapestry, Idol, Idol]                                                                                                  
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 2                                                                                                             
+[]                                                                                                                      
+Tapestry : 3                                                                                                            
+[Red-6]                                                                                                                 
+Manuscript                                                                                                              
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Idol, Idol]                                                                                                  
+Action:  3-1-2                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Pottery : 2
+                                                                                                                      []
+                                                                                                            Tapestry : 3
+                                                                                                                 [Red-6]
+                                                                                                              Manuscript
+                                                                                                                 [Red-2]
+
+                                                                                                                Player 1
+                                                                                                             Servants: 0
+                                                                                                     [Tapestry, Jewelry]
+                                                                                                        Action:  Recover
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Jewelry : 4
+                                                                                                                      []
+                                                                                                             Pottery : 3
+                                                                                                                      []
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                                     [Tapestry, Jewelry]
+                                                                                                          Action:  2-3-4
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 4                                                                                                             
+[]                                                                                                                      
+Pottery : 3                                                                                                             
+[Blue-4, Blue-4, Blue-4]                                                                                                
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 2                                                                                                             
+[Tapestry, Idol, Idol, Tapestry, Manuscript]                                                                            
+Action:  3-1-2                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Jewelry : 4                                                                                                             
+[]                                                                                                                      
+Pottery : 3                                                                                                             
+[Blue-4, Blue-4, Blue-4]                                                                                                
+Remains                                                                                                                 
+[Red-2]                                                                                                                 
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Idol, Idol, Tapestry, Manuscript]                                                                            
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+Board:                                                                                                                  
+Pottery : 4                                                                                                             
+[]                                                                                                                      
+Remains : 3                                                                                                             
+[]                                                                                                                      
+Idol                                                                                                                    
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Idol : 1, Idol, Tapestry, Manuscript, Jewelry, Remains]                                                      
+Action:  1-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Pottery : 4
+                                                                                                                 [Red-6]
+                                                                                                             Remains : 3
+                                                                                                                      []
+                                                                                                                    Idol
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                            [Tapestry, Jewelry, Pottery]
+                                                                                                          Action:  2-1-3
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                          Manuscript : 1
+                                                                                                                      []
+                                                                                                             Jewelry : 1
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                                   [Tapestry, Jewelry, Pottery, Remains]
+                                                                                                        Action:  Recover
+                                                                                            ============================
+Board:                                                                                                                  
+Manuscript : 1                                                                                                          
+[]                                                                                                                      
+Jewelry : 1                                                                                                             
+[]                                                                                                                      
+Tapestry                                                                                                                
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Idol : 1, Idol, Tapestry, Manuscript, Jewelry, Remains, Pottery]                                             
+Action:  1-1-4                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                          Manuscript : 1
+                                                                                                                 [Red-4]
+                                                                                                             Jewelry : 1
+                                                                                                                      []
+                                                                                                                Tapestry
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                                   [Tapestry, Jewelry, Pottery, Remains]
+                                                                                                          Action:  2-1-1
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 3                                                                                                             
+[]                                                                                                                      
+Idol : 4                                                                                                                
+[]                                                                                                                      
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Idol : 1, Idol : 2, Tapestry, Manuscript, Jewelry, Remains, Pottery, Manuscript]                             
+Action:  2-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Jewelry : 3
+                                                                                                                      []
+                                                                                                                Idol : 4
+                                                                                                                 [Red-6]
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 3
+                                                                          [Tapestry, Jewelry, Pottery, Remains, Jewelry]
+                                                                                                          Action:  2-2-5
+                                                                                            ============================
+                                                                                                                  Board:
+                                                                                                             Jewelry : 3
+                                                                                                                      []
+                                                                                                                Idol : 4
+                                                                                                        [Blue-5, Blue-5]
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                                          [Tapestry, Jewelry, Pottery, Remains, Jewelry]
+                                                                                                          Action:  1-1-5
+                                                                                            ============================
+Board:                                                                                                                  
+Jewelry : 3                                                                                                             
+[Blue-5]                                                                                                                
+Idol : 4                                                                                                                
+[Blue-5, Blue-5]                                                                                                        
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 1                                                                                                             
+[Tapestry, Idol : 1, Idol : 2, Tapestry, Manuscript, Jewelry, Remains, Pottery, Manuscript]                             
+Action:  3-1-6                                                                                                          
+============================                                                                                            
+                                                                                                                  Board:
+                                                                                                             Pottery : 1
+                                                                                                                      []
+                                                                                                          Manuscript : 4
+                                                                                                                      []
+                                                                                                                 Remains
+                                                                                                                      []
+
+                                                                                                                Player 1
+                                                                                                             Servants: 1
+                                                       [Tapestry, Jewelry, Pottery, Remains, Jewelry, Jewelry, Idol : 4]
+                                                                                                          Action:  2-1-6
+                                                                                            ============================
+Board:                                                                                                                  
+Pottery : 1                                                                                                             
+[]                                                                                                                      
+Manuscript : 4                                                                                                          
+[Blue-6]                                                                                                                
+Remains                                                                                                                 
+[]                                                                                                                      
+
+Player 0                                                                                                                
+Servants: 0                                                                                                             
+[Tapestry, Idol : 1, Idol : 2, Tapestry, Manuscript, Jewelry, Remains, Pottery, Manuscript, Remains]                    
+Action:  Recover                                                                                                        
+============================                                                                                            
+Board:                                                                                                                  

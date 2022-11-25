@@ -79,7 +79,7 @@ def ResultOfAction(state, playerNr, action):
 
     elif action == 'useRemains':
         state.collectors[1].useCard(state.players[playerNr])
-        reward = 5
+        reward = 10
     else:
         bid = action.split('-')
 
@@ -93,10 +93,6 @@ def ResultOfAction(state, playerNr, action):
 
         card = state.board[place]['card']
 
-        #reward = state.board[place]['card'].coinvalue
-        #reward += state.collectors[card.type].get_reward(state.players[playerNr])
-       
-
         #subtract potential score for the player who was bumped off card
         otherPlayerNr = 1 if playerNr == 0 else 0
         if bumped_off:
@@ -107,20 +103,15 @@ def ResultOfAction(state, playerNr, action):
 
         #Add potential score for the player who owns the card
         if card.type == 6:
-            reward = state.collectors[card.type].potentialValue(card, state.players[playerNr], state.players[otherPlayerNr])
+            state.players[playerNr].score += state.collectors[card.type].potentialValue(card, state.players[playerNr], state.players[otherPlayerNr])
         else:
-            reward = state.collectors[card.type].potentialValue(card, state.players[playerNr])
+            state.players[playerNr].score += state.collectors[card.type].potentialValue(card, state.players[playerNr])
         
-        state.players[playerNr].score += reward
+        
+        ## With just the score as reward, the agent will always try to get the highest score possible
+        reward = state.players[playerNr].score + state.players[playerNr].nr_servants_available()
 
-        
-        #Times the probability of rolling equal or above the value of the servant
-        '''
-        if value == 1:
-            reward *= 0.9
-        else:
-            reward *= ((7 - value) / 6)
-        '''
+        #Try with penalty for using servants
         
     return state, reward
 

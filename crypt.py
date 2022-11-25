@@ -46,10 +46,10 @@ class Crypt:
         self.board[3]['card'].type, self.get_current_bid(3),
         self.players[0].nr_remains(), self.players[0].nr_idols(), self.players[0].nr_jewelry(),
         self.players[0].nr_manuscripts(), self.players[0].nr_pottery(), self.players[0].nr_tapestries(),
-        self.players[0].nr_servants_available(), self.players[0].score,
+        self.players[0].nr_servants_available(), self.players[0].score + self.players[0].nr_servants_available(),
         self.players[1].nr_remains(), self.players[1].nr_idols(), self.players[1].nr_jewelry(),
         self.players[1].nr_manuscripts(), self.players[1].nr_pottery(), self.players[1].nr_tapestries(),
-        self.players[1].nr_servants_available(), self.players[1].score,
+        self.players[1].nr_servants_available(), self.players[1].score + self.players[1].nr_servants_available(),
         self.turnsLeft
     ])
 

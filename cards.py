@@ -59,7 +59,7 @@ class RemainsCollector(CollectorCard):
         score = sum(x.coinvalue for x in player.collection if x.type == 1)
         return score
 
-    def potentialValue(self, card, player):
+    def potentialValue(self, card, player1=None, player2=None):
         return card.coinvalue
 
     def get_reward(self, player):
@@ -84,7 +84,7 @@ class IdolCollector(CollectorCard):
         score = sum(x.coinvalue for x in player.collection if x.type == 2)
         return score
 
-    def potentialValue(self, card, player):
+    def potentialValue(self, card, player1=None, player2=None):
         return card.coinvalue
         
     def get_reward(self, player):
@@ -128,9 +128,9 @@ class JewelryCollector(CollectorCard):
         else:
             return 0
 
-    def potentialValue(self, card, player):
+    def potentialValue(self, card, player1=None, player2=None):
         val = card.coinvalue
-        eligible_cards = [x for x in player.collection if x.type == 3]
+        eligible_cards = [x for x in player1.collection if x.type == 3]
         if len(eligible_cards) == 1:
             max_value = max(x.coinvalue for x in eligible_cards)
             if val >= max_value:
@@ -167,9 +167,9 @@ class ManuscriptCollector(CollectorCard):
                     score += card.coinvalue
                 return score
 
-        def potentialValue(self, card, player):
+        def potentialValue(self, card, player1=None, player2=None):
             val = card.coinvalue
-            eligible_cards = [x for x in player.collection if x.type == 4]
+            eligible_cards = [x for x in player1.collection if x.type == 4]
             if len(eligible_cards) >= 1:
                 val = 4
             return val
@@ -221,9 +221,9 @@ class PotteryCollector(CollectorCard):
                 score += card.coinvalue
             return score
 
-    def potentialValue(self, card, player):
+    def potentialValue(self, card, player1=None, player2=None):
         val = card.coinvalue
-        eligible_cards = [x for x in player.collection if x.type == 5]
+        eligible_cards = [x for x in player1.collection if x.type == 5]
         if len(eligible_cards) == 1:
             val += 2
         elif len(eligible_cards) == 2:
@@ -282,7 +282,7 @@ class TapestryCollector(CollectorCard):
             player2_score += 5
             return player1_score, player2_score
 
-    def potentialValue(self, card, player1, player2):
+    def potentialValue(self, card, player1=None, player2=None):
         p1_sum = sum(x.coinvalue for x in player1.collection if x.type == 6)
         p2_sum = sum(x.coinvalue for x in player2.collection if x.type == 6)
         if p1_sum + 1 >= p2_sum:
