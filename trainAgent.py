@@ -9,7 +9,7 @@ import time
 
 
 
-def trainNewAgent(nr_of_games, enemy_model_number, training_model_number, learning_rate, gamma):
+def trainNewAgent(nr_of_games, training_model_number, enemy_model_number, learning_rate, gamma):
     console = Console()
     avg_score = 0
     train = True
@@ -38,10 +38,17 @@ def trainNewAgent(nr_of_games, enemy_model_number, training_model_number, learni
     console.print(f"Time: {int((end-start)/3600)} hours and {int(((end-start)%3600)/60)} minutes")
 
     train_agent.save_model(f'model_{training_model_number}.h5')
-    ###### Save all important model data to a file #######
+    train_agent.save_target_model(f'target_model_{training_model_number}.h5')
+    # save all other attributes to a file
+    parameters = np.array([train_agent.epsilon, train_agent.gamma, train_agent.learning_rate])
+    np.savetxt(f'parameters_{training_model_number}.txt', parameters)
 
+    del train_agent
+    del enemy_agent
 
-def ContinueTraining(nr_of_games, enemy_model_number, training_model_number):
+    
+
+def ContinueTraining(nr_of_games, training_model_number, enemy_model_number):
     console = Console()
     avg_score = 0
     train = True
@@ -49,10 +56,10 @@ def ContinueTraining(nr_of_games, enemy_model_number, training_model_number):
 
     train_agent = DQNAgent()
     train_agent.load_model(f'model_{training_model_number}.h5')
-    ######### Load in target model ######
+    train_agent.load_target_model(f'target_model_{training_model_number}.h5')
 
-    ######### Load in variables from file function ######
-    # epsilon, gamma, learning rate
+    train_agent.epsilon, train_agent.gamma, train_agent.learning_rate = np.loadtxt(f'parameters_{training_model_number}.txt', unpack=True)
+    
 
     enemy_agent = DQNAgent(epsilon=0.01)
     enemy_agent.load_model(f'model_{enemy_model_number}.h5')
@@ -76,13 +83,15 @@ def ContinueTraining(nr_of_games, enemy_model_number, training_model_number):
     console.print(f"Time: {int((end-start)/3600)} hours and {int(((end-start)%3600)/60)} minutes")
 
     train_agent.save_model(f'model_{training_model_number}.h5')
-    ###### Save all important model data to a file #######
+    train_agent.save_target_model(f'target_model_{training_model_number}.h5')
 
-        
-        
+    parameters = np.array([train_agent.epsilon, train_agent.gamma, train_agent.learning_rate])
+    np.savetxt(f'parameters_{training_model_number}.txt', parameters)
 
+    del train_agent
+    del enemy_agent
+    
 
-trainNewAgent(500, 15, 0.002, 0.85)
 
 
 
