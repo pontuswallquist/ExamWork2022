@@ -10,12 +10,12 @@ from actionspace import *
 import tensorflow as tf
 
 
-
+'''
 configproto = tf.compat.v1.ConfigProto() 
 configproto.gpu_options.allow_growth = True
 sess = tf.compat.v1.Session(config=configproto) 
 tf.compat.v1.keras.backend.set_session(sess)
-
+'''
 
 
 class DQNAgent:
