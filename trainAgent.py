@@ -50,7 +50,7 @@ def trainNewAgent(nr_of_games, training_model_number, learning_rate, gamma):
 
     
 
-def continueTraining(nr_of_games, training_model_number):
+def continueTraining(training_model_number, start_game, end_game):
     console = Console()
     avg_score = 0
     train = True
@@ -69,7 +69,7 @@ def continueTraining(nr_of_games, training_model_number):
     writer = tf.summary.create_file_writer(logdir=f"tensorboard/model_{training_model_number}")
 
     start = time.time()
-    for i in track(range(nr_of_games), description=f'Training agent {training_model_number}...'):
+    for i in track(range(start_game, end_game), description=f'Training agent {training_model_number}...'):
         state = Crypt()
         state = playGame(state, train_agent, train, log)
         avg_score += state.players[1].score
@@ -95,11 +95,17 @@ def continueTraining(nr_of_games, training_model_number):
 
 
 
-trainNewAgent(100, 1, 0.002, 0.85)
+#trainNewAgent(100, 1, 0.002, 0.85)
 
 continueTraining(100, 1)
 
 continueTraining(100, 1)
+
+continueTraining(100, 1)
+
+continueTraining(100, 1)
+
+
 
 print("Done")
 

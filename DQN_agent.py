@@ -119,4 +119,10 @@ class DQNAgent:
     def load_model(self, file_name):
         self.model = load_model(file_name)
 
+    def save_target_model(self, file_name):
+        self.target_model.save(file_name)
+
+    def load_target_model(self, file_name):
+        self.target_model = load_model(file_name)
+
     

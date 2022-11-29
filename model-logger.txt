@@ -9,3 +9,9 @@ Epsilon decay: 0.9975
 Gamma: 0.85
 Average score: 33.86
 Reward = score and endgame-reward = 10 * difference between score and opponent score
+
+model_1 64 %
+Trained for 200 games
+Learning rate: 0.002
+Epsilon decay: 0.9975
+Gamma: 0.85

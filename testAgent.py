@@ -47,8 +47,8 @@ def playSingleGame(model_number):
     
 #testAgent(12, 250)
 #testAgent(11, 250)
-#testAgent(14, 250)
-playSingleGame(14)
+testAgent(1, 250)
+playSingleGame(1)
 
 
 

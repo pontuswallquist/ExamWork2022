@@ -2,9 +2,7 @@ import random
 from actionspace import Actions, ResultOfAction
 import numpy as np
 from rich.console import Console
-from log_actions import log_action
 import copy
-console = Console()
 
 
 def revealPhase(state):
@@ -55,6 +53,7 @@ def claimPhase(state, agent, train, log):
             p0_played = True
             
             if log is True:
+                console = Console()
                 console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', soft_wrap=False)
                 #log_action(curr__input_state, action, 0)
 
