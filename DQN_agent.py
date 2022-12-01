@@ -1,7 +1,10 @@
 import numpy as np
 import random
-from keras.layers import Input, Dense
+import gc
+from keras.layers import Input, Dense, Softmax, LeakyReLU, ReLU
+from keras import backend as K
 from keras.models import Model, load_model
+from keras.callbacks import Callback
 from actionspace import ReducePossibleActions
 
 from keras.optimizers import Adam
@@ -9,14 +12,10 @@ from collections import deque
 from actionspace import *
 import tensorflow as tf
 
-
-
-configproto = tf.compat.v1.ConfigProto() 
-configproto.gpu_options.allow_growth = True
-sess = tf.compat.v1.Session(config=configproto) 
-tf.compat.v1.keras.backend.set_session(sess)
-
-
+class ClearMemory(Callback):
+    def on_epoch_end(self, epoch, logs=None):
+        gc.collect()
+        K.clear_session()
 
 class DQNAgent:
     def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.9975 , gamma=0.95):
@@ -53,9 +52,13 @@ class DQNAgent:
 
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
-        hidden_layer = Dense(40, activation='relu')(input_layer)
-        output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
-        model = Model(inputs=input_layer, outputs=output_layer)
+        hidden_layer = Dense(40, activation=None)(input_layer)
+        hidden_layer_activation = ReLU()(hidden_layer)
+        output_layer = Dense(self.nr_actions, activation=None)(hidden_layer_activation)
+        output_layer_activation = Softmax()(output_layer)
+
+        model = Model(inputs=input_layer, outputs=output_layer_activation)
+
         model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate), metrics=['accuracy'])
         return model
 
@@ -104,7 +107,7 @@ class DQNAgent:
                 Q_future = max(self.target_model.predict(next_state, verbose=0)[0])
                 target[action] = reward + Q_future * self.gamma
                 target = tf.expand_dims(target, 0)
-                self.training_history = self.model.fit(input_state, target, epochs=1, verbose=0)
+                self.training_history = self.model.fit(input_state, target, epochs=1, verbose=0, callbacks=ClearMemory())
                 
     def target_train(self):
         weights = self.model.get_weights()

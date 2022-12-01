@@ -1,4 +1,4 @@
-from crypt import Crypt
+from game import Crypt
 from cards import *
 
 
