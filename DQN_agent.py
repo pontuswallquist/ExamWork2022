@@ -1,24 +1,33 @@
 import numpy as np
 import random
-import gc
 from keras.layers import Input, Dense, Softmax, LeakyReLU, ReLU
 from keras import backend as K
 from keras.models import Model, load_model
 from keras.callbacks import Callback
-from actionspace import ReducePossibleActions
-
 from keras.optimizers import Adam
 from collections import deque
-from actionspace import *
 import tensorflow as tf
+
+def makeActionSpace1D(actionspace):
+    actionspace1D = []
+    actionspace1D.extend(actionspace[0])
+    actionspace1D.extend(actionspace[1])
+    actionspace1D.extend(actionspace[2])
+    actionspace1D.extend(actionspace[3])
+    return actionspace1D
+
+def ReducePossibleActions(actionspace, actions):
+    actionspace1d = makeActionSpace1D(actionspace)
+    for i in range(len(actionspace1d)):
+        actions[i] = actions[i] * actionspace1d[i]
+    return actions
 
 class ClearMemory(Callback):
     def on_epoch_end(self, epoch, logs=None):
-        gc.collect()
         K.clear_session()
 
 class DQNAgent:
-    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.9975 , gamma=0.95):
+    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.998 , gamma=0.95):
         self.memory = deque(maxlen=10000)
         self.gamma = gamma    # discount rate
         self.epsilon = epsilon # exploration rate
@@ -45,21 +54,20 @@ class DQNAgent:
 
         self.map_id_to_actions = {v: k for k, v in self.map_actions_to_id.items()}
 
-
-
         self.model = self.create_model()
         self.target_model = self.create_model()
 
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
-        hidden_layer = Dense(40, activation=None)(input_layer)
-        hidden_layer_activation = ReLU()(hidden_layer)
-        output_layer = Dense(self.nr_actions, activation=None)(hidden_layer_activation)
-        output_layer_activation = Softmax()(output_layer)
+        hidden_layer = Dense(40, activation='relu')(input_layer)
+        #hidden_layer_activation = LeakyReLU()(hidden_layer)
+        output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
+        #output_layer_activation = Softmax()(output_layer)
 
-        model = Model(inputs=input_layer, outputs=output_layer_activation)
+        model = Model(inputs=input_layer, outputs=output_layer, name='DQN')
 
         model.compile(loss='mean_squared_error', optimizer=Adam(learning_rate=self.learning_rate), metrics=['accuracy'])
+        model.summary()
         return model
 
     def remember(self, state, action, reward, next_state, done):
@@ -74,13 +82,13 @@ class DQNAgent:
             if np.random.random() < self.epsilon:
                 output = action_list
                 random_action = True
-        #inputs = tf.expand_dims(input_state, 0)
-        #output = self.model(inputs)[0].numpy()
+        
         if random_action:
             action = random.choice(output)
             action_id = self.map_actions_to_id[action]
         else:
             input_state = tf.expand_dims(input_state, 0)
+            #output = self.model(input_state)[0].numpy()
             output = self.model.predict(input_state, verbose=0)[0]
             legal_outputs = ReducePossibleActions(actionspace, output)
             action_id = np.argmax(legal_outputs)
@@ -95,19 +103,19 @@ class DQNAgent:
         samples = random.sample(list(self.memory), batch_size)
         for sample in samples:
             input_state, action, reward, next_state, done = sample
-            input_state = tf.expand_dims(input_state, 0) # make tensorflow tensor
-            #target = self.target_model(inputs, training=True)[0].numpy()
+            input_state = tf.expand_dims(input_state, 0) # makes tensorflow tensor
+            #target = self.target_model(input_state, training=True)[0].numpy()
             target = self.target_model.predict(input_state, verbose=0)[0]
             
             if done:
                 target[action] = reward
             else:
                 next_state = tf.expand_dims(next_state, 0)
-                #Q_future = max(self.target_model(next_inputs, training=True)[0].numpy())
+                #Q_future = max(self.target_model(next_state, training=True)[0].numpy())
                 Q_future = max(self.target_model.predict(next_state, verbose=0)[0])
                 target[action] = reward + Q_future * self.gamma
                 target = tf.expand_dims(target, 0)
-                self.training_history = self.model.fit(input_state, target, epochs=1, verbose=0, callbacks=ClearMemory())
+                self.training_history = self.model.fit(input_state, target, epochs=1, verbose=0)
                 
     def target_train(self):
         weights = self.model.get_weights()

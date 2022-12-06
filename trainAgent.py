@@ -73,7 +73,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
 
     start = time.time()
     env = Crypt()
-    for i in track(range(start_game, end_game), description=f'Training agent {training_model_number}...'):
+    for i in range(start_game, end_game):  #track(range(start_game, end_game), description=f'Training agent {training_model_number}...'):
         
         env.playGame(enemy_agent, train_agent, train, log)
         #avg_score += env.players[1].score
@@ -102,7 +102,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
     del enemy_agent
     
 
-trainNewAgent(500, 4, 14, 0.002, 0.85)
+trainNewAgent(100, 7, 4, 0.001, 0.95)
 
 
 

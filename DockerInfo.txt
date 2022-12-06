@@ -1,0 +1,18 @@
+
+
+Dockerfile:
+=============================================
+FROM tensorflow/tensorflow:latest-gpu
+
+COPY pyfiles /tmp
+COPY requirements.txt /tmp
+WORKDIR /tmp
+
+RUN pip install -r requirements.txt
+
+=============================================
+
+
+docker build -t crypt .
+
+docker run --gpus all -it crypt bash

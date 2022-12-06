@@ -204,6 +204,9 @@ class Crypt:
 
 
     def claimPhase(self, enemy_agent, train_agent, train, log):
+
+        # Penalty for missing servants
+        penalty = 2 * (self.players[1].nr_servants_available() - 3)
     
         if self.players[0].hasTorch():
             turn = 0
@@ -229,13 +232,7 @@ class Crypt:
                     continue
             
             #Make sure we only train one agent against the other
-                
-                if train:
-                    train = False
-                action, action_id = enemy_agent.step(self.get_input_state(), list_of_actions, actionspace, train)
-                train = True
-                
-                
+                action, action_id = enemy_agent.step(self.get_input_state(), list_of_actions, actionspace, False)
                 #action = random.choice(list_of_actions)
 
                 if train is True or log is True:
@@ -269,6 +266,9 @@ class Crypt:
 
                 reward = self.ResultOfAction(1, action)
                 p1_played = True
+
+                if turn == 1:
+                    reward += penalty
 
                 if log is True:
                     self.console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', style='bold blue')

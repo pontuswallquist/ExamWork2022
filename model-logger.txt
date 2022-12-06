@@ -1,103 +1,4 @@
-All models tested on 250 games vs Random Agent
 
-With inital rewards system
-
-model_1 80% 
-Trained for 250 games
-Learning rate: 0.001
-Epsilon decay: 0.95
-Gamma: 0.95
-
-model_2 63 %
-Trained for 250 games
-Learning rate: 0.0005
-Epsilon decay: 0.95
-Gamma: 0.95
-
-With potential Score added after every bid as reward, with penalty reward *= (7-value) / 6
-Better action taking with this but value 1 is played too often
-
-model_3 69 %
-Trained for 100 games
-Learning rate: 0.001
-Epsilon decay: 0.85
-Gamma: 0.95
-
-model_4 44 %
-Trained for 250 games
-Learning rate: 0.001
-Epsilon decay: 0.999
-Gamma: 0.85
-
-model_5 55 %
-Trained for 250 games
-Learning rate: 0.0025
-Epsilon decay: 0.999
-Gamma: 0.75
-
-With potential score added after every bid as reward, with penalty reward - value
-
-model_6 26 %
-Trained for 250 games
-Learning rate: 0.005
-Epsilon decay: 0.99
-Gamma: 0.85
-
-with potential score added after every bid as reward, without any penalty
-
-model_7 34 %
-Trained for 500 games
-Learning rate: 0.001
-Epsilon decay: 0.995
-Gamma: 0.95
-Average score: 29.656
-
-model_8 14 %
-Trained for 100 games
-Learning rate: 0.002
-Epsilon decay: 0.995
-Gamma: 0.85
-Average score: 25.78
-
-model_9 23 %
-Trained for 250 games
-Learning rate: 0.005
-Epsilon decay: 0.998
-Gamma: 0.75
-Average score: 26.216
-
-model_10 67 %
-Trained for 250 games
-Learning rate: 0.002
-Epsilon decay: 0.998
-Gamma: 0.85
-Average score: 33.452
-Reward = score and endgame reward = 5 * difference between score and opponent score
-
-model_11
-Trained for 500 games
-Learning rate: 0.002
-Epsilon decay: 0.998
-Gamma: 0.85
-Average score: 21.438
-
-model_12 72 %
-Trained for 500 games
-Learning rate: 0.002
-Epsilon decay: 0.998
-Gamma: 0.95
-Average score: 33.94
-Reward = score and endgame-reward = reward * difference between score and opponent score
-
-Test with softmax activation func and model.predict()
-
-model_13 66 %
-Trained for 100 games
-Learning rate: 0.002
-Epsilon decay: 0.9975
-Gamma: 0.95
-Average score: 34.67
-Reward = score and endgame-reward = reward * difference between score and opponent score
 
 model_14 74 %
 Trained for 100 games
@@ -107,17 +8,20 @@ Gamma: 0.85
 Average score: 33.86
 Reward = score and endgame-reward = 10 * difference between score and opponent score
 
-model_1 
-Trained for 100 games
+Model 4
+with clearMemory callback and activation layers
+Trained for 500 games = 18h 40 min
+58 % winrate against model_14
+Epsilon decay = 0.9975
+gamma = 0.85
+learning rate = 0.002
 
-model_1 
-Trained for 200 games
 
-model_1
-Trained for 300 games
+We will keep and improve on model 4
+Model 4 without penalty for losing servants
 
-model_1
-Trained for 400 games
 
-model_1
-Trained for 500 games
+Model 7 with penalty for losing servants
+Trained for 250 games = 7h 50 min
+
+
