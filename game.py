@@ -206,7 +206,7 @@ class Crypt:
     def claimPhase(self, enemy_agent, train_agent, train, log):
 
         # Penalty for missing servants
-        penalty = 2 * (self.players[1].nr_servants_available() - 3)
+        penalty = 3 * (self.players[1].nr_servants_available() - 3)
     
         if self.players[0].hasTorch():
             turn = 0

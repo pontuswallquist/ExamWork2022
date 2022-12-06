@@ -2,7 +2,8 @@
 
 Dockerfile:
 =============================================
-FROM tensorflow/tensorflow:latest-gpu
+FROM tensorflow/tensorflow:latest-gpu //GPU
+FROM nvcr.io/nvidia/tensorflow:22.11-tf2-py3 //CPU
 
 COPY pyfiles /tmp
 COPY requirements.txt /tmp

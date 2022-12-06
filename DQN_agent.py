@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from keras.layers import Input, Dense, Softmax, LeakyReLU, ReLU
+from keras.layers import Input, Dense, Dropout
 from keras import backend as K
 from keras.models import Model, load_model
 from keras.callbacks import Callback
@@ -27,7 +27,7 @@ class ClearMemory(Callback):
         K.clear_session()
 
 class DQNAgent:
-    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.998 , gamma=0.95):
+    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.98, gamma=0.95):
         self.memory = deque(maxlen=10000)
         self.gamma = gamma    # discount rate
         self.epsilon = epsilon # exploration rate
@@ -60,9 +60,11 @@ class DQNAgent:
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
         hidden_layer = Dense(40, activation='relu')(input_layer)
-        #hidden_layer_activation = LeakyReLU()(hidden_layer)
-        output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
-        #output_layer_activation = Softmax()(output_layer)
+
+        dropout_layer = Dropout(0.5)(hidden_layer)
+
+        output_layer = Dense(self.nr_actions, activation='softmax')(dropout_layer)
+        
 
         model = Model(inputs=input_layer, outputs=output_layer, name='DQN')
 
@@ -115,7 +117,7 @@ class DQNAgent:
                 Q_future = max(self.target_model.predict(next_state, verbose=0)[0])
                 target[action] = reward + Q_future * self.gamma
                 target = tf.expand_dims(target, 0)
-                self.training_history = self.model.fit(input_state, target, epochs=1, verbose=0)
+                self.training_history = self.model.fit(input_state, target, epochs=1, verbose=0, callbacks=ClearMemory())
                 
     def target_train(self):
         weights = self.model.get_weights()
