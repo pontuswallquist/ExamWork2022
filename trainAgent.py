@@ -14,7 +14,7 @@ def trainNewAgent(nr_of_games, training_model_number, enemy_model_number, learni
     train = True
     log = False
 
-    train_agent = DQNAgent(learning_rate=learning_rate, epsilon_decay=0.9975, gamma=gamma)
+    train_agent = DQNAgent(learning_rate=learning_rate, epsilon_decay=0.999, gamma=gamma)
     enemy_agent = DQNAgent(epsilon=0.01)
     enemy_agent.load_model(f'model_{enemy_model_number}.h5')
 
@@ -25,6 +25,8 @@ def trainNewAgent(nr_of_games, training_model_number, enemy_model_number, learni
     for i in track(range(nr_of_games), description=f'Training agent {training_model_number}...'):
         
         env.playGame(enemy_agent, train_agent, train, log)
+        if i % 10 == 0 and i > 1:
+            train_agent.target_train()
         #avg_score += state.players[1].score
         if i > 2:
             with writer.as_default():
@@ -76,6 +78,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
     for i in range(start_game, end_game):  #track(range(start_game, end_game), description=f'Training agent {training_model_number}...'):
         
         env.playGame(enemy_agent, train_agent, train, log)
+        
         #avg_score += env.players[1].score
         if i > start_game + 2:
             with writer.as_default():
@@ -102,7 +105,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
     del enemy_agent
     
 
-trainNewAgent(1000, 8, 4, 0.001, 0.85)
+trainNewAgent(500, 9, 8, 0.0001, 0.95)
 
 
 

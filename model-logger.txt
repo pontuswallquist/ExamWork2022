@@ -16,13 +16,21 @@ learning rate = 0.002
 
 
 Model 7 with penalty for losing servants
+Trained for 250 games = 7h 50 min
 epsilon decay = 0.998
 gamma = 0.95
 learning rate = 0.001
-Trained for 250 games = 7h 50 min
 59 % winrate vs Model 14, Avg score: 35
 57 % winrate vs Model 4,  Avg score: 35
 
 
+Model 8 with penalty for losing servants
+Trained for 1000 games = 40h 30 min
+epsilon decay = 0.9975
+gamma = 0.85
+learning rate = 0.001
+57 % winrate vs model 4, Avg score: 37.25
+76.5 % winrate vs model 14, Avg score: 40.7
+58 % winrate vs model 7, Avg score: 36.3
 
 

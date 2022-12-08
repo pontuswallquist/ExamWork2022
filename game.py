@@ -280,8 +280,8 @@ class Crypt:
                     train_agent.replay()
                     
                     if done:
-                        if train is True:
-                            train_agent.target_train()
+                        #if train is True:
+                        #    train_agent.target_train()
                         turn += 1
                         continue
 
@@ -429,11 +429,11 @@ class Crypt:
         reward = 0
         if action == 'Recover':
             if self.players[playerNr].nr_servants_available() == 0:
-                reward = 2
+                reward = -5
             elif self.players[playerNr].nr_servants_available() == 1:
-                reward = 1
+                reward = -10
             elif self.players[playerNr].nr_servants_available() == 2:
-                reward = 0
+                reward = -15
             self.players[playerNr].recoverAllExhaustedServants()
 
         elif action == 'useRemains':
