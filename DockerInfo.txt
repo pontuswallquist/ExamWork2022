@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 
 docker build -t crypt .
 
-docker run --gpus all -it crypt bash
+docker run -it crypt bash
