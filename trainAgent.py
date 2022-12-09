@@ -25,7 +25,7 @@ def trainNewAgent(nr_of_games, training_model_number, enemy_model_number, learni
     for i in track(range(nr_of_games), description=f'Training agent {training_model_number}...'):
         
         env.playGame(enemy_agent, train_agent, train, log)
-        if i % 10 == 0 and i > 1:
+        if i % 2 == 0 and i > 2:
             train_agent.target_train()
         #avg_score += state.players[1].score
         if i > 2:
@@ -105,7 +105,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
     del enemy_agent
     
 
-trainNewAgent(500, 9, 8, 0.0001, 0.95)
+trainNewAgent(500, 10, 8, 0.0001, 0.95)
 
 
 

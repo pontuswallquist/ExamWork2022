@@ -61,9 +61,9 @@ class DQNAgent:
         input_layer = Input(shape=(self.nr_states,))
         hidden_layer = Dense(40, activation='relu')(input_layer)
 
-        dropout_layer = Dropout(0.5)(hidden_layer)
+        #dropout_layer = Dropout(0.5)(hidden_layer)
 
-        output_layer = Dense(self.nr_actions, activation='softmax')(dropout_layer)
+        output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
         
 
         model = Model(inputs=input_layer, outputs=output_layer, name='DQN')

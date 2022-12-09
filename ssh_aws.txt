@@ -1,0 +1,12 @@
+ssh -i .\pontus-aws.pem ubuntu@ec2-3-64-125-255.eu-central-1.compute.amazonaws.com
+
+git access token: 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
+
+
+docker cp musing_goldwasser:/tmp/model_9.h5 .
+
+docker cp musing_goldwasser:/tmp/target_model_9.h5 .
+
+docker cp musing_goldwasser:/tmp/tensorboard/model_9 .
+
+docker cp musing_goldwasser:/tmp/parameters_9.txt .

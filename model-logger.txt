@@ -33,4 +33,15 @@ learning rate = 0.001
 76.5 % winrate vs model 14, Avg score: 40.7
 58 % winrate vs model 7, Avg score: 36.3
 
+Model 4 and Model 8 are best at this point
+
+Model 9 with penalty
+Trained for 500 games
+epsilon_decay = 0.999
+gamma = 0.95
+learning_rate = 0.0001
+12 % winrate vs model 8
+11.5 % winrate vs model 14
+
+
 

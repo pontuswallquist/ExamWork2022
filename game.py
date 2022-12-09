@@ -206,7 +206,7 @@ class Crypt:
     def claimPhase(self, enemy_agent, train_agent, train, log):
 
         # Penalty for missing servants
-        penalty = 3 * (self.players[1].nr_servants_available() - 3)
+        #penalty = 3 * (self.players[1].nr_servants_available() - 3)
     
         if self.players[0].hasTorch():
             turn = 0
@@ -242,7 +242,7 @@ class Crypt:
                 p0_played = True
             
                 if log is True:
-                    self.console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', style='bold red')
+                    self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold red')
                 #log_action(curr__input_state, action, 0)
 
                 if turn == 2 and self.players[0].hasTorch() and p0_played and p1_played:
@@ -267,11 +267,11 @@ class Crypt:
                 reward = self.ResultOfAction(1, action)
                 p1_played = True
 
-                if turn == 1:
-                    reward += penalty
+                #if turn == 1:
+                #    reward += penalty
 
                 if log is True:
-                    self.console.print(curr__input_state.tolist(), action, reward, sep='\n', justify='center', style='bold blue')
+                    self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold blue')
                     
                 # call Remember with the state before action, action, reward, state after action, done
                 if train is True:
@@ -289,7 +289,7 @@ class Crypt:
                     phase_over = True
                 
                 if action == 'Recover':
-                    turn += 1                
+                    turn += 1               
                     continue
 
     def collectPhase(self):
@@ -386,10 +386,9 @@ class Crypt:
 
         servants_available = self.players[playerNr].nr_servants_available()
 
-        if (playerNr == 0 and turn == 0 and not hasPlayed) or (playerNr == 1 and turn == 1 and not hasPlayed):
-            if self.players[playerNr].hasExhaustedServants():
-                actionspace[0][0] = 1
-                actions.append('Recover')
+        if self.players[playerNr].hasExhaustedServants() and hasPlayed is False:
+            actionspace[0][0] = 1
+            actions.append('Recover')
             
         # Servant needs to be exhausted to be used by remains card or recover
         if self.players[playerNr].hasExhaustedServants():
@@ -429,11 +428,11 @@ class Crypt:
         reward = 0
         if action == 'Recover':
             if self.players[playerNr].nr_servants_available() == 0:
-                reward = -5
-            elif self.players[playerNr].nr_servants_available() == 1:
                 reward = -10
+            elif self.players[playerNr].nr_servants_available() == 1:
+                reward = -20
             elif self.players[playerNr].nr_servants_available() == 2:
-                reward = -15
+                reward = -30
             self.players[playerNr].recoverAllExhaustedServants()
 
         elif action == 'useRemains':
@@ -470,7 +469,6 @@ class Crypt:
             ## With just the score as reward, the agent will always try to get the highest score possible
             reward = self.players[playerNr].score + self.players[playerNr].nr_servants_available()
 
-            #Try with penalty for using servants
             
         return reward
 
