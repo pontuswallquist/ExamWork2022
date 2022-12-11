@@ -33,7 +33,7 @@ learning rate = 0.001
 76.5 % winrate vs model 14, Avg score: 40.7
 58 % winrate vs model 7, Avg score: 36.3
 
-Model 4 and Model 8 are best at this point
+
 
 Model 10 with penalty and target train every other game
 Trained for 500 games
@@ -43,5 +43,7 @@ learning_rate = 0.0001
 38 % winrate vs model 8 as Blue, 65 % winrate as Red
 66 % winrate vs model 14
 75 % winrate vs model 4
+
+Model 10 and model 8 are best at this point
 
 Model 11 with penalty and target train every game
