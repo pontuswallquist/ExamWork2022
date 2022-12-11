@@ -35,13 +35,13 @@ learning rate = 0.001
 
 Model 4 and Model 8 are best at this point
 
-Model 9 with penalty
+Model 10 with penalty and target train every other game
 Trained for 500 games
 epsilon_decay = 0.999
 gamma = 0.95
 learning_rate = 0.0001
-12 % winrate vs model 8
-11.5 % winrate vs model 14
+38 % winrate vs model 8 as Blue, 65 % winrate as Red
+66 % winrate vs model 14
+75 % winrate vs model 4
 
-
-
+Model 11 with penalty and target train every game
