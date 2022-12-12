@@ -6,7 +6,7 @@ COPY player.py /tmp
 COPY game.py /tmp
 COPY trainAgent.py /tmp
 COPY testAgent.py /tmp
-COPY model_10.h5 /tmp
+COPY model_14.h5 /tmp
 COPY requirements.txt /tmp
 WORKDIR /tmp
 
