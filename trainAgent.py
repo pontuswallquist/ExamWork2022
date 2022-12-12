@@ -8,14 +8,14 @@ import time
 
 
 
-def trainNewAgent(nr_of_games, training_model_number, enemy_model_number, learning_rate, gamma):
+def trainNewAgent(nr_of_games, training_model_number, enemy_model_number):
     console = Console()
     avg_score = 0
     train = True
     log = False
 
-    train_agent = DQNAgent(learning_rate=learning_rate, epsilon_decay=0.999, gamma=gamma)
-    enemy_agent = DQNAgent(epsilon=0.01)
+    train_agent = DQNAgent()
+    enemy_agent = DQNAgent(epsilon=0.2)
     enemy_agent.load_model(f'model_{enemy_model_number}.h5')
 
     writer = tf.summary.create_file_writer(logdir=f"tensorboard/model_{training_model_number}")
@@ -25,7 +25,9 @@ def trainNewAgent(nr_of_games, training_model_number, enemy_model_number, learni
     for i in track(range(nr_of_games), description=f'Training agent {training_model_number}...'):
         
         env.playGame(enemy_agent, train_agent, train, log)
-
+        # Train target network every 5 games
+        if i % 5 == 0 and i > 2:
+            train_agent.target_train()
         #avg_score += state.players[1].score
         if i > 2:
             with writer.as_default():
@@ -104,7 +106,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
     del enemy_agent
     
 
-trainNewAgent(500, 11, 10, 0.0001, 0.85)
+trainNewAgent(2000, 13, 14)
 
 
 

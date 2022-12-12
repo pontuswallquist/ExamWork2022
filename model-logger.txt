@@ -33,8 +33,6 @@ learning rate = 0.001
 76.5 % winrate vs model 14, Avg score: 40.7
 58 % winrate vs model 7, Avg score: 36.3
 
-
-
 Model 10 with penalty and target train every other game
 Trained for 500 games
 epsilon_decay = 0.999
@@ -47,3 +45,22 @@ learning_rate = 0.0001
 Model 10 and model 8 are best at this point
 
 Model 11 with penalty and target train every game
+Trained for 500 games
+LR = 0.0001
+gamma = 0.85
+32 % winrate vs model 10
+61 % winrate vs model 8
+
+Model 12 with penalty and target train every game
+Has better action taking
+Trained for 500 games
+LR = 0.005
+gamma = 0.85
+8 % winrate vs model 10
+10 % winrate vs model 8
+8.5 % winrate vs model 14
+
+Model 13 with target train every 5 games
+Trained for 2000 games
+LR = 0.0025
+gamma = 0.85

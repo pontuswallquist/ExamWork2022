@@ -23,7 +23,7 @@ class Player:
 
     def hasExhaustedServants(self):
         for servant in self.servants.values():
-            if servant.isExhausted and not servant.onCard:
+            if servant.isExhausted:
                 return True
         return False
 

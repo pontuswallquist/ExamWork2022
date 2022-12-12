@@ -47,7 +47,7 @@ def testAgent(enemy_model_number, trained_model_number, nr_of_games):
 def playSingleGame(enemy_model_number, trained_model_number):
     train = False
     log = True
-    enemy_agent = DQNAgent(epsilon=0.01)
+    enemy_agent = DQNAgent(epsilon=0.05)
     enemy_agent.load_model(f'model_{enemy_model_number}.h5')
     trained_agent = DQNAgent(epsilon=0.01)
     trained_agent.load_model(f'model_{trained_model_number}.h5')
@@ -56,9 +56,9 @@ def playSingleGame(enemy_model_number, trained_model_number):
     env.reset()
     print("Done!")
 
-testAgent(8, 10, 200)
+testAgent(14, 8, 200)
 
-playSingleGame(8, 10)
+playSingleGame(14, 8)
 
 
 

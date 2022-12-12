@@ -27,13 +27,13 @@ class ClearMemory(Callback):
         K.clear_session()
 
 class DQNAgent:
-    def __init__(self, learning_rate=0.001, epsilon=1.0, epsilon_decay=0.98, gamma=0.95):
+    def __init__(self, epsilon=1.0):
         self.memory = deque(maxlen=10000)
-        self.gamma = gamma    # discount rate
+        self.gamma = 0.85    # discount rate
         self.epsilon = epsilon # exploration rate
         self.epsilon_min = 0.01
-        self.epsilon_decay = epsilon_decay
-        self.learning_rate = learning_rate
+        self.epsilon_decay = 0.999
+        self.learning_rate = 0.0025
         self.training_history = None
         self.nr_actions = 56
         self.nr_states = 25
@@ -59,12 +59,8 @@ class DQNAgent:
 
     def create_model(self):
         input_layer = Input(shape=(self.nr_states,))
-        hidden_layer = Dense(40, activation='relu')(input_layer)
-
-        #dropout_layer = Dropout(0.5)(hidden_layer)
-
-        output_layer = Dense(self.nr_actions, activation='softmax')(hidden_layer)
-        
+        hidden_layer = Dense(40, activation='relu', kernel_initializer='he_uniform')(input_layer)
+        output_layer = Dense(self.nr_actions, activation='softmax', kernel_initializer='he_uniform')(hidden_layer)
 
         model = Model(inputs=input_layer, outputs=output_layer, name='DQN')
 

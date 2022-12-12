@@ -280,8 +280,8 @@ class Crypt:
                     train_agent.replay()
                     
                     if done:
-                        if train is True:
-                            train_agent.target_train()
+                        #if train is True:
+                        #    train_agent.target_train()
                         turn += 1
                         continue
 
