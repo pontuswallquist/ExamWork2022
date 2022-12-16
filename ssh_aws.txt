@@ -1,4 +1,4 @@
-ssh -i .\pontus-aws.pem ubuntu@ec2-3-122-193-175.eu-central-1.compute.amazonaws.com
+ssh -i .\pontus-aws.pem ubuntu@ec2-52-59-229-90.eu-central-1.compute.amazonaws.com
 
-git access token: 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
+
 

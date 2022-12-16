@@ -106,7 +106,7 @@ def ContinueTraining(training_model_number, enemy_model_number, start_game, end_
     del enemy_agent
     
 
-trainNewAgent(2000, 13, 14)
+#trainNewAgent(2000, 13, 14)
 
 
 

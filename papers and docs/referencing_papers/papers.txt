@@ -6,18 +6,21 @@ https://www.kickstarter.com/projects/roadtoinfamy/crypt-1
 2: Richard S. Sutton and Andrew G. Barto. Reinforcement Learning, An Introduction. MIT Press, 1998
 https://redirect.cs.umbc.edu/courses/graduate/678/spring17/RL-3.pdf
 
-3: David Silver et al. Mastering the game of Go without human knowledge. 2017
+3: Ronald A Howard. Dynamic programming and markov processes. 1960.
+
+4: David Silver et al. Mastering the game of Go without human knowledge. 2017
 Nature, 550:354–359
 
-4: OpenAI, Christopher Berner et al. Dota 2 with Large Scale Deep Reinforcement Learning. 2019
+5: OpenAI, Christopher Berner et al. Dota 2 with Large Scale Deep Reinforcement Learning. 2019
 https://doi.org/10.48550/arXiv.1912.06680
 
-5: Christopher John Cornish Hellaby Watkins. Learning from delayed rewards. 1989
+6: Christopher John Cornish Hellaby Watkins. Learning from delayed rewards. 1989
 
-6: Hado van Hasselt. Double Q-learning. 2010
+
+7: Hado van Hasselt. Double Q-learning. 2010
 https://papers.nips.cc/paper/2010/hash/091d584fced301b442654dd8c23b3fc9-Abstract.html
 
-7: Hado van Hasselt, Arthur Guez, and David Silver. Deep Reinforcement Learning with Double Q-learning, 2015
+8: Hado van Hasselt, Arthur Guez, and David Silver. Deep Reinforcement Learning with Double Q-learning, 2015
 https://arxiv.org/abs/1509.06461
 
 

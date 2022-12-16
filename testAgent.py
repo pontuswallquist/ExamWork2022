@@ -56,9 +56,9 @@ def playSingleGame(enemy_model_number, trained_model_number):
     env.reset()
     print("Done!")
 
-testAgent(14, 8, 200)
+testAgent(8, 13, 200)
 
-playSingleGame(14, 8)
+playSingleGame(8, 13)
 
 
 
