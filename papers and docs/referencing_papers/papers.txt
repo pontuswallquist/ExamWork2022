@@ -1,0 +1,34 @@
+Lägg till mer uppgifter om källor, En URL eller bara namn och år räcker inte
+
+1: Andrew Nerger and Jeffrey Chin. R2i Games. Crypt. 2018
+https://www.kickstarter.com/projects/roadtoinfamy/crypt-1
+
+2: Richard S. Sutton and Andrew G. Barto. Reinforcement Learning, An Introduction. MIT Press, 1998
+https://redirect.cs.umbc.edu/courses/graduate/678/spring17/RL-3.pdf
+
+3: David Silver et al. Mastering the game of Go without human knowledge. 2017
+Nature, 550:354–359
+
+4: OpenAI, Christopher Berner et al. Dota 2 with Large Scale Deep Reinforcement Learning. 2019
+https://doi.org/10.48550/arXiv.1912.06680
+
+5: Christopher John Cornish Hellaby Watkins. Learning from delayed rewards. 1989
+
+6: Hado van Hasselt. Double Q-learning. 2010
+https://papers.nips.cc/paper/2010/hash/091d584fced301b442654dd8c23b3fc9-Abstract.html
+
+7: Hado van Hasselt, Arthur Guez, and David Silver. Deep Reinforcement Learning with Double Q-learning, 2015
+https://arxiv.org/abs/1509.06461
+
+
+Konstantia Xenou, Georgios Chalkiadakis, Stergos Afantenos. Deep Reinforcement Learning in Strategic Board Game Environments.
+16th European Conference on Multi-Agent Systems (EUMAS 2018),
+Dec 2018, Bergen, Norway. pp.233-248. ffhal-02124411
+
+Oskar Arvidsson and Linus Wallgren. Q-Learning for a Simple Board Game.
+Bachelor’s Thesis in Computer Science at the School of Computer Science and Engineering
+Royal Institute of Technology 2010.
+https://www.csc.kth.se/utbildning/kandidatexjobb/datateknik/2010/rapport/arvidsson_oskar_OCH_wallgren_linus_K10047.pdf
+
+Diederik P. Kingma and Jimmy Ba. Adam: A method for stochastic optimization, 2014. (Adam optimizer)
+
