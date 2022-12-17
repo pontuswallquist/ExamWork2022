@@ -1,11 +1,12 @@
 from cards import *
 from player import *
+import copy
 import numpy as np
 from rich.console import Console
 
 class Crypt:
 
-    def __init__(self):
+    def __init__(self, player1, player2):
         # Initalize deck of treasure cards
         self.deck = []
         for type in range(1, 7):
@@ -26,26 +27,20 @@ class Crypt:
         }
 
         # Initialize players
-        self.players = [Player('Red', True), Player('Blue')]
+        self.players = [player1, player2]
 
-        #self.exhaustedServants = []
-        
         #Initialize board
         self.board = {
-            1: {'card': None, 'servants': [] },
-            2: {'card': None, 'servants': [] },
-            3: {'card': None, 'servants': [] }
+            1: {'card': None, 'servants': deque([], maxlen=3) },
+            2: {'card': None, 'servants': deque([], maxlen=3) },
+            3: {'card': None, 'servants': deque([], maxlen=3) }
         }
         self.turnsLeft = 8
 
     def reset(self):
-        del self.players
-        del self.collectors
-        del self.board
-        del self.deck
-        del self.turnsLeft
-        del self.console
-        self.__init__()
+        self.players[0].score = 0
+        self.players[1].score = 0
+        self.__init__(self.players[0], self.players[1])
 
     def get_current_bid(self, place):
         current_bid = 0
@@ -101,9 +96,6 @@ class Crypt:
         for card in self.players[1].collection:
             self.players[1].score += card.coinvalue
 
-
-
-
     def get_total_score(self):
         player1 = self.players[0]
         player2 = self.players[1]
@@ -146,22 +138,24 @@ class Crypt:
     def rollWithoutAction(self, playerNr, servant): 
         roll = servant.roll()
         if roll < servant.effort_value:
-            self.players[playerNr].exhaustAServant()
+            self.players[playerNr].exhaustAServant(servant)
+            #self.console.print(f"{self.players[playerNr].color} player exhausted a servant", justify='center')
             return
         else:
-            self.players[playerNr].recoverServantFromCard()
+            self.players[playerNr].recoverServantFromCard(servant)
 
     def rollWithAction(self, playerNr, servant):
         roll = servant.roll()
         if roll < servant.effort_value:
             newRoll = self.collectors[2].useCard(self.players[playerNr])
             if newRoll < servant.effort_value:
-                self.players[playerNr].exhaustAServant()
+                self.players[playerNr].exhaustAServant(servant)
+                #self.console.print(f"{self.players[playerNr].color} player exhausted a servant", justify='center')
                 return
             else:
-                self.players[playerNr].recoverServantFromCard()
+                self.players[playerNr].recoverServantFromCard(servant)
         else:
-            self.players[playerNr].recoverServantFromCard()
+            self.players[playerNr].recoverServantFromCard(servant)
     
     def collectTreasure(self, playerNr, place):
         card = self.board[place]['card']
@@ -176,13 +170,14 @@ class Crypt:
         if not len(self.board[place]['servants']) == 0:
             nr_servants_on_card = len(self.board[place]['servants'])
             for i in range(nr_servants_on_card):
-                self.players[otherPlayerNr].bump_off_servant()
+                servant = self.board[place]['servants'].pop()
+                self.players[otherPlayerNr].bump_off_servant(servant)
             self.board[place]['servants'].clear()
             bumped_off = True
 
         for i in range(servants):
             servant = self.players[playerNr].useServant(value)
-            servant.setEffort(value) #servant was None
+            servant.setEffort(value)
             self.board[place]['servants'].append(servant)
 
         return bumped_off
@@ -203,10 +198,7 @@ class Crypt:
         self.updateNewBoard(3)
 
 
-    def claimPhase(self, enemy_agent, train_agent, train, log):
-
-        # Penalty for missing servants
-        #penalty = 3 * (self.players[1].nr_servants_available() - 3)
+    def claimPhase(self, train, log):
     
         if self.players[0].hasTorch():
             turn = 0
@@ -226,26 +218,26 @@ class Crypt:
 
         #Model to train against
             if turn % 2 == 0:
-                list_of_actions, actionspace = self.Actions(0, turn, p0_played)
+                list_of_actions, actionspace = self.Actions(0, p0_played)
                 if len(list_of_actions) == 0:
                     turn += 1
                     continue
             
-            #Make sure we only train one agent against the other
-                action, action_id = enemy_agent.step(self.get_input_state(), list_of_actions, actionspace, False)
-                #action = random.choice(list_of_actions)
+            
+                action, action_id = self.players[0].step(self.get_input_state(), list_of_actions, actionspace, False)
 
                 if train is True or log is True:
                     curr__input_state = copy.deepcopy(self.get_input_state())
                 
                 reward = self.ResultOfAction(0, action)
                 p0_played = True
+                p1_played = False
             
                 if log is True:
                     self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold red')
                 #log_action(curr__input_state, action, 0)
 
-                if turn == 2 and self.players[0].hasTorch() and p0_played and p1_played:
+                if turn == 2 and self.players[0].hasTorch():
                     phase_over = True
 
                 if action == 'Recover':
@@ -254,30 +246,28 @@ class Crypt:
     ##################################################################################
         #Model to train
             elif turn % 2 == 1:   
-                list_of_actions, actionspace = self.Actions(1, turn, p1_played)
+                list_of_actions, actionspace = self.Actions(1, p1_played)
                 if len(list_of_actions) == 0:
                     turn += 1
                     continue
 
-                action, action_id = train_agent.step(self.get_input_state(), list_of_actions, actionspace, train)
+                action, action_id = self.players[1].step(self.get_input_state(), list_of_actions, actionspace, train)
 
                 if train is True or log is True:
                     curr__input_state = copy.deepcopy(self.get_input_state())
 
                 reward = self.ResultOfAction(1, action)
                 p1_played = True
-
-                #if turn == 1:
-                #    reward += penalty
+                p0_played = False
 
                 if log is True:
                     self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold blue')
                     
                 # call Remember with the state before action, action, reward, state after action, done
                 if train is True:
-                    done, reward = self.checkIfDone(1, action, reward, turn, p0_played)
-                    train_agent.remember(curr__input_state, action_id, reward, self.get_input_state(), done)
-                    train_agent.replay()
+                    done, reward = self.checkIfDone(1, action, reward, p0_played)
+                    self.players[1].remember(curr__input_state, action_id, reward, self.get_input_state(), done)
+                    self.players[1].replay()
                     
                     if done:
                         #if train is True:
@@ -285,18 +275,26 @@ class Crypt:
                         turn += 1
                         continue
 
-                if turn == 3 and self.players[1].hasTorch() and p0_played and p1_played:
+                if turn == 3 and self.players[1].hasTorch():
                     phase_over = True
                 
                 if action == 'Recover':
                     turn += 1               
                     continue
 
+    def AllServantsPushedOut(self, color):
+        #check the board places to see if there is a servant of the given color
+        for place in self.board.keys():
+            for servant in self.board[place]['servants']:
+                if servant.color == color:
+                    return False
+        return True
+        
     def collectPhase(self):
 
-        if self.players[0].ifAllServantsPushedOut():
+        if self.AllServantsPushedOut('Red'):
             self.players[0].recoverAllExhaustedServants()
-        elif self.players[1].ifAllServantsPushedOut():
+        elif self.AllServantsPushedOut('Blue'):
             self.players[1].recoverAllExhaustedServants()
         
 
@@ -320,12 +318,6 @@ class Crypt:
 
     def passTorchPhase(self, game_over):
         if not self.deck:
-            # reset score and count score
-            self.players[0].score = 0
-            self.players[1].score = 0
-            self.countBonus()
-            self.calculateCollectionScore()
-            self.countServants()
             game_over = True
         else:
             self.players[0].torch = not self.players[0].torch
@@ -333,7 +325,7 @@ class Crypt:
             game_over = False
         return game_over
 
-    def checkIfDone(self, playerNr, action, reward, turn, hasPlayed):
+    def checkIfDone(self, playerNr, action, reward, hasPlayed):
         otherPlayerNr = 0 if playerNr == 1 else 1
 
         self.players[0].score = 0
@@ -341,22 +333,20 @@ class Crypt:
         self.players[0].score, self.players[1].score  = self.get_total_score()
 
 
-        if self.turnsLeft == 0 and not self.hasAvailableActions(playerNr, turn, hasPlayed) or self.turnsLeft == 0 and action == 'Recover':
+        if self.turnsLeft == 0 and not self.hasAvailableActions(playerNr, hasPlayed) or self.turnsLeft == 0 and action == 'Recover':
             done = True
-            reward = 10 * (self.players[playerNr].score - self.players[otherPlayerNr].score)
+            reward = 5 * (self.players[playerNr].score - self.players[otherPlayerNr].score)
         else:
             done = False
         
         return done, reward
 
-    def hasAvailableActions(self, playerNr, turn, hasPlayed):
-        action_list, _ = self.Actions(playerNr, turn, hasPlayed)
+    def hasAvailableActions(self, playerNr, hasPlayed):
+        action_list, _ = self.Actions(playerNr, hasPlayed)
         if len(action_list) == 0:
             return False
         else:
             return True
-
-    
 
         
     def ActiontoIndex(self, place, servant, value):
@@ -375,7 +365,7 @@ class Crypt:
         return actionspace1D
 
 
-    def Actions(self, playerNr, turn, hasPlayed):
+    def Actions(self, playerNr, hasPlayed):
         actionspace = [
         [0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -386,7 +376,8 @@ class Crypt:
 
         servants_available = self.players[playerNr].nr_servants_available()
 
-        if self.players[playerNr].hasExhaustedServants() and hasPlayed is False:
+        exhaustedServants = self.players[playerNr].hasExhaustedServants()
+        if exhaustedServants and hasPlayed is False:
             actionspace[0][0] = 1
             actions.append('Recover')
             
@@ -440,36 +431,21 @@ class Crypt:
             reward = 10
         else:
             bid = action.split('-')
-
             place = int(bid[0])
             servant = int(bid[1])
             value = int(bid[2])
 
-            
             bumped_off = self.addServant2Card(playerNr, place, servant, value)
-            
 
             card = self.board[place]['card']
-
-            #subtract potential score for the player who was bumped off card
             otherPlayerNr = 1 if playerNr == 0 else 0
-            if bumped_off:
-                if card.type == 6:
-                    self.players[otherPlayerNr].score -= self.collectors[card.type].potentialValue(card, self.players[otherPlayerNr], self.players[playerNr])
-                else:
-                    self.players[otherPlayerNr].score -= self.collectors[card.type].potentialValue(card, self.players[playerNr])
-
-            #Add potential score for the player who owns the card
+            
             if card.type == 6:
-                self.players[playerNr].score += self.collectors[card.type].potentialValue(card, self.players[playerNr], self.players[otherPlayerNr])
+                reward += self.collectors[card.type].potentialValue(card, self.players[playerNr], self.players[otherPlayerNr])
             else:
-                self.players[playerNr].score += self.collectors[card.type].potentialValue(card, self.players[playerNr])
+                reward += self.collectors[card.type].potentialValue(card, self.players[playerNr])
             
-            
-            ## With just the score as reward, the agent will always try to get the highest score possible
-            reward = self.players[playerNr].score + self.players[playerNr].nr_servants_available()
-
-            
+            reward += self.players[playerNr].nr_servants_available()
         return reward
 
     def ReducePossibleActions(self, actionspace, actions):
@@ -478,10 +454,10 @@ class Crypt:
             actions[i] = actions[i] * actionspace1d[i]
         return actions
 
-    def playGame(self, enemy_agent, train_agent, train, log):
+    def playGame(self, train, log):
         game_over = False
         while not game_over:
             self.revealPhase()
-            self.claimPhase(enemy_agent, train_agent, train, log)
+            self.claimPhase(train, log)
             self.collectPhase()
             game_over = self.passTorchPhase(game_over)

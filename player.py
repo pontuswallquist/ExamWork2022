@@ -1,82 +1,67 @@
-import copy
 from cards import *
 import random
+from collections import deque
 
-
-class Player:
+class PlayerInterface:
 
     def __init__(self, color, torch = False):
         self.color = color
         self.torch = torch
         self.collection = []
         self.score = 0
-        self.servants = { 1: Servant(color), 2: Servant(color), 3: Servant(color) }
+        self.servants = deque([Servant(color), Servant(color), Servant(color)], maxlen=3)
+        self.exhaustedServants = deque([], maxlen=3)
+
+        self.map_actions_to_id = {
+            'Recover': 0,
+            'useRemains': 1,
+            '1-1-1': 2, '1-1-2': 3, '1-1-3': 4, '1-1-4': 5, '1-1-5': 6, '1-1-6': 7,
+            '1-2-1': 8, '1-2-2': 9, '1-2-3': 10, '1-2-4': 11, '1-2-5': 12, '1-2-6': 13,
+            '1-3-1': 14, '1-3-2': 15, '1-3-3': 16, '1-3-4': 17, '1-3-5': 18, '1-3-6': 19,
+            '2-1-1': 20, '2-1-2': 21, '2-1-3': 22, '2-1-4': 23, '2-1-5': 24, '2-1-6': 25,
+            '2-2-1': 26, '2-2-2': 27, '2-2-3': 28, '2-2-4': 29, '2-2-5': 30, '2-2-6': 31,
+            '2-3-1': 32, '2-3-2': 33, '2-3-3': 34, '2-3-4': 35, '2-3-5': 36, '2-3-6': 37,
+            '3-1-1': 38, '3-1-2': 39, '3-1-3': 40, '3-1-4': 41, '3-1-5': 42, '3-1-6': 43,
+            '3-2-1': 44, '3-2-2': 45, '3-2-3': 46, '3-2-4': 47, '3-2-5': 48, '3-2-6': 49,
+            '3-3-1': 50, '3-3-2': 51, '3-3-3': 52, '3-3-4': 53, '3-3-5': 54, '3-3-6': 55
+        }
+
+        self.map_id_to_actions = {v: k for k, v in self.map_actions_to_id.items()}
+
 
     def useServant(self, value):
-        for servant in self.servants.values():
-            if servant.isExhausted or servant.onCard:
-                continue
-            else:
-                servant.onCard = True
-                servant.setValue(value)
-                return servant
+        servant = self.servants.pop()
+        servant.setValue(value)
+        return servant
 
     def hasExhaustedServants(self):
-        for servant in self.servants.values():
-            if servant.isExhausted:
-                return True
+        if self.exhaustedServants:
+            return True
         return False
 
-
     def nr_servants_available(self):
-        count = 0
-        for servant in self.servants.values():
-            if servant.isExhausted or servant.onCard:
-                continue
-            else:
-                count += 1
-        return count
+        return len(self.servants)
     
     def hasTorch(self):
         return self.torch
 
-    def ifAllServantsPushedOut(self):
-        for servant in self.servants.values():
-            if servant.onCard and not servant.isExhausted:
-                return False
-        return True
-
     def recoverAllExhaustedServants(self):
-        for servant in self.servants.values():
-            if servant.isExhausted:
-                servant.isExhausted = False
-
-    def bump_off_servant(self):
-        for servant in self.servants.values():
-            if servant.onCard and not servant.isExhausted:
-                servant.onCard = False
-                return
+        for i in range(len(self.exhaustedServants)):
+            servant = self.exhaustedServants.pop()
+            self.servants.append(servant)
+            
+    def bump_off_servant(self, servant):
+        self.servants.append(servant)
   
     def recoverExhaustedServant(self):
-        for servant in self.servants.values():
-            if servant.isExhausted and not servant.onCard:
-                servant.isExhausted = False
-                servant.onCard = False
-                return
+        servant = self.exhaustedServants.pop()
+        self.servants.append(servant)
 
-    def recoverServantFromCard(self):
-        for servant in self.servants.values():
-            if servant.onCard and not servant.isExhausted:
-                servant.onCard = False
-                servant.isExhausted = False
-                return
+    def recoverServantFromCard(self, servant):
+        self.servants.append(servant)
 
-    def exhaustAServant(self):
-        for servant in self.servants.values():
-            if not servant.isExhausted and servant.onCard:
-                servant.isExhausted = True
-                servant.onCard = False
-                return
+    def exhaustAServant(self, servant):
+        self.exhaustedServants.append(servant)
     
     def addTreasure(self, treasure):
         self.collection.append(treasure)
@@ -130,8 +115,6 @@ class Servant:
         self.color = color
         self.value = 0
         self.effort_value = 0
-        self.isExhausted = False
-        self.onCard = False
 
     def __repr__(self):
         return str(self.color + '-' + str(self.value))
@@ -147,3 +130,26 @@ class Servant:
 
     def setValue(self, value):
         self.value = value
+
+class HumanPlayer(PlayerInterface):
+    
+    def __init__(self, color, torch=False):
+        super().__init__(color, torch)
+    
+    def step(self, input_state, list_of_possible_actions, actionspace, train):
+        
+        # Render action space with pygame
+        # Get action from user
+        # Map action to action_id
+        # return action, action_id
+        pass
+      
+class RandomPlayer(PlayerInterface):
+
+    def __init__(self, color, torch=False):
+        super().__init__(color, torch)
+
+    def step(self, input_state, list_of_possible_actions, actionspace, train):
+        action = random.choice(list_of_possible_actions)
+        action_id = self.map_actions_to_id[action]
+        return action, action_id

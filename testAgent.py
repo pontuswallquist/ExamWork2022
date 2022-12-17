@@ -1,5 +1,6 @@
 from game import Crypt
 from DQN_agent import DQNAgent
+from player import RandomPlayer, HumanPlayer
 from rich.console import Console
 from rich.progress import track
 
@@ -13,52 +14,112 @@ def append_winner(state, model1_wins, model2_wins, ties):
         ties.append(state.players[1].score)
 
 
-
-def testAgent(enemy_model_number, trained_model_number, nr_of_games):
+def testModelVsModel(model_nr, enemy_nr, nr_of_games):
     train = False
     log = False
     console = Console()
 
-    enemy_agent = DQNAgent(epsilon=0.01)
-    enemy_agent.load_model(f'model_{enemy_model_number}.h5')
+    player1 = DQNAgent('Red', torch=True, epsilon=0.01)
+    player1.load_model(f'model_{enemy_nr}.h5')
 
-    trained_agent = DQNAgent(epsilon=0.01)
-    trained_agent.load_model(f'model_{trained_model_number}.h5')
-
-    trained_model_wins = []
-    enemy_model_wins = []
+    player2 = DQNAgent('Blue', epsilon=0.01)
+    player2.load_model(f'model_{model_nr}.h5')
+    
+    model_wins = []
+    enemy_wins = []
     ties = []
-    avg_score = 0
+    model_score = 0
+    enemy_score = 0
 
-    env = Crypt()
-    for i in track(range(nr_of_games), description=f'Testing agent {trained_model_number}...'):
+    env = Crypt(player1, player2)
+    for i in track(range(nr_of_games), description=f'Testing agent {model_nr}...'):
         
-        env.playGame(enemy_agent, trained_agent, train, log)
-        avg_score += env.players[1].score
-        append_winner(env, trained_model_wins, enemy_model_wins, ties)
+        env.playGame(train, log)
+        enemy_score += env.players[0].score
+        model_score += env.players[1].score
+        append_winner(env, model_wins, enemy_wins, ties)
         env.reset()
 
-    console.print(f"Model {trained_model_number} won {len(trained_model_wins)/nr_of_games*100}% of the games")
-    console.print(f"Model {trained_model_number} lost {len(enemy_model_wins)/nr_of_games*100}% of the games")
-    console.print(f"Model {trained_model_number} tied {len(ties)/nr_of_games*100}% of the games")
-    console.print(f"Model {trained_model_number} average score: {avg_score/nr_of_games}")
-    #console.print(f"Enemy {enemy_model_number} average score: {} games")
+    console.print(f"Model {model_nr} won {len(model_wins)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_nr} lost {len(enemy_wins)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_nr} tied {len(ties)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_nr} average score: {(model_score/nr_of_games)}")
+    console.print(f"Enemy {enemy_nr} average score: {(enemy_score/nr_of_games)}")
+
+def testModelVsRandom(model_nr, nr_of_games):
+    train = False
+    log = False
+    console = Console()
+
+    player1 = RandomPlayer('Red', torch=True)
+
+    player2 = DQNAgent('Blue', epsilon=0.01)
+    player2.load_model(f'model_{model_nr}.h5')
     
-def playSingleGame(enemy_model_number, trained_model_number):
+    model_wins = []
+    enemy_wins = []
+    ties = []
+    model_score = 0
+    enemy_score = 0
+
+    env = Crypt(player1, player2)
+    for i in track(range(nr_of_games), description=f'Testing agent {model_nr}...'):
+        
+        env.playGame(train, log)
+        enemy_score += env.players[0].score
+        model_score += env.players[1].score
+        append_winner(env, model_wins, enemy_wins, ties)
+        env.reset()
+
+    console.print(f"Model {model_nr} won {len(model_wins)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_nr} lost {len(enemy_wins)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_nr} tied {len(ties)/nr_of_games*100}% of the games")
+    console.print(f"Model {model_nr} average score: {(model_score/nr_of_games)}")
+    console.print(f"Random average score: {(enemy_score/nr_of_games)}")
+    
+def singleGameModelVsModel(enemy_model_number, trained_model_number):
     train = False
     log = True
-    enemy_agent = DQNAgent(epsilon=0.05)
-    enemy_agent.load_model(f'model_{enemy_model_number}.h5')
-    trained_agent = DQNAgent(epsilon=0.01)
-    trained_agent.load_model(f'model_{trained_model_number}.h5')
-    env = Crypt()
-    env.playGame(enemy_agent, trained_agent, train, log)
-    env.reset()
+
+    player1 = DQNAgent('Red', torch=True, epsilon=0.01)
+    player1.load_model(f'model_{enemy_model_number}.h5')
+
+    player2 = DQNAgent('Blue', epsilon=0.01)
+    player2.load_model(f'model_{trained_model_number}.h5')
+
+    env = Crypt(player1, player2)
+    env.playGame(train, log)
     print("Done!")
 
-testAgent(8, 13, 200)
+def singleGameModelVsRandom(trained_model_number):
+    train = False
+    log = True
 
-playSingleGame(8, 13)
+    player1 = RandomPlayer('Red', torch=True)
+    
+    player2 = DQNAgent('Blue', epsilon=0.01)
+    player2.load_model(f'model_{trained_model_number}.h5')
+
+    env = Crypt(player1, player2)
+    env.playGame(train, log)
+    print("Done!")
+
+def singleGameRandomVsRandom():
+    train = False
+    log = True
+
+    player1 = RandomPlayer('Red', torch=True)
+    player2 = RandomPlayer('Blue')
+
+    env = Crypt(player1, player2)
+    env.playGame(train, log)
+    print("Done!")
+
+
+
+
+
+
 
 
 

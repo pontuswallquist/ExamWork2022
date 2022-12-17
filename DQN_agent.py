@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from player import PlayerInterface
 from keras.layers import Input, Dense, Dropout
 from keras import backend as K
 from keras.models import Model, load_model
@@ -26,8 +27,10 @@ class ClearMemory(Callback):
     def on_epoch_end(self, epoch, logs=None):
         K.clear_session()
 
-class DQNAgent:
-    def __init__(self, epsilon=1.0):
+class DQNAgent(PlayerInterface):
+    def __init__(self, color, torch=False, epsilon=1.0):
+        super().__init__(color, torch)
+
         self.memory = deque(maxlen=10000)
         self.gamma = 0.85    # discount rate
         self.epsilon = epsilon # exploration rate
@@ -36,31 +39,15 @@ class DQNAgent:
         self.learning_rate = 0.0025
         self.training_history = None
         self.nr_actions = 56
-        self.nr_states = 25
-
-        self.map_actions_to_id = {
-            'Recover': 0,
-            'useRemains': 1,
-            '1-1-1': 2, '1-1-2': 3, '1-1-3': 4, '1-1-4': 5, '1-1-5': 6, '1-1-6': 7,
-            '1-2-1': 8, '1-2-2': 9, '1-2-3': 10, '1-2-4': 11, '1-2-5': 12, '1-2-6': 13,
-            '1-3-1': 14, '1-3-2': 15, '1-3-3': 16, '1-3-4': 17, '1-3-5': 18, '1-3-6': 19,
-            '2-1-1': 20, '2-1-2': 21, '2-1-3': 22, '2-1-4': 23, '2-1-5': 24, '2-1-6': 25,
-            '2-2-1': 26, '2-2-2': 27, '2-2-3': 28, '2-2-4': 29, '2-2-5': 30, '2-2-6': 31,
-            '2-3-1': 32, '2-3-2': 33, '2-3-3': 34, '2-3-4': 35, '2-3-5': 36, '2-3-6': 37,
-            '3-1-1': 38, '3-1-2': 39, '3-1-3': 40, '3-1-4': 41, '3-1-5': 42, '3-1-6': 43,
-            '3-2-1': 44, '3-2-2': 45, '3-2-3': 46, '3-2-4': 47, '3-2-5': 48, '3-2-6': 49,
-            '3-3-1': 50, '3-3-2': 51, '3-3-3': 52, '3-3-4': 53, '3-3-5': 54, '3-3-6': 55
-        }
-
-        self.map_id_to_actions = {v: k for k, v in self.map_actions_to_id.items()}
+        self.nr_inputs = 25
 
         self.model = self.create_model()
         self.target_model = self.create_model()
 
     def create_model(self):
-        input_layer = Input(shape=(self.nr_states,))
+        input_layer = Input(shape=(self.nr_inputs,))
         hidden_layer = Dense(40, activation='relu', kernel_initializer='he_uniform')(input_layer)
-        output_layer = Dense(self.nr_actions, activation='softmax', kernel_initializer='he_uniform')(hidden_layer)
+        output_layer = Dense(self.nr_actions, activation='linear', kernel_initializer='he_uniform')(hidden_layer)
 
         model = Model(inputs=input_layer, outputs=output_layer, name='DQN')
 
