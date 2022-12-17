@@ -51,11 +51,9 @@ gamma = 0.85
 32 % winrate vs model 10
 61 % winrate vs model 8
 
-Model 13 with target train every 5 games
-Trained for 2000 games
-LR = 0.0025
-gamma = 0.85
-54 % winrate vs model 14
-15 % winrate vs model 8
 
+Model 15, Linear Activation Func and target train every 5 games
+
+
+Model 16, Linear Activation Func and target train every 10 games
 
