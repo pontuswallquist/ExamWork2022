@@ -3,7 +3,6 @@ from player import *
 import copy
 import numpy as np
 from rich.console import Console
-import pygame
 
 class Crypt:
 
@@ -453,12 +452,10 @@ class Crypt:
             actions[i] = actions[i] * actionspace1d[i]
         return actions
 
-    def playGame(self, train, log, render=False):
-        if render:
-            pass
+    def playGame(self, train, log):
         game_over = False
         while not game_over:
             self.revealPhase()
-            self.claimPhase(train, log, render)
+            self.claimPhase(train, log)
             self.collectPhase()
             game_over = self.passTorchPhase(game_over)
