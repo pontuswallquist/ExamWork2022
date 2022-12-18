@@ -28,6 +28,8 @@ class PlayerInterface:
 
         self.map_id_to_actions = {v: k for k, v in self.map_actions_to_id.items()}
 
+    def resetScore(self):
+        self.score = 0
 
     def useServant(self, value):
         servant = self.servants.pop()

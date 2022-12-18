@@ -3,6 +3,7 @@ from player import *
 import copy
 import numpy as np
 from rich.console import Console
+import pygame
 
 class Crypt:
 
@@ -38,8 +39,6 @@ class Crypt:
         self.turnsLeft = 8
 
     def reset(self):
-        self.players[0].score = 0
-        self.players[1].score = 0
         self.__init__(self.players[0], self.players[1])
 
     def get_current_bid(self, place):
@@ -454,10 +453,12 @@ class Crypt:
             actions[i] = actions[i] * actionspace1d[i]
         return actions
 
-    def playGame(self, train, log):
+    def playGame(self, train, log, render=False):
+        if render:
+
         game_over = False
         while not game_over:
             self.revealPhase()
-            self.claimPhase(train, log)
+            self.claimPhase(train, log, render)
             self.collectPhase()
             game_over = self.passTorchPhase(game_over)

@@ -53,7 +53,13 @@ gamma = 0.85
 
 
 Model 15, Linear Activation Func and target train every 5 games
-
+91 % winrate vs model 16
+72 % winrate vs Random
 
 Model 16, Linear Activation Func and target train every 10 games
+35 % winrate vs Random
+6 % winrate vs model 15
+
+Model 17, Linear Activation Func and target train every game
+
 
