@@ -455,7 +455,7 @@ class Crypt:
 
     def playGame(self, train, log, render=False):
         if render:
-
+            pass
         game_over = False
         while not game_over:
             self.revealPhase()
