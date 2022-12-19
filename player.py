@@ -111,28 +111,6 @@ class PlayerInterface:
         count = sum(1 for x in self.collection if x.type == 6)
         return count
 
-class Servant:
-
-    def __init__(self, color):
-        self.color = color
-        self.value = 0
-        self.effort_value = 0
-
-    def __repr__(self):
-        return str(self.color + '-' + str(self.value))
-
-    def roll(self):
-        return random.randint(1, 6)
-
-    def setEffort(self, value):
-        self.effort_value = value
-
-    def getEffort(self):
-        return self.effort_value
-
-    def setValue(self, value):
-        self.value = value
-
 class HumanPlayer(PlayerInterface):
     
     def __init__(self, color, torch=False):
@@ -155,3 +133,25 @@ class RandomPlayer(PlayerInterface):
         action = random.choice(list_of_possible_actions)
         action_id = self.map_actions_to_id[action]
         return action, action_id
+
+class Servant:
+
+    def __init__(self, color):
+        self.color = color
+        self.value = 1
+        self.effort_value = 0
+
+    def __repr__(self):
+        return str(self.color + '-' + str(self.value))
+
+    def roll(self):
+        return random.randint(1, 6)
+
+    def setEffort(self, value):
+        self.effort_value = value
+
+    def getEffort(self):
+        return self.effort_value
+
+    def setValue(self, value):
+        self.value = value

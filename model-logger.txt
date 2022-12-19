@@ -60,6 +60,8 @@ Model 16, Linear Activation Func and target train every 10 games
 35 % winrate vs Random
 6 % winrate vs model 15
 
-Model 17, Linear Activation Func and target train every game
-
+Model 18, Linear Activation Func and target train every game
+0 % winrate vs Random
+0 % winrate vs model 15
+ % winrate vs model 16
 

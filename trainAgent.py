@@ -32,7 +32,8 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
         
         env.playGame(train, log)
         # Train target network every game
-        train_agent.target_train()
+        if i % 5 == 0:
+         train_agent.target_train()
         #avg_score += state.players[1].score
         if i > 2:
             with writer.as_default():
@@ -58,7 +59,7 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
 
     
 
-trainNewAgent(18, 'random', 500)
+trainNewAgent(19, 15, 500)
 
 
 

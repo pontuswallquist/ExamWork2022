@@ -129,10 +129,24 @@ def singleGameRandomVsRandom():
     env.playGame(train, log)
     print("Done!")
 
+def singleGameHumanVsModel(model_nr):
+    train = False
+    log = False
 
-testModelVsModel(16, 15, 100)
+    player1 = HumanPlayer('Red', torch=True)
+    player2 = DQNAgent('Blue', epsilon=0.01)
+    player2.load_model(f'model_{model_nr}.h5')
 
-singleGameModelVsModel(15, 16)
+    env = Crypt(player1, player2)
+    env.playGame(train, log)
+    print("Done!")
+
+
+#testModelVsRandom(18, 100)
+
+#testModelVsModel(18, 15, 100)
+
+
 
 
 

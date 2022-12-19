@@ -209,6 +209,7 @@ class Crypt:
         phase_over = False
         while not phase_over:
 
+
             if turn == 3 and self.players[0].hasTorch():
                 break
             elif turn == 4 and self.players[1].hasTorch():
@@ -235,12 +236,12 @@ class Crypt:
                     self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold red')
                 #log_action(curr__input_state, action, 0)
 
-                if turn == 2 and self.players[0].hasTorch():
-                    phase_over = True
-
                 if action == 'Recover':
                     turn += 1
                     continue
+                
+                if turn == 2 and self.players[0].hasTorch():
+                    phase_over = True
     ##################################################################################
         #Model to train
             elif turn % 2 == 1:   
@@ -273,12 +274,14 @@ class Crypt:
                         turn += 1
                         continue
 
-                if turn == 3 and self.players[1].hasTorch():
-                    phase_over = True
+                
                 
                 if action == 'Recover':
                     turn += 1               
                     continue
+
+                if turn == 3 and self.players[1].hasTorch():
+                    phase_over = True
 
     def AllServantsPushedOut(self, color):
         #check the board places to see if there is a servant of the given color
