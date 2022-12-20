@@ -65,3 +65,6 @@ Model 18, Linear Activation Func and target train every game
 0 % winrate vs model 15
  % winrate vs model 16
 
+Model 19, Linear Activation Func and target train every game
+
+

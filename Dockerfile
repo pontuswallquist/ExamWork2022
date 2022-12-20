@@ -8,6 +8,7 @@ COPY trainAgent.py /tmp
 COPY testAgent.py /tmp
 COPY requirements.txt /tmp
 COPY model_15.h5 /tmp
+COPY model_19.h5 /tmp
 WORKDIR /tmp
 
 RUN pip install -r requirements.txt
