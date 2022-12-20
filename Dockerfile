@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-gpu
+FROM tensorflow/tensorflow:latest
 
 COPY DQN_agent.py /tmp
 COPY cards.py /tmp
