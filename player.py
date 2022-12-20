@@ -1,6 +1,7 @@
 from cards import *
 import random
 from collections import deque
+import re
 
 class PlayerInterface:
 
@@ -28,8 +29,11 @@ class PlayerInterface:
 
         self.map_id_to_actions = {v: k for k, v in self.map_actions_to_id.items()}
 
-    def resetScore(self):
+    def reset(self):
+        self.collection = []
         self.score = 0
+        self.servants = deque([Servant(self.color), Servant(self.color), Servant(self.color)], maxlen=3)
+        self.exhaustedServants = deque([], maxlen=3)
 
     def useServant(self, value):
         servant = self.servants.pop()
@@ -117,17 +121,43 @@ class HumanPlayer(PlayerInterface):
         super().__init__(color, torch)
     
     def step(self, input_state, list_of_possible_actions, actionspace, train):
+
+        options = []
+        if 'Recover' in list_of_possible_actions:
+            options.append('Recover')
+        if 'useRemains' in list_of_possible_actions:
+            options.append('useRemains')
+        if self.servants:
+            options.append('Claim')
+
+        print('Choose an action:')
+        for i, option in enumerate(options):
+            print(i, ':', option)
+        action = int(input())
+        action = options[action]
+        if action == 'Claim':
+            print("Please enter bid in the form of place-servants-value:")
+            validInput = False
+            while not validInput:
+                action = input()
+                pattern = re.compile(r'(\d)-(\d)-(\d)')
+                match = pattern.fullmatch(action)
+                if match:
+                    if action in list_of_possible_actions:
+                        validInput = True
+                    else:
+                        print("Invalid input, please try again")
+                else:
+                    print("Invalid input, please try again")
         
-        # Render action space with pygame
-        # Get action from user
-        # Map action to action_id
-        # return action, action_id
-        pass
+        action_id = self.map_actions_to_id[action]
+        return action, action_id
       
 class RandomPlayer(PlayerInterface):
 
     def __init__(self, color, torch=False):
         super().__init__(color, torch)
+        
 
     def step(self, input_state, list_of_possible_actions, actionspace, train):
         action = random.choice(list_of_possible_actions)

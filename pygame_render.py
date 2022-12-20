@@ -249,6 +249,11 @@ drawCollection('Blue', collectcardsBlue)
 drawCollection('Red', collectcardsRed)
 drawRecoverButton()
 drawUseRemains()
+print(bg.get_alpha())
+bg.fill((64,64,64))
+bg.set_alpha(200)
+screen.blit(bg, bg_rect)
+print(bg.get_alpha())
 
 # Run the game loop
 running = True

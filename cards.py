@@ -10,6 +10,15 @@ cardtypes = {
     6: 'Tapestry'
 }
 
+shortcardtypes = {
+    1: 'R',
+    2: 'I',
+    3: 'J',
+    4: 'M',
+    5: 'P',
+    6: 'T'
+}
+
 class TreasureCard:
     
     """A treasure card."""

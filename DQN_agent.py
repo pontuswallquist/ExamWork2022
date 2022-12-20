@@ -31,6 +31,7 @@ class DQNAgent(PlayerInterface):
     def __init__(self, color, torch=False, epsilon=1.0):
         super().__init__(color, torch)
 
+
         self.memory = deque(maxlen=10000)
         self.gamma = 0.85    # discount rate
         self.epsilon = epsilon # exploration rate
@@ -121,5 +122,6 @@ class DQNAgent(PlayerInterface):
 
     def load_target_model(self, file_name):
         self.target_model = load_model(file_name)
+
 
     

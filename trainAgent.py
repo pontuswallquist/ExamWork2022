@@ -59,7 +59,7 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
 
     
 
-trainNewAgent(19, 15, 500)
+trainNewAgent(20, 'random', 500)
 
 
 

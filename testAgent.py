@@ -28,29 +28,24 @@ def testModelVsModel(model_nr, enemy_nr, nr_of_games):
     model_wins = []
     enemy_wins = []
     ties = []
-    model_score = 0
-    enemy_score = 0
+    model_score = []
+    enemy_score = []
 
     env = Crypt(player1, player2)
     for i in track(range(nr_of_games), description=f'Testing agent {model_nr}...'):
         
         env.playGame(train, log)
-        enemy_score += env.players[0].score
-        model_score += env.players[1].score
         append_winner(env, model_wins, enemy_wins, ties)
-        player1.resetScore()
-        player2.resetScore()
+        model_score.append(env.players[1].score)
+        enemy_score.append(env.players[0].score)
+        
         env.reset()
-
-    
-    avg_model_score = model_score/nr_of_games
-    avg_enemy_score = enemy_score/nr_of_games
 
     console.print(f"Model {model_nr} won {len(model_wins)/nr_of_games*100}% of the games")
     console.print(f"Model {model_nr} lost {len(enemy_wins)/nr_of_games*100}% of the games")
     console.print(f"Model {model_nr} tied {len(ties)/nr_of_games*100}% of the games")
-    console.print(f"Model {model_nr} average score: {avg_model_score}")
-    console.print(f"Enemy {enemy_nr} average score: {avg_enemy_score}")
+    console.print(f"Model {model_nr} average score: {sum(model_score)/len(model_score)}")
+    console.print(f"Enemy {enemy_nr} average score: {sum(enemy_score)/len(enemy_score)}")
 
 def testModelVsRandom(model_nr, nr_of_games):
     train = False
@@ -138,13 +133,11 @@ def singleGameHumanVsModel(model_nr):
     player2.load_model(f'model_{model_nr}.h5')
 
     env = Crypt(player1, player2)
-    env.playGame(train, log)
+    env.playGame(train, log, render=True)
     print("Done!")
 
 
-#testModelVsRandom(18, 100)
-
-#testModelVsModel(18, 15, 100)
+singleGameModelVsModel(15, 19)
 
 
 
