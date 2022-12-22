@@ -68,3 +68,12 @@ Model 18, Linear Activation Func and target train every game
 Model 19, Linear Activation Func and target train every game
 
 
+Model 20, Trained vs Random, 500 games
+62 % winrate vs Random, 200 games
+
+Model 21, Trained vs model 20, 500 games
+35 % winrate vs Model 20, 200 games
+
+Model 22, Trained vs Model 20, 1000 games
+
+

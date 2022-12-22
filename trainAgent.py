@@ -31,8 +31,8 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
     for i in track(range(nr_of_games), description=f'Training agent {training_model_number}...'):
         
         env.playGame(train, log)
-        # Train target network every game
-        if i % 5 == 0:
+        # Train target network every 5 games
+        if i % 5 == 0 and i > 0:
          train_agent.target_train()
         #avg_score += state.players[1].score
         if i > 2:
@@ -63,8 +63,8 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
 # Model 21 trained for 500 games against model 20
 #trainNewAgent(21, 20, 500)
 
-# Model 22 trained for 1000 games against model 21
-trainNewAgent(22, 21, 1000)
+# Model 22 trained for 1000 games against model 20
+trainNewAgent(22, 20, 1000)
 
 
 
