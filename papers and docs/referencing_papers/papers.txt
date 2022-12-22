@@ -2,6 +2,7 @@ Lägg till mer uppgifter om källor, En URL eller bara namn och år räcker inte
 
 1: Andrew Nerger and Jeffrey Chin. R2i Games. Crypt. 2018
 https://www.kickstarter.com/projects/roadtoinfamy/crypt-1
+Rules: https://roadtoinfamy.com/rules/Crypt_booklet_printerFriendly.pdf
 
 2: Richard S. Sutton and Andrew G. Barto. Reinforcement Learning, An Introduction. MIT Press, 1998
 https://redirect.cs.umbc.edu/courses/graduate/678/spring17/RL-3.pdf
