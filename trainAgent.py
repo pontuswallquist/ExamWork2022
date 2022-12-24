@@ -31,10 +31,9 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
     for i in track(range(nr_of_games), description=f'Training agent {training_model_number}...'):
         
         env.playGame(train, log)
-        # Train target network every 5 games
-        if i % 5 == 0 and i > 0:
+        # Train target network every 20 games
+        if i % 20 == 0 and i > 0:
          train_agent.target_train()
-        #avg_score += state.players[1].score
         if i > 2:
             with writer.as_default():
                 tf.summary.scalar("Score each game", env.players[1].score, step=i)
@@ -57,14 +56,16 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
     del train_agent
     del enemy_agent
 
-# Model 20 trained for 500 games against random agent
-#trainNewAgent(20, 'random', 500)
+# Model 23 trained for 500 games against random
+trainNewAgent(23, 'random', 500)
 
-# Model 21 trained for 500 games against model 20
-#trainNewAgent(21, 20, 500)
+# Model 25 trained for 500 games against model 14
+#trainNewAgent(25, 14, 500)
 
-# Model 22 trained for 1000 games against model 20
-trainNewAgent(22, 20, 1000)
+# Model 24 trained for 500 games against model 23
+#trainNewAgent(24, 23, 500)
+
+
 
 
 

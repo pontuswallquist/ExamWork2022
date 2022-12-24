@@ -80,7 +80,7 @@ def testModelVsRandom(model_nr, nr_of_games):
     console.print(f"Model {model_nr} average score: {(sum(model_score)/nr_of_games)}")
     console.print(f"Random average score: {(sum(enemy_score)/nr_of_games)}")
     
-def singleGameModelVsModel(enemy_model_number, trained_model_number):
+def singleGameModelVsModel(trained_model_number, enemy_model_number):
     train = False
     log = True
     console = Console()
@@ -137,9 +137,13 @@ def singleGameHumanVsModel(model_nr):
     print("Done!")
 
 
-testModelVsModel(21, 20, 200)
+testModelVsModel(14,20, 100)
 
-#singleGameModelVsModel(20, 21)
+#testModelVsRandom(22, 100)
+
+#singleGameModelVsRandom(22)
+
+singleGameModelVsModel(14, 20)
 
 
 

@@ -1,11 +1,6 @@
 
 
-model_14 without penalty
-Trained for 100 games
-Learning rate: 0.002
-Epsilon decay: 0.9975
-Gamma: 0.85
-75 % winrate vs Random agent
+
 
 Model 4 without penalty for losing servants
 Trained for 500 games = 18h 40 min
@@ -55,25 +50,27 @@ gamma = 0.85
 Model 15, Linear Activation Func and target train every 5 games
 91 % winrate vs model 16
 72 % winrate vs Random
+6 % winrate vs Model 14
 
-Model 16, Linear Activation Func and target train every 10 games
-35 % winrate vs Random
-6 % winrate vs model 15
-
-Model 18, Linear Activation Func and target train every game
-0 % winrate vs Random
-0 % winrate vs model 15
- % winrate vs model 16
-
-Model 19, Linear Activation Func and target train every game
-
+model_14 without penalty
+Trained for 100 games
+Learning rate: 0.002
+Epsilon decay: 0.9975
+Gamma: 0.85
+75 % winrate vs Random agent
+35 % winrate vs Model 20
 
 Model 20, Trained vs Random, 500 games
-62 % winrate vs Random, 200 games
+62 % winrate vs Random
+51 % winrate vs Model 15
+43 % winrate vs Model 14
 
 Model 21, Trained vs model 20, 500 games
-35 % winrate vs Model 20, 200 games
+35 % winrate vs Model 20
 
 Model 22, Trained vs Model 20, 1000 games
+15 % winrate vs Model 20
+15 % winrate vs Random
 
+Model 14 and 20 are best
 
