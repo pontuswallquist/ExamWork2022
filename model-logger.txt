@@ -67,10 +67,13 @@ Model 20, Trained vs Random, 500 games
 
 Model 21, Trained vs model 20, 500 games
 35 % winrate vs Model 20
+59 % winrate vs Random
 
 Model 22, Trained vs Model 20, 1000 games
 15 % winrate vs Model 20
 15 % winrate vs Random
 
 Model 14 and 20 are best
+
+Model 23, Trained vs Random, 500 games
 

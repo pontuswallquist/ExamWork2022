@@ -33,7 +33,7 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
         env.playGame(train, log)
         # Train target network every 20 games
         if i % 20 == 0 and i > 0:
-         train_agent.target_train()
+            train_agent.target_train()
         if i > 2:
             with writer.as_default():
                 tf.summary.scalar("Score each game", env.players[1].score, step=i)

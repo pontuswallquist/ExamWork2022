@@ -352,7 +352,7 @@ class Crypt:
 
         if self.turnsLeft == 0 and not self.hasAvailableActions(playerNr, hasPlayed) or self.turnsLeft == 0 and action == 'Recover':
             done = True
-            reward = 5 * (self.players[playerNr].score - self.players[otherPlayerNr].score)
+            reward = 2 * (self.players[playerNr].score - self.players[otherPlayerNr].score)
         else:
             done = False
         
