@@ -137,13 +137,13 @@ def singleGameHumanVsModel(model_nr):
     print("Done!")
 
 
-#testModelVsModel(14,20, 100)
+testModelVsModel(14,23, 100)
 
-testModelVsRandom(21, 100)
+#testModelVsRandom(23, 100)
 
-singleGameModelVsRandom(21)
+#singleGameModelVsRandom(23)
 
-#singleGameModelVsModel(14, 20)
+#singleGameModelVsModel(23, 14)
 
 
 

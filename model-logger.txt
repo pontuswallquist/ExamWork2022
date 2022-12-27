@@ -75,5 +75,8 @@ Model 22, Trained vs Model 20, 1000 games
 
 Model 14 and 20 are best
 
-Model 23, Trained vs Random, 500 games
+Model 23, Trained vs Random, 500 games, target train every 20th game
+82 % winrate vs Random, 15 % lost, 3 % draw, Avg score 42.8, enemy avg score 30.5
+45 % winrate vs Model 20, 53 % lost, 2 % draw, Avg score 35.7, enemy avg score 35.8
+34 % winrate vs Model 14, 64 % lost, 2 % draw, Avg score 34.8, enemy avg score 39.3
 
