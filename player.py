@@ -136,6 +136,8 @@ class HumanPlayer(PlayerInterface):
         action = int(input())
         action = options[action]
         if action == 'Claim':
+            if len(list_of_possible_actions) < 10:
+                print(list_of_possible_actions)
             print("Please enter bid in the form of place-servants-value:")
             validInput = False
             while not validInput:

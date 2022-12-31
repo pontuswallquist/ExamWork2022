@@ -79,8 +79,11 @@ Model 23, Trained vs Random, 500 games, target train every 20th game
 82 % winrate vs Random, 15 % lost, 3 % draw, Avg score 42.8, enemy avg score 30.5
 45 % winrate vs Model 20, 53 % lost, 2 % draw, Avg score 35.7, enemy avg score 35.8
 34 % winrate vs Model 14, 64 % lost, 2 % draw, Avg score 34.8, enemy avg score 39.3
+60 % winrate vs model 25, 36% lost, 4% draw, Avg score 38.7, enemy avg score 34.8
 
 Model 24, Trained vs 23, 500 games, target train every 20th game
 12 % winrate vs Model 23, 87 % lost, 1 % draw, Avg score 27, enemy avg score 41
 
-Model 25, Trained vs 23, 1000 games, target train every 20th game
+Model 25, Trained vs Random, 1000 games, target train every 20th game
+53 % winrate vs Random, 44 % lost, 3 % draw, Avg score 33.8, enemy avg score 31.9
+18 % winrate vs Model 23, 80 % lost, 2 % draw, Avg score 30, enemy avg score 41.6

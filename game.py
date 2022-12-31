@@ -3,8 +3,8 @@ from player import *
 import copy
 import numpy as np
 from rich.console import Console
-#import pygame
-from time import sleep
+from rich.table import Table
+
 
 colors = {
     'yellow': (255, 200, 0),
@@ -144,22 +144,31 @@ class Crypt:
                     self.collectTreasure(1, place)
                     break
 
-    def rollWithoutAction(self, playerNr, servant): 
+    def rollWithoutAction(self, playerNr, servant, render): 
         roll = servant.roll()
+        if render:
+            self.console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
         if roll < servant.effort_value:
             self.players[playerNr].exhaustAServant(servant)
-            #self.console.print(f"{self.players[playerNr].color} player exhausted a servant", justify='center')
+            if render:
+                self.console.print(self.players[playerNr].color + ' exhausted a servant', justify='center')
             return
         else:
             self.players[playerNr].recoverServantFromCard(servant)
 
-    def rollWithAction(self, playerNr, servant):
+    def rollWithAction(self, playerNr, servant, render):
         roll = servant.roll()
+        if render:
+            self.console.print(self.players[playerNr].color + ' rolled', roll, 'against', servant.effort_value, justify='center')
         if roll < servant.effort_value:
+            
             newRoll = self.collectors[2].useCard(self.players[playerNr])
+            if render:
+                self.console.print(self.players[playerNr].color + ' used Idol card to re-roll', newRoll, 'against', servant.effort_value, justify='center')
             if newRoll < servant.effort_value:
                 self.players[playerNr].exhaustAServant(servant)
-                #self.console.print(f"{self.players[playerNr].color} player exhausted a servant", justify='center')
+                if render:
+                    self.console.print(self.players[playerNr].color + ' exhausted a servant', justify='center')
                 return
             else:
                 self.players[playerNr].recoverServantFromCard(servant)
@@ -200,14 +209,17 @@ class Crypt:
             winner = 'Draw'
         print('Model Score: ', self.players[0].score, ' - ', 'Random AI Score: ', self.players[1].score, ' - ', 'Winner: ', winner)
 
-    def revealPhase(self):
+    def revealPhase(self, render):
         self.turnsLeft -= 1
+        if render:
+            self.console.print('[bold underline italic green]Reveal Phase', justify='center')
+            self.console.print('Turns left: ', self.turnsLeft, justify='left')
         self.updateNewBoard(1)
         self.updateNewBoard(2)
         self.updateNewBoard(3)
 
 
-    def claimPhase(self, train, log):
+    def claimPhase(self, train, log, render):
     
         if self.players[0].hasTorch():
             turn = 0
@@ -219,12 +231,6 @@ class Crypt:
 
         phase_over = False
         while not phase_over:
-            '''
-            if render:
-                self.render(screen)
-                pygame.display.flip()
-                sleep(1)
-            '''   
             if turn == 3 and self.players[0].hasTorch():
                 break
             elif turn == 4 and self.players[1].hasTorch():
@@ -236,6 +242,10 @@ class Crypt:
                 if len(list_of_actions) == 0:
                     turn += 1
                     continue
+
+                if render is True:
+                    self.printBoard()
+                    self.printRoundInfo(0)
             
             
                 action, action_id = self.players[0].step(self.get_input_state(), list_of_actions, actionspace, False)
@@ -246,6 +256,9 @@ class Crypt:
                 reward = self.ResultOfAction(0, action)
                 p0_played = True
                 p1_played = False
+
+                if render:
+                    self.console.print('[red]Red played: ', action, justify='left')
             
                 if log is True:
                     self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold red')
@@ -265,6 +278,10 @@ class Crypt:
                     turn += 1
                     continue
 
+                if render is True:
+                    self.printBoard()
+                    self.printRoundInfo(1)
+
                 action, action_id = self.players[1].step(self.get_input_state(), list_of_actions, actionspace, train)
 
                 if train is True or log is True:
@@ -273,6 +290,9 @@ class Crypt:
                 reward = self.ResultOfAction(1, action)
                 p1_played = True
                 p0_played = False
+
+                if render:
+                    self.console.print('[blue]Blue played: ', action, justify='right')
 
                 if log is True:
                     self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold blue')
@@ -284,13 +304,9 @@ class Crypt:
                     self.players[1].replay()
                     
                     if done:
-                        #if train is True:
-                        #    train_agent.target_train()
                         turn += 1
                         continue
 
-                
-                
                 if action == 'Recover':
                     turn += 1               
                     continue
@@ -306,7 +322,11 @@ class Crypt:
                     return False
         return True
         
-    def collectPhase(self):
+    def collectPhase(self, render):
+
+        if render:
+            self.console.print('[bold underline italic green]Collect Phase', justify='center')
+            self.printBoard()
 
         if self.AllServantsPushedOut('Red'):
             self.players[0].recoverAllExhaustedServants()
@@ -323,20 +343,22 @@ class Crypt:
         for servant in servants_to_roll:
             if servant.color == 'Red':
                 if self.players[0].hasIdol():
-                    self.rollWithAction(0, servant)
+                    self.rollWithAction(0, servant, render)
                 else:
-                    self.rollWithoutAction(0, servant)
+                    self.rollWithoutAction(0, servant, render)
             elif servant.color == 'Blue':
                 if self.players[1].hasIdol():
-                    self.rollWithAction(1, servant)
+                    self.rollWithAction(1, servant, render)
                 else:
-                    self.rollWithoutAction(1, servant)
+                    self.rollWithoutAction(1, servant, render)
 
-    def passTorchPhase(self, game_over):
+    def passTorchPhase(self, game_over, render):
         
         if not self.deck:
             game_over = True
         else:
+            if render:
+                input('Press enter to pass torch')
             self.players[0].torch = not self.players[0].torch
             self.players[1].torch = not self.players[1].torch
             game_over = False
@@ -471,240 +493,67 @@ class Crypt:
             actions[i] = actions[i] * actionspace1d[i]
         return actions
 
-    '''
-    def drawCollection(self, screen, color, cards):
-        if not cards:
-            return
-        if color == 'Blue':
-            start_x = 420
-            start_y = 80
-        elif color == 'Red':
-            start_x = 460
-            start_y = 665
-        rects = []
-        card_width = 30
-        card_height = 40
-        spacing = 5
-        font = pygame.font.Font("consola.ttf", 24)
-        y = start_y
-        x = start_x
-        for i, card in enumerate(cards):
-            if i == 13:
-                y = start_y + card_height + spacing
-                x = start_x
-            rects.append(pygame.Rect(x, y, card_width, card_height))
-            pygame.draw.rect(screen, colors['white'], rects[i], 2)
-            value_text = font.render(shortcardtypes[card.type], True, colors['yellow'])
-            text_width, text_height = value_text.get_size()
-            text_x = x + (card_width - text_width) / 2
-            text_y = y + (card_height - text_height) / 2
-            screen.blit(value_text, (text_x, text_y))
-            x = x + card_width + spacing
+    def printScore(self):
+        self.console.print('[bold italic underline green]GAME OVER!', justify='center')
+        self.console.print('[bold blue]Blue:', justify='right')
+        self.console.print('Treasures: ', self.players[1].collection, justify='right')
+        self.console.print('Servants: ', self.players[1].servants, justify='right')
+        self.console.print('Score: ', self.players[1].score, justify='right')
+        self.console.print('[bold red]Red:', justify='left')
+        self.console.print('Treasures: ', self.players[0].collection, justify='left')
+        self.console.print('Servants: ', self.players[0].servants, justify='left')
+        self.console.print('Score: ', self.players[0].score, justify='left')
 
-    def diceNumber(self, color, servant):
-        if servant.value <= 1:
-            servant_image = pygame.image.load(f'images/{color}One.png')
-        elif servant.value == 2:
-            servant_image = pygame.image.load(f'images/{color}Two.png')
-        elif servant.value == 3:
-            servant_image = pygame.image.load(f'images/{color}Three.png')
-        elif servant.value == 4:
-            servant_image = pygame.image.load(f'images/{color}Four.png')
-        elif servant.value == 5:
-            servant_image = pygame.image.load(f'images/{color}Five.png')
-        elif servant.value == 6:
-            servant_image = pygame.image.load(f'images/{color}Six.png')
-        return servant_image
+    def printRoundInfo(self, playerNr):
+        if self.players[playerNr].color == 'Red':
+            self.console.print(' [bold red]|| Red turn ||', justify='left')
+            self.console.print('[bold red]Servants available:', self.players[playerNr].servants, justify='left')
+            self.console.print('[bold red]Treasures collected:', self.players[playerNr].collection, justify='left')
+        else:
+            self.console.print(' [bold blue]|| Blue turn ||', style='bold blue', justify='right')
+            self.console.print('[bold blue]Servants available:', self.players[playerNr].servants, justify='right')
+            self.console.print('[bold blue]Treasures collected:', self.players[playerNr].collection, justify='right')
 
-    def drawServants(self, screen, color, servants):
-        if not servants:
-            return
-        if color == 'Blue':
-            start_x = 90
-            start_y = 90
-        elif color == 'Red':
-            start_x = 1050
-            start_y = 670
-        dice_width = 60
-        dice_height = 60
-        spacing = 25
+    def anyServantsOnPlace(self, color, place):
+        for servant in self.board[place]['servants']:
+            if servant.color == color:
+                return True
+        return False
 
-        y = start_y
-        x = start_x
-
-        for i, servant in enumerate(servants):
-            servant_image = self.diceNumber(color, servant)
-            servant_image = pygame.transform.scale(servant_image, (dice_width, dice_height))
-            servant_rect = servant_image.get_rect(topleft=(x, y))
-            screen.blit(servant_image, servant_rect)
-            x = x + dice_width + spacing
-
-    def drawExhausted(self, screen, color, servants):
-        if not servants:
-            return
-        if color == 'Blue':
-            start_x = 1010
-            start_y = 90
-        elif color == 'Red':
-            start_x = 125
-            start_y = 670
-        dice_width = 60
-        dice_height = 60
-        spacing = 25
-
-        y = start_y
-        x = start_x
-
-        for i, servant in enumerate(servants):
-            servant_image = self.diceNumber(color, servant)
-            servant_image = pygame.transform.scale(servant_image, (dice_width, dice_height))
-            servant_rect = servant_image.get_rect(topleft=(x, y))
-            screen.blit(servant_image, servant_rect)
-            
-            x = x + dice_width + spacing
+    def printBoard(self):
+        self.console.print('')
+        board_table = Table(title='Board')
+        if self.anyServantsOnPlace('Red', 1):
+            board_table.add_column('1', justify='center', style='bold red')
+        elif self.anyServantsOnPlace('Blue', 1):
+            board_table.add_column('1', justify='center', style='bold blue')
+        else:
+            board_table.add_column('1', justify='center')
+        if self.anyServantsOnPlace('Red', 2):
+            board_table.add_column('2', justify='center', style='bold red')
+        elif self.anyServantsOnPlace('Blue', 2):
+            board_table.add_column('2', justify='center', style='bold blue')
+        else:
+            board_table.add_column('2', justify='center')
+        if self.anyServantsOnPlace('Red', 3):
+            board_table.add_column('3', justify='center', style='bold red')
+        elif self.anyServantsOnPlace('Blue', 3):
+            board_table.add_column('3', justify='center', style='bold blue')
+        else:
+            board_table.add_column('3', justify='center')
+        board_table.add_row(str(self.board[1]['card']), str(self.board[2]['card']), str(self.board[3]['card']))
+        board_table.add_row(str(self.board[1]['servants']), str(self.board[2]['servants']), str(self.board[3]['servants']))
+        self.console.print(board_table, justify='center')
+        self.console.print('')
     
-    def drawBoard(self, screen, board):
-
-        cards = [board[i]['card'] for i in board.keys()]
-
-        card_width, card_height = 200, 250
-        card_spacing = 20
-        font = pygame.font.Font("consola.ttf", 24)
-        # Calculate the total width of the cards
-        total_width = card_width * len(cards) + card_spacing * (len(cards) - 1)
-        # Calculate the starting x position for the cards
-        start_x = 1400 // 2 - total_width // 2
-
-
-        for i, card in enumerate(cards):
-            # Calculate the card position
-            x = start_x + i * (card_width + card_spacing)
-            y = 800 // 2 - card_height // 2
-            # Draw the card outline
-            pygame.draw.rect(screen, (255, 255, 255), (x, y, card_width, card_height), 2)
-            # Draw the card value
-            if i < 2:
-                value_text = font.render(str(card.coinvalue), True, colors["yellow"])
-                value_text_rect = value_text.get_rect()
-                value_text_rect.center = (x + card_width // 2, y + card_height // 4)
-                screen.blit(value_text, value_text_rect)
-            # Draw the card type
-            type_text = font.render(cardtypes[card.type], True, colors["white"])
-            type_text_rect = type_text.get_rect()
-            type_text_rect.center = (x + card_width // 2, y + card_height * 2 // 4)
-            screen.blit(type_text, type_text_rect)
-
-        self.drawServantsOnBoard(screen, board[1]['servants'], 1)
-        self.drawServantsOnBoard(screen, board[2]['servants'], 2)
-        self.drawServantsOnBoard(screen, board[3]['servants'], 3)
-
-    def drawServantsOnBoard(self, screen, servants, card_nr):
-        if not servants:
-            return
-        if card_nr == 1:
-            start_x, start_y = 385, 450
-        elif card_nr == 2:
-            start_x, start_y = 605, 450
-        elif card_nr == 3:
-            start_x, start_y = 825, 450
-        spacing = 5
-        dice_width = 60
-        dice_height = 60
-
-        x = start_x
-        y = start_y
-
-        for i, servant in enumerate(servants):
-            servant_image = self.diceNumber(servant.color, servant)
-            servant_image = pygame.transform.scale(servant_image, (dice_width, dice_height))
-            servant_rect = servant_image.get_rect(topleft=(x, y))
-            screen.blit(servant_image, servant_rect)
-            
-            x = x + dice_width + spacing
-
-    def drawRecoverButton(self, screen):
-        width = 150
-        height = 50
-        x = 150
-        y = 500
-        font = pygame.font.Font("consola.ttf", 24)
-
-        recoverButton_rect = pygame.draw.rect(screen, colors['white'], (x, y, width, height), 2)
-        value_text = font.render('Recover', True, colors['yellow'])
-        text_width, text_height = value_text.get_size()
-        text_x = x + (width - text_width) / 2
-        text_y = y + (height - text_height) / 2
-        screen.blit(value_text, (text_x, text_y))
-
-    def drawUseRemains(self, screen):
-        width = 150
-        height = 50
-        x = 1150
-        y = 500
-        font = pygame.font.Font("consola.ttf", 24)
-
-        useRemains_rect = pygame.draw.rect(screen, colors['white'], (x, y, width, height), 2)
-        value_text = font.render('Use Remains', True, colors['yellow'])
-        text_width, text_height = value_text.get_size()
-        text_x = x + (width - text_width) / 2
-        text_y = y + (height - text_height) / 2
-        screen.blit(value_text, (text_x, text_y))
-
-    def renderGameEnd(self, screen, bg, bg_rect, winner):
-        
-        font = pygame.font.Font("consola.ttf", 48)
-        bg.fill((64,64,64))
-        bg.set_alpha(200)
-        screen.blit(bg, bg_rect)
-        text = font.render(f"{winner} \nRed score:{self.players[0].score}\tBlue score:{self.players[0].score}", True, colors["white"])
-        text_rect = text.get_rect()
-        text_rect.center = (1400 // 2, 800 // 2)
-        screen.blit(text, text_rect)
-
-    def render(self, screen):
-        self.drawBoard(screen, self.board)
-        self.drawServants(screen, 'Blue', self.players[1].servants)
-        self.drawServants(screen, 'Red', self.players[0].servants)
-        self.drawExhausted(screen, 'Red', self.players[0].exhaustedServants)
-        self.drawExhausted(screen, 'Blue', self.players[1].exhaustedServants)
-        self.drawCollection(screen, 'Blue', self.players[1].collection)
-        self.drawCollection(screen, 'Red', self.players[0].collection)
-        #self.drawRecoverButton()
-        #self.drawUseRemains()
-    '''
     def playGame(self, train, log, render=False):
-        '''
-        if render:
-            # Initialize Pygame
-            pygame.init()
-            # Set the window size
-            window_size = (1400, 800)
-            # Create the window
-            screen = pygame.display.set_mode(window_size)
-            pygame.display.set_caption('Crypt')
-            bg = pygame.image.load('images/Background.png')
-            bg_rect = bg.get_rect(topleft=(0,0))
-            screen.blit(bg, bg_rect)
-            '''
+        
         game_over = False
         self.players[0].score = 0
         self.players[1].score = 0
 
         while not game_over:
-            self.revealPhase()
-            self.claimPhase(train, log)
-            self.collectPhase()
-            game_over = self.passTorchPhase(game_over)
-        '''
-        if render:
-            if self.players[0].score > self.players[1].score:
-                winner = 'Red wins'
-            elif self.players[0].score < self.players[1].score:
-                winner = 'Blue wins'
-            else:
-                winner = 'Tied Game'
-            self.renderGameEnd(screen, bg, bg_rect, winner)
-            pygame.display.flip()
-            sleep(30)
-            pygame.quit()
-        '''
+            self.revealPhase(render)
+            self.claimPhase(train, log, render)
+            self.collectPhase(render)
+            game_over = self.passTorchPhase(game_over, render)

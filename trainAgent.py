@@ -56,14 +56,10 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
     del train_agent
     del enemy_agent
 
-# Model 23 trained for 500 games against random
-#trainNewAgent(23, 'random', 500)
 
-# Model 25 trained for 500 games against model 14
-#trainNewAgent(25, 14, 500)
 
-# Model 24 trained for 500 games against model 23
-trainNewAgent(25, 'random', 1000)
+
+trainNewAgent(26, 23, 1000)
 
 
 

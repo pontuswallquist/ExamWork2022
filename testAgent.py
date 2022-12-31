@@ -134,16 +134,18 @@ def singleGameHumanVsModel(model_nr):
 
     env = Crypt(player1, player2)
     env.playGame(train, log, render=True)
-    print("Done!")
+    env.printScore()
 
 
-#testModelVsModel(24,23, 100)
+#testModelVsModel(23,25, 250)
 
-testModelVsRandom(24, 100)
+#testModelVsRandom(25, 250)
 
-#singleGameModelVsRandom(23)
+#singleGameModelVsRandom(25)
 
 #singleGameModelVsModel(24, 23)
+
+singleGameHumanVsModel(23)
 
 
 
