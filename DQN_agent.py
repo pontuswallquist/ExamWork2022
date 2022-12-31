@@ -79,6 +79,13 @@ class DQNAgent(PlayerInterface):
             legal_outputs = ReducePossibleActions(actionspace, output)
             action_id = np.argmax(legal_outputs)
             action = self.map_id_to_actions[action_id]
+            if action not in action_list:         
+                for i in range(len(legal_outputs)):
+                    legal_outputs[action_id] = 0
+                    action_id = np.argmax(legal_outputs)
+                    action = self.map_id_to_actions[action_id]
+                    if action in action_list:
+                        break
 
         return action, action_id
 
