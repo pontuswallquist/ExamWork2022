@@ -63,7 +63,7 @@ def trainNewAgent(training_model_number, enemy_type, nr_of_games):
 #trainNewAgent(25, 14, 500)
 
 # Model 24 trained for 500 games against model 23
-trainNewAgent(24, 23, 500)
+trainNewAgent(25, 'random', 1000)
 
 
 
