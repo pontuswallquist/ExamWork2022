@@ -253,6 +253,10 @@ class Crypt:
                 if train is True or log is True:
                     curr__input_state = copy.deepcopy(self.get_input_state())
                 
+                if action not in list_of_actions:
+                    action = 'Pass'
+                    action_id = 56
+                
                 reward = self.ResultOfAction(0, action)
                 p0_played = True
                 p1_played = False
@@ -264,7 +268,7 @@ class Crypt:
                     self.console.print(curr__input_state.tolist(), f"Turn: {turn}", action, reward, sep='\n', justify='center', style='bold red')
                 #log_action(curr__input_state, action, 0)
 
-                if action == 'Recover':
+                if action == 'Recover' or action == 'Pass':
                     turn += 1
                     continue
                 
@@ -468,6 +472,10 @@ class Crypt:
         elif action == 'useRemains':
             self.collectors[1].useCard(self.players[playerNr])
             reward = 10
+
+        elif action == 'Pass':
+            reward = 0
+        
         else:
             bid = action.split('-')
             place = int(bid[0])
@@ -497,21 +505,23 @@ class Crypt:
         self.console.print('[bold italic underline green]GAME OVER!', justify='center')
         self.console.print('[bold blue]Blue:', justify='right')
         self.console.print('Treasures: ', self.players[1].collection, justify='right')
-        self.console.print('Servants: ', self.players[1].servants, justify='right')
+        self.console.print('Servants: ', list(self.players[1].servants), justify='right')
         self.console.print('Score: ', self.players[1].score, justify='right')
         self.console.print('[bold red]Red:', justify='left')
         self.console.print('Treasures: ', self.players[0].collection, justify='left')
-        self.console.print('Servants: ', self.players[0].servants, justify='left')
+        self.console.print('Servants: ', list(self.players[0].servants), justify='left')
         self.console.print('Score: ', self.players[0].score, justify='left')
 
     def printRoundInfo(self, playerNr):
         if self.players[playerNr].color == 'Red':
             self.console.print(' [bold red]|| Red turn ||', justify='left')
-            self.console.print('[bold red]Servants available:', self.players[playerNr].servants, justify='left')
+            self.console.print('[bold red]Servants available:', list(self.players[playerNr].servants), justify='left')
+            self.console.print('[bold red]Exhausted servants:', list(self.players[playerNr].exhaustedServants), justify='left')
             self.console.print('[bold red]Treasures collected:', self.players[playerNr].collection, justify='left')
         else:
             self.console.print(' [bold blue]|| Blue turn ||', style='bold blue', justify='right')
-            self.console.print('[bold blue]Servants available:', self.players[playerNr].servants, justify='right')
+            self.console.print('[bold blue]Servants available:', list(self.players[playerNr].servants), justify='right')
+            self.console.print('[bold blue]Exhausted servants:', list(self.players[playerNr].exhaustedServants), justify='right')
             self.console.print('[bold blue]Treasures collected:', self.players[playerNr].collection, justify='right')
 
     def anyServantsOnPlace(self, color, place):

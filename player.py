@@ -24,7 +24,8 @@ class PlayerInterface:
             '2-3-1': 32, '2-3-2': 33, '2-3-3': 34, '2-3-4': 35, '2-3-5': 36, '2-3-6': 37,
             '3-1-1': 38, '3-1-2': 39, '3-1-3': 40, '3-1-4': 41, '3-1-5': 42, '3-1-6': 43,
             '3-2-1': 44, '3-2-2': 45, '3-2-3': 46, '3-2-4': 47, '3-2-5': 48, '3-2-6': 49,
-            '3-3-1': 50, '3-3-2': 51, '3-3-3': 52, '3-3-4': 53, '3-3-5': 54, '3-3-6': 55
+            '3-3-1': 50, '3-3-2': 51, '3-3-3': 52, '3-3-4': 53, '3-3-5': 54, '3-3-6': 55,
+            'Pass': 56
         }
 
         self.map_id_to_actions = {v: k for k, v in self.map_actions_to_id.items()}
@@ -122,29 +123,36 @@ class HumanPlayer(PlayerInterface):
     
     def step(self, input_state, list_of_possible_actions, actionspace, train):
 
+        # Skip action
         options = []
+        if self.servants:
+            options.append('Claim')
         if 'Recover' in list_of_possible_actions:
             options.append('Recover')
         if 'useRemains' in list_of_possible_actions:
             options.append('useRemains')
-        if self.servants:
-            options.append('Claim')
+        options.append('Pass')
 
         print('Choose an action:')
         for i, option in enumerate(options):
-            print(i, ':', option)
-        action = int(input())
-        action = options[action]
+            print(i+1, ':', option)
+        action_nr = int(input())
+        action = options[action_nr-1]
         if action == 'Claim':
-            if len(list_of_possible_actions) < 10:
+            if len(list_of_possible_actions) < 18:
                 print(list_of_possible_actions)
             print("Please enter bid in the form of place-servants-value:")
             validInput = False
             while not validInput:
                 action = input()
-                pattern = re.compile(r'(\d)-(\d)-(\d)')
-                match = pattern.fullmatch(action)
-                if match:
+                pattern1 = re.compile(r'(\d)-(\d)-(\d)')
+                pattern2 = re.compile(r'\d{3}')
+                match1 = pattern1.fullmatch(action)
+                match2 = pattern2.fullmatch(action)
+                if match2:
+                    action = action[0] + '-' + action[1] + '-' + action[2]
+                    match1 = pattern1.fullmatch(action)
+                if match1:
                     if action in list_of_possible_actions:
                         validInput = True
                     else:

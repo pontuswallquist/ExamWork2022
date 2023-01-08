@@ -37,7 +37,7 @@ class DQNAgent(PlayerInterface):
         self.epsilon = epsilon # exploration rate
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.999
-        self.learning_rate = 0.0025
+        self.learning_rate = 0.0023
         self.training_history = None
         self.nr_actions = 56
         self.nr_inputs = 25
